@@ -1,0 +1,7 @@
+{
+  "mode": "debug",
+  "port": "8080",
+  "db_addr": "127.0.0.1:3306",
+  "db_username": "root",
+  "db_password": "0000"
+}
