@@ -9,8 +9,13 @@ import (
 
 func RouteQuestionController(engine *gin.Engine) {
 	group := engine.Group("/question")
+	group.GET("", GetAllQuestions)
 	group.GET("/:question_id", GetQuestionById)
 	group.POST("", NewQuestion)
+}
+
+func GetAllQuestions(c *gin.Context) {
+
 }
 
 func GetQuestionById(c *gin.Context) {

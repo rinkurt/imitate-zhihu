@@ -7,13 +7,11 @@ import (
 	"strconv"
 )
 
-
 // Usage:
 // Use WithData() to bring normal errors,
 // In repository layer, DO NOT bring models,
 // bring DTOs in service layer instead.
 // Use HandleError() to print stack when bringing error as data.
-
 
 type Result struct {
 	// Hide from outside
@@ -62,7 +60,6 @@ func ShowBadRequest(data interface{}) gin.H {
 	return RequestFormatErr.WithData(data).Show()
 }
 
-
 // Result definitions
 var (
 	Ok                    = Result{code: 0, message: "OK"}
@@ -73,4 +70,5 @@ var (
 	EmailAlreadyExistErr  = Result{code: 2004, message: "Email already exists"}
 	CreateUserErr         = Result{code: 2005, message: "Create user error"}
 	SetTokenErr           = Result{code: 2006, message: "Set token error"}
+	QuestionNotFoundErr   = Result{code: 2007, message: "Question Not Found"}
 )

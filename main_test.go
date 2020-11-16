@@ -13,6 +13,7 @@ func TestHandleError(t *testing.T) {
 }
 
 func TestA(t *testing.T) {
-	_, res := repository.SelectUserByEmail("fff@fff.com")
-	fmt.Println(res.Show())
+	questions, res := repository.SelectAllQuestions()
+	fmt.Println(res)
+	fmt.Println(questions)
 }

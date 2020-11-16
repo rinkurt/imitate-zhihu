@@ -935,66 +935,113 @@ SELECT|sys.sys_config:null
     <column id="293" parent="289" name="title">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <key id="294" parent="289" name="PRIMARY">
+    <column id="294" parent="289" name="description">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="295" parent="289" name="creator_id">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="296" parent="289" name="tag">
+      <Position>5</Position>
+      <DataType>varchar(256)|0s</DataType>
+    </column>
+    <column id="297" parent="289" name="comment_count">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="298" parent="289" name="view_count">
+      <Position>7</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="299" parent="289" name="like_count">
+      <Position>8</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="300" parent="289" name="gmt_create">
+      <Position>9</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <column id="301" parent="289" name="gmt_modified">
+      <Position>10</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <index id="302" parent="289" name="questions_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="303" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="295" parent="290" name="id">
+    <key id="304" parent="289" name="questions_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>questions_id_uindex</UnderlyingIndexName>
+    </key>
+    <column id="305" parent="290" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="296" parent="290" name="name">
+    <column id="306" parent="290" name="name">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="297" parent="290" name="email">
+    <column id="307" parent="290" name="email">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="298" parent="290" name="password">
+    <column id="308" parent="290" name="password">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="299" parent="290" name="token">
+    <column id="309" parent="290" name="token">
       <Position>5</Position>
       <DataType>varchar(40)|0s</DataType>
     </column>
-    <column id="300" parent="290" name="gmt_create">
+    <column id="310" parent="290" name="gmt_create">
       <Position>6</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="301" parent="290" name="bio">
+    <column id="311" parent="290" name="bio">
       <Position>7</Position>
       <DataType>varchar(256)|0s</DataType>
     </column>
-    <column id="302" parent="290" name="avatar_url">
+    <column id="312" parent="290" name="avatar_url">
       <Position>8</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <index id="303" parent="290" name="users_id_uindex">
+    <index id="313" parent="290" name="users_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="304" parent="290" name="users_email_uindex">
+    <index id="314" parent="290" name="users_email_uindex">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="305" parent="290" name="PRIMARY">
+    <key id="315" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="306" parent="290" name="users_id_uindex">
+    <key id="316" parent="290" name="users_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users_id_uindex</UnderlyingIndexName>
     </key>
-    <key id="307" parent="290" name="users_email_uindex">
+    <key id="317" parent="290" name="users_email_uindex">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>users_email_uindex</UnderlyingIndexName>
     </key>
