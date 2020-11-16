@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"time"
 )
@@ -16,32 +17,33 @@ type User struct {
 	AvatarUrl string `json:"avatar_url"`
 }
 
-func SetUserToken(user *User, token string) tool.Result {
+func SetUserToken(user *User, token string) result.Result {
 	db := tool.GetDatabase()
 	res := db.Model(user).Update("token", token)
 	if res.RowsAffected == 0 {
-		return tool.SetTokenErr.WithData(res.Error.Error())
+		return result.SetTokenErr.WithData(res.Error.Error())
 	}
-	return tool.Ok
+	user.Token = token
+	return result.Ok
 }
 
-func SelectUserByEmail(email string) (User, tool.Result) {
+func SelectUserByEmail(email string) (User, result.Result) {
 	db := tool.GetDatabase()
 	user := User{Email: email}
 	res := db.Where(&user).First(&user)
 	if res.RowsAffected == 0 {
-		return user, tool.UserNotFoundErr
+		return user, result.UserNotFoundErr.WithData(res.Error.Error())
 	}
-	return user, tool.Ok
+	return user, result.Ok
 }
 
-func CreateUser(user *User) tool.Result {
+func CreateUser(user *User) result.Result {
 	db := tool.GetDatabase()
 	user.Id = 0
 	user.GmtCreate = time.Now().Unix()
 	res := db.Create(user)
 	if res.RowsAffected == 0 {
-		return tool.CreateUserErr.WithData(res.Error.Error())
+		return result.CreateUserErr.WithData(res.Error.Error())
 	}
-	return tool.Ok.WithData(user)
+	return result.Ok
 }

@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="" />
+    <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/MyUtil.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/UserController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/UserController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/UserRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/UserRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/Result.go" beforeDir="false" afterPath="$PROJECT_DIR$/result/Result.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,23 +39,29 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="Go Application" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
   <component name="GOROOT" path="C:\Users\user\go-sdk\go1.15.3" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
   <component name="ProjectId" id="1k5oKJQBJFTLjbGYkGhN8KZM32n" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="DefaultGoTemplateProperty" value="Go Application" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
@@ -41,10 +76,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Workspace\imitate-zhihu\result" />
       <recent name="D:\Workspace\imitate-zhihu\error" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Test.TestA in imitate-zhihu">
     <configuration name="go build imitate-zhihu" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="imitate-zhihu" />
       <working_directory value="$PROJECT_DIR$" />
@@ -54,9 +90,38 @@
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestA in imitate-zhihu" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imitate-zhihu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="imitate-zhihu" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestA\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestHandleError in imitate-zhihu" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imitate-zhihu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="imitate-zhihu" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestHandleError\E$" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build imitate-zhihu" />
+      <item itemvalue="Go Test.TestHandleError in imitate-zhihu" />
+      <item itemvalue="Go Test.TestA in imitate-zhihu" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestA in imitate-zhihu" />
         <item itemvalue="Go Build.go build imitate-zhihu" />
+        <item itemvalue="Go Test.TestHandleError in imitate-zhihu" />
       </list>
     </recent_temporary>
   </component>
@@ -64,34 +129,46 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
   </component>
   <component name="WindowStateProjectService">
-    <state x="233" y="4" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605005414984">
+    <state x="191" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605453082820">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="233" y="4" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605005414984" />
-    <state width="1237" height="145" key="GridCell.Tab.0.bottom" timestamp="1605261066433">
+    <state x="191" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605453082820" />
+    <state width="1237" height="235" key="GridCell.Tab.0.bottom" timestamp="1605493875609">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="145" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
-    <state width="1237" height="145" key="GridCell.Tab.0.bottom/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605261066433" />
-    <state width="1237" height="145" key="GridCell.Tab.0.center" timestamp="1605261066433">
+    <state width="1237" height="235" key="GridCell.Tab.0.bottom/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605493875609" />
+    <state width="1237" height="235" key="GridCell.Tab.0.center" timestamp="1605493875609">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="145" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
-    <state width="1237" height="145" key="GridCell.Tab.0.center/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605261066433" />
-    <state width="1237" height="145" key="GridCell.Tab.0.left" timestamp="1605261066433">
+    <state width="1237" height="235" key="GridCell.Tab.0.center/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605493875609" />
+    <state width="1237" height="235" key="GridCell.Tab.0.left" timestamp="1605493875609">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="145" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
-    <state width="1237" height="145" key="GridCell.Tab.0.left/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605261066433" />
-    <state width="1237" height="145" key="GridCell.Tab.0.right" timestamp="1605261066433">
+    <state width="1237" height="235" key="GridCell.Tab.0.left/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605493875609" />
+    <state width="1237" height="235" key="GridCell.Tab.0.right" timestamp="1605493875609">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="145" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
-    <state width="1237" height="145" key="GridCell.Tab.0.right/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605261066433" />
+    <state width="1237" height="235" key="GridCell.Tab.0.right/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605493875609" />
     <state width="1237" height="208" key="GridCell.Tab.1.bottom" timestamp="1605172268570">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
