@@ -18,22 +18,14 @@ type Question struct {
 	GmtModified  int64
 }
 
-func SelectQuestionsWithLimit(offset int, limit int) ([]Question, result.Result) {
-	db := tool.GetDatabase()
-	var questions []Question
-	res := db.Limit(limit).Offset(offset).Find(&questions)
-	if res.RowsAffected == 0 {
-		return questions, result.QuestionNotFoundErr
-	}
-	return questions, result.Ok
-}
 
-func SelectQuestionsBySearchWithLimit(search string,
-	offset int, limit int) ([]Question, result.Result) {
+func SelectQuestions(search string, offset int, limit int) ([]Question, result.Result) {
 	db := tool.GetDatabase()
 	var questions []Question
-	res := db.Where("title LIKE ?", search).Or("tag LIKE ?", search).
-		Limit(limit).Offset(offset).Find(&questions)
+	if search != "" {
+		db = db.Where("title LIKE ?", search).Or("tag LIKE ?", search)
+	}
+	res := db.Limit(limit).Offset(offset).Find(&questions)
 	if res.RowsAffected == 0 {
 		return questions, result.QuestionNotFoundErr
 	}

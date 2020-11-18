@@ -20,16 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/service/QuestionService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/QuestionController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/QuestionController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/QuestionDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/QuestionDto.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/UserDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/UserDto.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/QuestionRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/QuestionRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/UserRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/UserRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/result/Result.go" beforeDir="false" afterPath="$PROJECT_DIR$/result/Result.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/QuestionService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/QuestionService.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

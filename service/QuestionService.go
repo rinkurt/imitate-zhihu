@@ -10,13 +10,7 @@ import (
 
 func GetQuestions(search string, page int, size int) result.Result {
 	offset := (page - 1) * size
-	var questions []repository.Question
-	var res result.Result
-	if search == "" {
-		questions, res = repository.SelectQuestionsWithLimit(offset, size)
-	} else {
-		questions, res = repository.SelectQuestionsBySearchWithLimit(search, offset, size)
-	}
+	questions, res := repository.SelectQuestions(search, offset, size)
 	if !res.IsOK() {
 		return res
 	}
