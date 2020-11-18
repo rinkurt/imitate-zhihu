@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
 	"testing"
 )
@@ -12,8 +11,16 @@ func TestHandleError(t *testing.T) {
 	fmt.Println(res.Show())
 }
 
+type Bar struct {
+	a int
+}
+
+func Foo() *Bar {
+	bar := Bar{a: 1}
+	return &bar
+}
+
 func TestA(t *testing.T) {
-	questions, res := repository.SelectAllQuestions()
-	fmt.Println(res)
-	fmt.Println(questions)
+	bar := Foo()
+	fmt.Println(bar.a)
 }

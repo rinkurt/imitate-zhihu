@@ -54,3 +54,15 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	model.Copy(&userDto, &user)
 	return res.WithData(userDto)
 }
+
+
+// TODO: Cache
+func GetUserById(id int) (*dto.UserDto, result.Result) {
+	user, res := repository.SelectUserById(id)
+	if !res.IsOK() {
+		return nil, res
+	}
+	userDto := dto.UserDto{}
+	model.Copy(&userDto, &user)
+	return &userDto, result.Ok
+}

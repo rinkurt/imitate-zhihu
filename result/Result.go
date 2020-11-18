@@ -43,8 +43,8 @@ func (res Result) WithData(data interface{}) Result {
 
 // Print stack details while bringing error as data.
 func (res Result) HandleError(err error) Result {
-	err = errors.WithStack(err)
-	fmt.Printf("%+v\n", err)
+	ers := errors.WithStack(err)
+	fmt.Printf("%+v\n", ers)
 	return Result{res.code, res.message, err.Error()}
 }
 

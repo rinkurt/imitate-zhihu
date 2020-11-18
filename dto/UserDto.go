@@ -15,10 +15,10 @@ type UserRegisterDto struct {
 }
 
 type UserDto struct {
-	Id        int
-	Name      string
-	Email     string
-	Token     string
-	Bio       string
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	Token     string `json:"token"`
+	Bio       string `json:"bio"`
 	AvatarUrl string `json:"avatar_url"`
 }

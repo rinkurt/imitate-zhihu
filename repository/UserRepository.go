@@ -21,10 +21,20 @@ func SetUserToken(user *User, token string) result.Result {
 	db := tool.GetDatabase()
 	res := db.Model(user).Update("token", token)
 	if res.RowsAffected == 0 {
-		return result.SetTokenErr.WithData(res.Error.Error())
+		return result.SetTokenErr
 	}
 	user.Token = token
 	return result.Ok
+}
+
+func SelectUserById(id int) (User, result.Result) {
+	db := tool.GetDatabase()
+	user := User{Id: id}
+	res := db.Where(&user).First(&user)
+	if res.RowsAffected == 0 {
+		return user, result.UserNotFoundErr
+	}
+	return user, result.Ok
 }
 
 func SelectUserByEmail(email string) (User, result.Result) {
@@ -32,7 +42,7 @@ func SelectUserByEmail(email string) (User, result.Result) {
 	user := User{Email: email}
 	res := db.Where(&user).First(&user)
 	if res.RowsAffected == 0 {
-		return user, result.UserNotFoundErr.WithData(res.Error.Error())
+		return user, result.UserNotFoundErr
 	}
 	return user, result.Ok
 }
@@ -43,7 +53,7 @@ func CreateUser(user *User) result.Result {
 	user.GmtCreate = time.Now().Unix()
 	res := db.Create(user)
 	if res.RowsAffected == 0 {
-		return result.CreateUserErr.WithData(res.Error.Error())
+		return result.CreateUserErr
 	}
 	return result.Ok
 }

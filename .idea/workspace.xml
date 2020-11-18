@@ -20,14 +20,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sql/questions.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0f5c89be-1917-486b-a5cc-ae51cc4f0d16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0f5c89be-1917-486b-a5cc-ae51cc4f0d16.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/QuestionService.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/QuestionController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/QuestionController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/QuestionDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/QuestionDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/UserDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/UserDto.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/QuestionRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/QuestionRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/UserRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/UserRepository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/result/Result.go" beforeDir="false" afterPath="$PROJECT_DIR$/result/Result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +80,7 @@
       <recent name="D:\Workspace\imitate-zhihu\error" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestA in imitate-zhihu">
+  <component name="RunManager" selected="Go Build.go build imitate-zhihu">
     <configuration name="go build imitate-zhihu" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="imitate-zhihu" />
       <working_directory value="$PROJECT_DIR$" />
@@ -86,6 +88,17 @@
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="imitate-zhihu" />
       <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestA in imitate-zhihu (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="imitate-zhihu" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="imitate-zhihu" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestA\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestA in imitate-zhihu" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -114,11 +127,13 @@
       <item itemvalue="Go Build.go build imitate-zhihu" />
       <item itemvalue="Go Test.TestHandleError in imitate-zhihu" />
       <item itemvalue="Go Test.TestA in imitate-zhihu" />
+      <item itemvalue="Go Test.TestA in imitate-zhihu (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestA in imitate-zhihu" />
         <item itemvalue="Go Build.go build imitate-zhihu" />
+        <item itemvalue="Go Test.TestA in imitate-zhihu (1)" />
+        <item itemvalue="Go Test.TestA in imitate-zhihu" />
         <item itemvalue="Go Test.TestHandleError in imitate-zhihu" />
       </list>
     </recent_temporary>
@@ -151,25 +166,25 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="191" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605453082820" />
-    <state width="1237" height="235" key="GridCell.Tab.0.bottom" timestamp="1605503671915">
+    <state width="1237" height="235" key="GridCell.Tab.0.bottom" timestamp="1605680068537">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="145" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
+    <state width="1237" height="235" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605680068537" />
     <state width="1237" height="235" key="GridCell.Tab.0.bottom/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605503671915" />
-    <state width="1237" height="235" key="GridCell.Tab.0.center" timestamp="1605503671915">
+    <state width="1237" height="235" key="GridCell.Tab.0.center" timestamp="1605680068537">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="145" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
+    <state width="1237" height="235" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605680068537" />
     <state width="1237" height="235" key="GridCell.Tab.0.center/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605503671915" />
-    <state width="1237" height="235" key="GridCell.Tab.0.left" timestamp="1605503671915">
+    <state width="1237" height="235" key="GridCell.Tab.0.left" timestamp="1605680068537">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="145" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
+    <state width="1237" height="235" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605680068537" />
     <state width="1237" height="235" key="GridCell.Tab.0.left/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605503671915" />
-    <state width="1237" height="235" key="GridCell.Tab.0.right" timestamp="1605503671915">
+    <state width="1237" height="235" key="GridCell.Tab.0.right" timestamp="1605680068537">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state width="1237" height="145" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605252394064" />
+    <state width="1237" height="235" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605680068537" />
     <state width="1237" height="235" key="GridCell.Tab.0.right/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605503671915" />
     <state width="1237" height="208" key="GridCell.Tab.1.bottom" timestamp="1605172268570">
       <screen x="0" y="0" width="1280" height="689" />
@@ -212,9 +227,10 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="0" y="0" width="603" height="689" key="find.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605157913484" />
-    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1605099436142">
+    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1605680090740">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
+    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1605680090740" />
     <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605099436142" />
   </component>
 </project>
