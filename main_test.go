@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"imitate-zhihu/result"
+	"imitate-zhihu/tool"
 	"testing"
 )
 
@@ -21,6 +22,6 @@ func Foo() *Bar {
 }
 
 func TestA(t *testing.T) {
-	bar := Foo()
-	fmt.Println(bar.a)
+	token, _ := tool.GenToken("1")
+	fmt.Println(token)
 }

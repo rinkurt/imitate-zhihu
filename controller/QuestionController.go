@@ -14,7 +14,7 @@ func RouteQuestionController(engine *gin.Engine) {
 	group := engine.Group("/question")
 	group.GET("", GetQuestions)
 	group.GET("/:question_id", GetQuestionById)
-	group.POST("", NewQuestion)
+	group.POST("", JWTAuthMiddleware, NewQuestion)
 }
 
 func GetQuestions(c *gin.Context) {
