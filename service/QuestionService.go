@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
@@ -14,14 +13,13 @@ func GetQuestions(search string, page int, size int) result.Result {
 	if !res.IsOK() {
 		return res
 	}
-	var questionDtos []dto.QuestionDto
+	var questionDtos []dto.QuestionDetailDto
 	for _, question := range questions {
-		questionDto := dto.QuestionDto{}
+		questionDto := dto.QuestionDetailDto{}
 		model.Copy(&questionDto, &question)
 		userDto, res := GetUserById(question.CreatorId)
 		if !res.IsOK() {
-			// TODO: 匿名用户
-			fmt.Println("User Not Found")
+			userDto = dto.AnonymousUser()
 		}
 		questionDto.Creator = userDto
 		questionDtos = append(questionDtos, questionDto)

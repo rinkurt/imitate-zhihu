@@ -45,7 +45,7 @@ func GetQuestionById(c *gin.Context) {
 
 // TODO
 func NewQuestion(c *gin.Context) {
-	questionDto := dto.QuestionDto{}
+	questionDto := dto.QuestionDetailDto{}
 	err := c.BindJSON(&questionDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))

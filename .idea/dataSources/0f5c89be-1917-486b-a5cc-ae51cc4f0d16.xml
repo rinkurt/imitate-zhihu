@@ -920,128 +920,221 @@ SELECT|sys.sys_config:null
 </ObjectGrants>
     </user>
     <table id="288" parent="2" name="book"/>
-    <table id="289" parent="11" name="questions"/>
-    <table id="290" parent="11" name="users"/>
-    <column id="291" parent="288" name="id">
+    <table id="289" parent="11" name="answers"/>
+    <table id="290" parent="11" name="questions"/>
+    <table id="291" parent="11" name="users"/>
+    <column id="292" parent="288" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="292" parent="289" name="id">
+    <column id="293" parent="289" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="293" parent="289" name="title">
+    <column id="294" parent="289" name="answer">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="295" parent="289" name="view_count">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="296" parent="289" name="upvote_count">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="297" parent="289" name="downvote_count">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="298" parent="289" name="comment_count">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="299" parent="289" name="gmt_create">
+      <Position>7</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <column id="300" parent="289" name="gmt_modified">
+      <Position>8</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <column id="301" parent="289" name="creator_id">
+      <Position>9</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="302" parent="289" name="question_id">
+      <Position>10</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <index id="303" parent="289" name="answers_id_uindex">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="304" parent="289" name="answers_users_id_fk">
+      <ColNames>creator_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="305" parent="289" name="answers_questions_id_fk">
+      <ColNames>question_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="306" parent="289" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="307" parent="289" name="answers_id_uindex">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>answers_id_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="308" parent="289" name="answers_users_id_fk">
+      <ColNames>creator_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="309" parent="289" name="answers_questions_id_fk">
+      <ColNames>question_id</ColNames>
+      <RefTableName>questions</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="310" parent="290" name="id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="311" parent="290" name="title">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="294" parent="289" name="description">
+    <column id="312" parent="290" name="description">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="295" parent="289" name="creator_id">
+    <column id="313" parent="290" name="creator_id">
       <Position>4</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="296" parent="289" name="tag">
+    <column id="314" parent="290" name="tag">
       <Position>5</Position>
       <DataType>varchar(256)|0s</DataType>
     </column>
-    <column id="297" parent="289" name="comment_count">
+    <column id="315" parent="290" name="answer_count">
       <Position>6</Position>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="298" parent="289" name="view_count">
+    <column id="316" parent="290" name="comment_count">
       <Position>7</Position>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="299" parent="289" name="like_count">
+    <column id="317" parent="290" name="view_count">
       <Position>8</Position>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="300" parent="289" name="gmt_create">
+    <column id="318" parent="290" name="like_count">
       <Position>9</Position>
-      <DataType>bigint|0s</DataType>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="301" parent="289" name="gmt_modified">
+    <column id="319" parent="290" name="gmt_create">
       <Position>10</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <index id="302" parent="289" name="questions_id_uindex">
+    <column id="320" parent="290" name="gmt_modified">
+      <Position>11</Position>
+      <DataType>bigint|0s</DataType>
+    </column>
+    <index id="321" parent="290" name="questions_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="303" parent="289" name="PRIMARY">
+    <index id="322" parent="290" name="questions_users_id_fk">
+      <ColNames>creator_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="323" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="304" parent="289" name="questions_id_uindex">
+    <key id="324" parent="290" name="questions_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>questions_id_uindex</UnderlyingIndexName>
     </key>
-    <column id="305" parent="290" name="id">
+    <foreign-key id="325" parent="290" name="questions_users_id_fk">
+      <ColNames>creator_id</ColNames>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="326" parent="291" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="306" parent="290" name="name">
+    <column id="327" parent="291" name="name">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="307" parent="290" name="email">
+    <column id="328" parent="291" name="email">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="308" parent="290" name="password">
+    <column id="329" parent="291" name="password">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="309" parent="290" name="token">
+    <column id="330" parent="291" name="token">
       <Position>5</Position>
       <DataType>varchar(40)|0s</DataType>
     </column>
-    <column id="310" parent="290" name="gmt_create">
+    <column id="331" parent="291" name="gmt_create">
       <Position>6</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="311" parent="290" name="bio">
+    <column id="332" parent="291" name="bio">
       <Position>7</Position>
       <DataType>varchar(256)|0s</DataType>
     </column>
-    <column id="312" parent="290" name="avatar_url">
+    <column id="333" parent="291" name="avatar_url">
       <Position>8</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <index id="313" parent="290" name="users_id_uindex">
+    <index id="334" parent="291" name="users_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="314" parent="290" name="users_email_uindex">
+    <index id="335" parent="291" name="users_email_uindex">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="315" parent="290" name="PRIMARY">
+    <key id="336" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="316" parent="290" name="users_id_uindex">
+    <key id="337" parent="291" name="users_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>users_id_uindex</UnderlyingIndexName>
     </key>
-    <key id="317" parent="290" name="users_email_uindex">
+    <key id="338" parent="291" name="users_email_uindex">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>users_email_uindex</UnderlyingIndexName>
     </key>

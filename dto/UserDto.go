@@ -14,11 +14,30 @@ type UserRegisterDto struct {
 	AvatarUrl  string `json:"avatar_url"`
 }
 
-type UserDto struct {
+type UserDetailDto struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
 	Email     string `json:"email"`
 	Token     string `json:"token"`
 	Bio       string `json:"bio"`
 	AvatarUrl string `json:"avatar_url"`
+}
+
+type UserDto struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	Bio       string `json:"bio"`
+	AvatarUrl string `json:"avatar_url"`
+}
+
+var anonymousUser *UserDto = nil
+
+func AnonymousUser() *UserDto {
+	if anonymousUser == nil {
+		anonymousUser = &UserDto{
+			Id:   0,
+			Name: "Anonymous",
+		}
+	}
+	return anonymousUser
 }

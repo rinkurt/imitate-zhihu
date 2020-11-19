@@ -23,7 +23,7 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	if !res.IsOK() {
 		return res
 	}
-	userDto := dto.UserDto{}
+	userDto := dto.UserDetailDto{}
 	model.Copy(&userDto, &user)
 	return res.WithData(&userDto)
 }
@@ -50,7 +50,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	if !res.IsOK() {
 		return res
 	}
-	userDto := dto.UserDto{}
+	userDto := dto.UserDetailDto{}
 	model.Copy(&userDto, &user)
 	return res.WithData(userDto)
 }

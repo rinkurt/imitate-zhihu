@@ -29,8 +29,8 @@ func SetUserToken(user *User, token string) result.Result {
 
 func SelectUserById(id int) (User, result.Result) {
 	db := tool.GetDatabase()
-	user := User{Id: id}
-	res := db.Where(&user).First(&user)
+	user := User{}
+	res := db.First(&user, id)
 	if res.RowsAffected == 0 {
 		return user, result.UserNotFoundErr
 	}
@@ -39,8 +39,8 @@ func SelectUserById(id int) (User, result.Result) {
 
 func SelectUserByEmail(email string) (User, result.Result) {
 	db := tool.GetDatabase()
-	user := User{Email: email}
-	res := db.Where(&user).First(&user)
+	user := User{}
+	res := db.Where(&User{Email: email}).First(&user)
 	if res.RowsAffected == 0 {
 		return user, result.UserNotFoundErr
 	}

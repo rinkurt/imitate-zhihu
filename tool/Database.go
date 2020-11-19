@@ -23,7 +23,7 @@ func InitDatabase() {
 
 	var err error
 	_database, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Warn),
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		panic(err.Error())
