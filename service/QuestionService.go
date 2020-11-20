@@ -39,7 +39,22 @@ func GetQuestionById(id int) result.Result {
 	return result.Ok.WithData(questionDto)
 }
 
-// TODO
-func NewQuestion(userId int, question *dto.QuestionCreateDto) result.Result {
-	return result.Ok
+
+func NewQuestion(userId int, questionDto *dto.QuestionCreateDto) result.Result {
+	question := repository.Question{}
+	model.Copy(&question, questionDto)
+	question.CreatorId = userId
+	res := repository.CreateQuestion(&question)
+	if !res.IsOK() {
+		return res
+	}
+
+	questionDetailDto := dto.QuestionDetailDto{}
+	model.Copy(&questionDetailDto, &question)
+	user, res := GetUserById(userId)
+	if !res.IsOK() {
+		user = dto.AnonymousUser()
+	}
+	questionDetailDto.Creator = user
+	return result.Ok.WithData(questionDetailDto)
 }

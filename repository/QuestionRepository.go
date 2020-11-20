@@ -3,6 +3,7 @@ package repository
 import (
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
+	"time"
 )
 
 type Question struct {
@@ -41,7 +42,13 @@ func SelectQuestionById(id int) Question {
 	return question
 }
 
-func CreateQuestion(question Question) {
+func CreateQuestion(question *Question) result.Result {
 	db := tool.GetDatabase()
-	db.Create(&question)
+	question.GmtCreate = time.Now().Unix()
+	question.GmtModified = question.GmtCreate
+	res := db.Create(question)
+	if res.RowsAffected == 0 {
+		return result.CreateQuestionErr
+	}
+	return result.Ok
 }

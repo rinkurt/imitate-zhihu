@@ -63,20 +63,18 @@ func ShowBadRequest(data interface{}) gin.H {
 
 // For Authorization Fail
 func ShowAuthErr(data interface{}) gin.H {
-	return AuthErr.WithData(data).Show()
+	return Result{code: 1001, message: "Authorization Error", data: data}.Show()
 }
 
 // For Errors in Controller Layer
 func ShowControllerErr(data interface{}) gin.H {
-	return ControllerErr.WithData(data).Show()
+	return Result{code: 1002, message: "Controller Error", data: data}.Show()
 }
 
 // Result definitions
 var (
 	Ok                    = Result{code: 0, message: "OK"}
 	RequestFormatErr      = Result{code: 1, message: "Request Format Error"}
-	AuthErr               = Result{code: 1001, message: "Authorization Error"}
-	ControllerErr         = Result{code: 1002, message: "Controller Error"}
 	OtherErr              = Result{code: 2001, message: "Other Error"}
 	UserNotFoundErr       = Result{code: 2002, message: "User Not Found"}
 	PasswordNotCorrectErr = Result{code: 2003, message: "Password not correct"}
@@ -84,4 +82,5 @@ var (
 	CreateUserErr         = Result{code: 2005, message: "Create user error"}
 	SetTokenErr           = Result{code: 2006, message: "Set token error"}
 	QuestionNotFoundErr   = Result{code: 2007, message: "Question Not Found"}
+	CreateQuestionErr     = Result{code: 2008, message: "Create question error"}
 )

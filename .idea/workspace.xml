@@ -21,13 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/AuthMiddleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/AuthMiddleware.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/QuestionController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/QuestionController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/QuestionDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/QuestionDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/QuestionRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/QuestionRepository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/result/Result.go" beforeDir="false" afterPath="$PROJECT_DIR$/result/Result.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/QuestionService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/QuestionService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tool/Token.go" beforeDir="false" afterPath="$PROJECT_DIR$/tool/Token.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,10 +239,10 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="0" y="0" width="603" height="689" key="find.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605157913484" />
-    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1605683374380">
+    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1605855225057">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1605683374380" />
+    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1605855225057" />
     <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605099436142" />
   </component>
 </project>
