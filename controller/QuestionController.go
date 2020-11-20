@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
-	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"net/http"
@@ -32,23 +31,29 @@ func GetQuestions(c *gin.Context) {
 }
 
 
-// TODO
 func GetQuestionById(c *gin.Context) {
 	qid := c.Param("question_id")
 	id, err := strconv.Atoi(qid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
 	}
-	question := repository.SelectQuestionById(id)
-	c.JSON(http.StatusOK, question)
+	res := service.GetQuestionById(id)
+	c.JSON(http.StatusOK, res.Show())
 }
 
-// TODO
+
 func NewQuestion(c *gin.Context) {
-	questionDto := dto.QuestionDetailDto{}
+	iUserId, exists := c.Get("user_id")
+	userId, ok := iUserId.(int)
+	if !exists || !ok {
+		c.JSON(http.StatusInternalServerError,
+			result.ShowControllerErr("get user_id failed"))
+	}
+	questionDto := dto.QuestionCreateDto{}
 	err := c.BindJSON(&questionDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
 	}
-	c.JSON(http.StatusOK, questionDto)
+	res := service.NewQuestion(userId, &questionDto)
+	c.JSON(http.StatusOK, res.Show())
 }

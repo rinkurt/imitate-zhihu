@@ -22,3 +22,9 @@ type QuestionDetailDto struct {
 	GmtModified  int64    `json:"gmt_modified"`
 	Creator      *UserDto `json:"creator"`
 }
+
+type QuestionCreateDto struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Tag         string `json:"tag"`
+}

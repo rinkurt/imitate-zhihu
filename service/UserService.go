@@ -1,12 +1,13 @@
 package service
 
 import (
-	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
+	"imitate-zhihu/tool"
+	"strconv"
 )
 
 func UserLogin(loginDto *dto.UserLoginDto) result.Result {
@@ -19,10 +20,16 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	if err != nil {
 		return result.PasswordNotCorrectErr.HandleError(err)
 	}
-	res = repository.SetUserToken(&user, uuid.NewV4().String())
-	if !res.IsOK() {
-		return res
+	//res = repository.SetUserToken(&user, uuid.NewV4().String())
+	//if !res.IsOK() {
+	//	return res
+	//}
+	token, err := tool.GenToken(strconv.Itoa(user.Id))
+	if err != nil {
+		return result.SetTokenErr.HandleError(err)
 	}
+	user.Token = token
+
 	userDto := dto.UserDetailDto{}
 	model.Copy(&userDto, &user)
 	return res.WithData(&userDto)
@@ -34,6 +41,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	if res.IsOK() {
 		return result.EmailAlreadyExistErr
 	}
+
 	user := repository.User{}
 	model.Copy(&user, registerDto)
 	// encrypt
@@ -46,10 +54,16 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	if !res.IsOK() {
 		return res
 	}
-	res = repository.SetUserToken(&user, uuid.NewV4().String())
-	if !res.IsOK() {
-		return res
+	//res = repository.SetUserToken(&user, uuid.NewV4().String())
+	//if !res.IsOK() {
+	//	return res
+	//}
+	token, err := tool.GenToken(strconv.Itoa(user.Id))
+	if err != nil {
+		return result.SetTokenErr.HandleError(err)
 	}
+	user.Token = token
+
 	userDto := dto.UserDetailDto{}
 	model.Copy(&userDto, &user)
 	return res.WithData(userDto)

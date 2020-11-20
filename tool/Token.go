@@ -3,6 +3,7 @@ package tool
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"
+	"time"
 )
 
 type MyClaims struct {
@@ -12,14 +13,17 @@ type MyClaims struct {
 
 var MySecret = []byte("c2f7e3c0-0267-44bd-a57a-162198e07784")
 
-//var TokenExpireDuration = time.Hour * 5
+// Expire after 15 days.
+//var TokenExpireDuration = time.Hour * 24 * 15
+
 
 func GenToken(userId string) (string, error) {
 	c := MyClaims{
 		userId, // 自定义字段
 		jwt.StandardClaims{
-			//ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(), // 过期时间
-			Issuer: "my-project", // 签发人
+			//ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(),
+			IssuedAt: time.Now().Unix(),
+			Issuer: "imitate-zhihu",
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)

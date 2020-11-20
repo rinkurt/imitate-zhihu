@@ -26,3 +26,20 @@ func GetQuestions(search string, page int, size int) result.Result {
 	}
 	return result.Ok.WithData(questionDtos)
 }
+
+func GetQuestionById(id int) result.Result {
+	question := repository.SelectQuestionById(id)
+	questionDto := dto.QuestionDetailDto{}
+	model.Copy(&questionDto, &question)
+	user, res := GetUserById(question.CreatorId)
+	if !res.IsOK() {
+		user = dto.AnonymousUser()
+	}
+	questionDto.Creator = user
+	return result.Ok.WithData(questionDto)
+}
+
+// TODO
+func NewQuestion(userId int, question *dto.QuestionCreateDto) result.Result {
+	return result.Ok
+}

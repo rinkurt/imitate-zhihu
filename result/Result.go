@@ -56,14 +56,27 @@ func NewResultWithData(code int, message string, data interface{}) Result {
 	return Result{code, message, data}
 }
 
+// For wrong request format, such as bind JSON error
 func ShowBadRequest(data interface{}) gin.H {
 	return RequestFormatErr.WithData(data).Show()
+}
+
+// For Authorization Fail
+func ShowAuthErr(data interface{}) gin.H {
+	return AuthErr.WithData(data).Show()
+}
+
+// For Errors in Controller Layer
+func ShowControllerErr(data interface{}) gin.H {
+	return ControllerErr.WithData(data).Show()
 }
 
 // Result definitions
 var (
 	Ok                    = Result{code: 0, message: "OK"}
 	RequestFormatErr      = Result{code: 1, message: "Request Format Error"}
+	AuthErr               = Result{code: 1001, message: "Authorization Error"}
+	ControllerErr         = Result{code: 1002, message: "Controller Error"}
 	OtherErr              = Result{code: 2001, message: "Other Error"}
 	UserNotFoundErr       = Result{code: 2002, message: "User Not Found"}
 	PasswordNotCorrectErr = Result{code: 2003, message: "Password not correct"}
