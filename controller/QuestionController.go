@@ -36,6 +36,7 @@ func GetQuestionById(c *gin.Context) {
 	id, err := strconv.Atoi(qid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		return
 	}
 	res := service.GetQuestionById(id)
 	c.JSON(http.StatusOK, res.Show())
@@ -48,11 +49,13 @@ func NewQuestion(c *gin.Context) {
 	if !exists || !ok {
 		c.JSON(http.StatusInternalServerError,
 			result.ShowControllerErr("get user_id failed"))
+		return
 	}
 	questionDto := dto.QuestionCreateDto{}
 	err := c.BindJSON(&questionDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		return
 	}
 	res := service.NewQuestion(userId, &questionDto)
 	c.JSON(http.StatusOK, res.Show())
