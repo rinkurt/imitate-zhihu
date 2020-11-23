@@ -933,7 +933,7 @@ SELECT|sys.sys_config:null
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="294" parent="289" name="answer">
+    <column id="294" parent="289" name="content">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
@@ -957,11 +957,11 @@ SELECT|sys.sys_config:null
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="299" parent="289" name="gmt_create">
+    <column id="299" parent="289" name="create_at">
       <Position>7</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="300" parent="289" name="gmt_modified">
+    <column id="300" parent="289" name="update_at">
       <Position>8</Position>
       <DataType>bigint|0s</DataType>
     </column>
@@ -1016,7 +1016,7 @@ SELECT|sys.sys_config:null
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="312" parent="290" name="description">
+    <column id="312" parent="290" name="content">
       <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
@@ -1050,11 +1050,11 @@ SELECT|sys.sys_config:null
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="319" parent="290" name="gmt_create">
+    <column id="319" parent="290" name="create_at">
       <Position>10</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="320" parent="290" name="gmt_modified">
+    <column id="320" parent="290" name="update_at">
       <Position>11</Position>
       <DataType>bigint|0s</DataType>
     </column>
@@ -1103,11 +1103,11 @@ SELECT|sys.sys_config:null
       <Position>5</Position>
       <DataType>varchar(40)|0s</DataType>
     </column>
-    <column id="331" parent="291" name="gmt_create">
+    <column id="331" parent="291" name="create_at">
       <Position>6</Position>
       <DataType>bigint|0s</DataType>
     </column>
-    <column id="332" parent="291" name="bio">
+    <column id="332" parent="291" name="description">
       <Position>7</Position>
       <DataType>varchar(256)|0s</DataType>
     </column>

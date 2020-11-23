@@ -1,13 +1,13 @@
 create table answers
 (
     id int primary key auto_increment,
-    answer text null,
+    content text null,
     view_count int default 0 null,
     upvote_count int default 0 null,
     downvote_count int default 0 null,
     comment_count int default 0 null,
-    gmt_create bigint null,
-    gmt_modified bigint null,
+    create_at bigint null,
+    update_at bigint null,
     creator_id int null,
     question_id int null,
     constraint answers_questions_id_fk

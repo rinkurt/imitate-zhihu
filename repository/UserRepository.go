@@ -7,14 +7,14 @@ import (
 )
 
 type User struct {
-	Id        int `gorm:"primaryKey"`
-	Name      string
-	Email     string
-	Password  string
-	Token     string
-	GmtCreate int64
-	Bio       string
-	AvatarUrl string `json:"avatar_url"`
+	Id          int `gorm:"primaryKey"`
+	Name        string
+	Email       string
+	Password    string
+	Token       string
+	CreateAt    int64
+	Description string
+	AvatarUrl   string `json:"avatar_url"`
 }
 
 func SetUserToken(user *User, token string) result.Result {
@@ -50,7 +50,7 @@ func SelectUserByEmail(email string) (User, result.Result) {
 func CreateUser(user *User) result.Result {
 	db := tool.GetDatabase()
 	user.Id = 0
-	user.GmtCreate = time.Now().Unix()
+	user.CreateAt = time.Now().Unix()
 	res := db.Create(user)
 	if res.RowsAffected == 0 {
 		return result.CreateUserErr

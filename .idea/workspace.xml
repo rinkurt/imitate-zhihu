@@ -20,8 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/QuestionController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/QuestionController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/AnswerDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/AnswerDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/QuestionDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/QuestionDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/UserDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/UserDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/QuestionRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/QuestionRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/UserRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/UserRepository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/answers.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/answers.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/questions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/questions.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/users.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +82,7 @@
       <recent name="D:\Workspace\imitate-zhihu\error" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestA in imitate-zhihu (3)">
+  <component name="RunManager" selected="Go Build.go build imitate-zhihu">
     <configuration name="go build imitate-zhihu" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="imitate-zhihu" />
       <working_directory value="$PROJECT_DIR$" />
@@ -139,8 +145,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestA in imitate-zhihu (3)" />
         <item itemvalue="Go Build.go build imitate-zhihu" />
+        <item itemvalue="Go Test.TestA in imitate-zhihu (3)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu (2)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu (1)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu" />
@@ -228,11 +234,11 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="512" y="235" width="332" height="247" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605497169103" />
-    <state x="559" y="34" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1605791787067">
+    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1606136908333">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="368" y="44" width="702" height="633" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1280.689@0.0.1280.689" timestamp="1605074767932" />
-    <state x="559" y="34" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605791787067" />
+    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606136908333" />
     <state x="0" y="0" width="603" height="689" key="find.popup" timestamp="1605157913484">
       <screen x="0" y="0" width="1280" height="689" />
     </state>

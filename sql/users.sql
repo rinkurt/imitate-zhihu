@@ -5,8 +5,8 @@ create table users
 	email varchar(30) null,
 	password varchar(100) null,
 	token varchar(40) null,
-	gmt_create bigint null,
-	bio varchar(256) null,
+	create_at bigint null,
+	description varchar(256) null,
 	avatar_url varchar(100) null
 );
 

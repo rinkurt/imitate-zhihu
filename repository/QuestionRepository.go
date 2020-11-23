@@ -9,15 +9,15 @@ import (
 type Question struct {
 	Id           int
 	Title        string
-	Description  string
+	Content      string
 	CreatorId    int
 	Tag          string
 	AnswerCount  int
 	CommentCount int
 	ViewCount    int
 	LikeCount    int
-	GmtCreate    int64
-	GmtModified  int64
+	CreateAt     int64
+	UpdateAt     int64
 }
 
 
@@ -44,8 +44,8 @@ func SelectQuestionById(id int) Question {
 
 func CreateQuestion(question *Question) result.Result {
 	db := tool.GetDatabase()
-	question.GmtCreate = time.Now().Unix()
-	question.GmtModified = question.GmtCreate
+	question.CreateAt = time.Now().Unix()
+	question.UpdateAt = question.CreateAt
 	res := db.Create(question)
 	if res.RowsAffected == 0 {
 		return result.CreateQuestionErr
