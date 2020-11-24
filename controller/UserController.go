@@ -17,23 +17,23 @@ func RouteUserController(engine *gin.Engine) {
 
 func UserLogin(c *gin.Context) {
 	userDto := dto.UserLoginDto{}
-	err := c.BindJSON(&userDto)
+	err := c.ShouldBindJSON(&userDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
 		return
 	}
 	res := service.UserLogin(&userDto)
-	c.JSON(http.StatusOK, res.Show())
+	c.JSON(http.StatusOK, res)
 }
 
 
 func UserRegister(c *gin.Context) {
 	registerDto := dto.UserRegisterDto{}
-	err := c.BindJSON(&registerDto)
+	err := c.ShouldBindJSON(&registerDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
 		return
 	}
 	res := service.UserRegister(&registerDto)
-	c.JSON(http.StatusOK, res.Show())
+	c.JSON(http.StatusOK, res)
 }

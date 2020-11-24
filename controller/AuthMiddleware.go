@@ -12,19 +12,19 @@ func JWTAuthMiddleware(c *gin.Context) {
 	// Token放在Header的Authorization中，并使用Bearer开头
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
-		c.JSON(http.StatusUnauthorized, result.ShowAuthErr("Empty Auth"))
+		c.JSON(http.StatusUnauthorized, result.EmptyAuth)
 		c.Abort()
 		return
 	}
 	parts := strings.SplitN(authHeader, " ", 2)
 	if !(len(parts) == 2 && parts[0] == "Bearer") {
-		c.JSON(http.StatusUnauthorized, result.ShowAuthErr("Auth Format Error"))
+		c.JSON(http.StatusUnauthorized, result.AuthFormatErr)
 		c.Abort()
 		return
 	}
 	mc, err := tool.ParseToken(parts[1])
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, result.ShowAuthErr("Token Error: " + err.Error()))
+		c.JSON(http.StatusUnauthorized, result.TokenErr.WithDataError(err))
 		c.Abort()
 		return
 	}

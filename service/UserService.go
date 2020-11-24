@@ -12,13 +12,13 @@ import (
 
 func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	user, res := repository.SelectUserByEmail(loginDto.Email)
-	if !res.IsOK() {
+	if res.NotOK() {
 		return res
 	}
 	// decrypt
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginDto.Password))
 	if err != nil {
-		return result.PasswordNotCorrectErr.HandleError(err)
+		return result.PasswordNotCorrectErr.WithDataError(err)
 	}
 	//res = repository.SetUserToken(&user, uuid.NewV4().String())
 	//if !res.IsOK() {
@@ -26,7 +26,7 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	//}
 	token, err := tool.GenToken(strconv.Itoa(user.Id))
 	if err != nil {
-		return result.SetTokenErr.HandleError(err)
+		return result.HandleServerErr(err)
 	}
 	user.Token = token
 
@@ -47,11 +47,11 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	// encrypt
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return result.OtherErr.HandleError(err)
+		return result.HandleServerErr(err)
 	}
 	user.Password = string(hash)
 	res = repository.CreateUser(&user)
-	if !res.IsOK() {
+	if res.NotOK() {
 		return res
 	}
 	//res = repository.SetUserToken(&user, uuid.NewV4().String())
@@ -60,7 +60,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	//}
 	token, err := tool.GenToken(strconv.Itoa(user.Id))
 	if err != nil {
-		return result.SetTokenErr.HandleError(err)
+		return result.HandleServerErr(err)
 	}
 	user.Token = token
 
@@ -73,7 +73,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 // TODO: Cache
 func GetUserById(id int) (*dto.UserDto, result.Result) {
 	user, res := repository.SelectUserById(id)
-	if !res.IsOK() {
+	if res.NotOK() {
 		return nil, res
 	}
 	userDto := dto.UserDto{}

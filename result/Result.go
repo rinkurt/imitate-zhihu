@@ -2,7 +2,6 @@ package result
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"strconv"
 )
@@ -11,76 +10,67 @@ import (
 // Use WithData() to bring normal errors,
 // In repository layer, DO NOT bring models,
 // bring DTOs in service layer instead.
-// Use HandleError() to print stack when bringing error as data.
+// Use HandleError() to print stack when bringing error as Data.
 
 type Result struct {
-	// Hide from outside
-	code    int
-	message string
-	data    interface{}
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 func (res Result) Error() string {
-	return strconv.Itoa(res.code) + ":" + res.message
+	return strconv.Itoa(res.Code) + ":" + res.Message
 }
 
-// Get message in map (gin.H), generally for JSON.
-func (res Result) Show() gin.H {
-	return gin.H{
-		"code":    res.code,
-		"message": res.message,
-		"data":    res.data,
-	}
-}
 
 func (res Result) IsOK() bool {
-	return res.code == 0
+	return res.Code == 0
+}
+
+func (res Result) NotOK() bool {
+	return res.Code != 0
 }
 
 func (res Result) WithData(data interface{}) Result {
-	return Result{res.code, res.message, data}
+	res.Data = data
+	return res
 }
 
-// Print stack details while bringing error as data.
-func (res Result) HandleError(err error) Result {
+func (res Result) WithDataIfOK(data interface{}) Result {
+	if res.NotOK() {
+		return res
+	}
+	return res.WithData(data)
+}
+
+func (res Result) WithDataError(err error) Result {
+	res.Data = err.Error()
+	return res
+}
+
+func HandleServerErr(err error) Result {
 	ers := errors.WithStack(err)
 	fmt.Printf("%+v\n", ers)
-	return Result{res.code, res.message, err.Error()}
-}
-
-func NewResult(code int, message string) Result {
-	return Result{code: code, message: message}
-}
-
-func NewResultWithData(code int, message string, data interface{}) Result {
-	return Result{code, message, data}
-}
-
-// For wrong request format, such as bind JSON error
-func ShowBadRequest(data interface{}) gin.H {
-	return RequestFormatErr.WithData(data).Show()
-}
-
-// For Authorization Fail
-func ShowAuthErr(data interface{}) gin.H {
-	return Result{code: 1001, message: "Authorization Error", data: data}.Show()
-}
-
-// For Errors in Controller Layer
-func ShowControllerErr(data interface{}) gin.H {
-	return Result{code: 1002, message: "Controller Error", data: data}.Show()
+	return ServerErr.WithDataError(err)
 }
 
 // Result definitions
 var (
-	Ok                    = Result{code: 0, message: "OK"}
-	RequestFormatErr      = Result{code: 1, message: "Request Format Error"}
-	OtherErr              = Result{code: 2001, message: "Other Error"}
-	UserNotFoundErr       = Result{code: 2002, message: "User Not Found"}
-	PasswordNotCorrectErr = Result{code: 2003, message: "Password not correct"}
-	EmailAlreadyExistErr  = Result{code: 2004, message: "Email already exists"}
-	CreateUserErr         = Result{code: 2005, message: "Create user error"}
-	SetTokenErr           = Result{code: 2006, message: "Set token error"}
-	QuestionNotFoundErr   = Result{code: 2007, message: "Question Not Found"}
-	CreateQuestionErr     = Result{code: 2008, message: "Create question error"}
+	Ok         = Result{Code: 0, Message: "OK"}
+	BadRequest = Result{Code: 400, Message: "Bad Request"}
+	ServerErr  = Result{Code: 500, Message: "Server Error"}
+	// 100x: Authorization
+	EmptyAuth     = Result{Code: 1001, Message: "Empty Authorization"}
+	AuthFormatErr = Result{Code: 1002, Message: "Authorization Format Error"}
+	TokenErr      = Result{Code: 1003, Message: "Token Error"}
+	// 200x: User Login
+	UserNotFoundErr       = Result{Code: 2001, Message: "User Not Found"}
+	PasswordNotCorrectErr = Result{Code: 2002, Message: "Password not correct"}
+	// 201x: User Register
+	EmailAlreadyExistErr = Result{Code: 2011, Message: "Email already exists"}
+	CreateUserErr        = Result{Code: 2012, Message: "DB Create user error"}
+	// 210x: Get Question
+	QuestionNotFoundErr = Result{Code: 2101, Message: "Question Not Found"}
+	// 211x: Create Question
+	CreateQuestionErr = Result{Code: 2111, Message: "DB Create question error"}
 )

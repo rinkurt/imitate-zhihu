@@ -17,15 +17,15 @@ type User struct {
 	AvatarUrl   string `json:"avatar_url"`
 }
 
-func SetUserToken(user *User, token string) result.Result {
-	db := tool.GetDatabase()
-	res := db.Model(user).Update("token", token)
-	if res.RowsAffected == 0 {
-		return result.SetTokenErr
-	}
-	user.Token = token
-	return result.Ok
-}
+//func SetUserToken(user *User, token string) result.Result {
+//	db := tool.GetDatabase()
+//	res := db.Model(user).Update("token", token)
+//	if res.RowsAffected == 0 {
+//		return result.SetTokenErr
+//	}
+//	user.Token = token
+//	return result.Ok
+//}
 
 func SelectUserById(id int) (User, result.Result) {
 	db := tool.GetDatabase()

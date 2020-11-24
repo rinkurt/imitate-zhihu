@@ -26,8 +26,8 @@ func GetQuestions(c *gin.Context) {
 		size = 10
 	}
 	search := c.Query("search")
-	res := service.GetQuestions(search, page, size)
-	c.JSON(http.StatusOK, res.Show())
+	q, res := service.GetQuestions(search, page, size)
+	c.JSON(http.StatusOK, res.WithDataIfOK(q))
 }
 
 
@@ -35,11 +35,11 @@ func GetQuestionById(c *gin.Context) {
 	qid := c.Param("question_id")
 	id, err := strconv.Atoi(qid)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
 		return
 	}
-	res := service.GetQuestionById(id)
-	c.JSON(http.StatusOK, res.Show())
+	q, res := service.GetQuestionById(id)
+	c.JSON(http.StatusOK, res.WithDataIfOK(q))
 }
 
 
@@ -48,15 +48,15 @@ func NewQuestion(c *gin.Context) {
 	userId, ok := iUserId.(int)
 	if !exists || !ok {
 		c.JSON(http.StatusInternalServerError,
-			result.ShowControllerErr("get user_id failed"))
+			result.ServerErr.WithData("get user_id failed"))
 		return
 	}
 	questionDto := dto.QuestionCreateDto{}
-	err := c.BindJSON(&questionDto)
+	err := c.ShouldBindJSON(&questionDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.ShowBadRequest(err.Error()))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
 		return
 	}
 	res := service.NewQuestion(userId, &questionDto)
-	c.JSON(http.StatusOK, res.Show())
+	c.JSON(http.StatusOK, res)
 }
