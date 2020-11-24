@@ -18,7 +18,7 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	// decrypt
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginDto.Password))
 	if err != nil {
-		return result.PasswordNotCorrectErr.WithDataError(err)
+		return result.PasswordNotCorrectErr.WithError(err)
 	}
 	//res = repository.SetUserToken(&user, uuid.NewV4().String())
 	//if !res.IsOK() {

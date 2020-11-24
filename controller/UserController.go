@@ -19,7 +19,7 @@ func UserLogin(c *gin.Context) {
 	userDto := dto.UserLoginDto{}
 	err := c.ShouldBindJSON(&userDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
 	res := service.UserLogin(&userDto)
@@ -31,7 +31,7 @@ func UserRegister(c *gin.Context) {
 	registerDto := dto.UserRegisterDto{}
 	err := c.ShouldBindJSON(&registerDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.BadRequest.WithDataError(err))
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
 	res := service.UserRegister(&registerDto)

@@ -31,27 +31,29 @@ func (res Result) NotOK() bool {
 	return res.Code != 0
 }
 
+// Effective only when the result is OK.
 func (res Result) WithData(data interface{}) Result {
+	if res.NotOK() {
+		return res
+	}
 	res.Data = data
 	return res
 }
 
-func (res Result) WithDataIfOK(data interface{}) Result {
-	if res.NotOK() {
-		return res
-	}
-	return res.WithData(data)
+func (res Result) WithError(err error) Result {
+	res.Data = err.Error()
+	return res
 }
 
-func (res Result) WithDataError(err error) Result {
-	res.Data = err.Error()
+func (res Result) WithErrorStr(str string) Result {
+	res.Data = str
 	return res
 }
 
 func HandleServerErr(err error) Result {
 	ers := errors.WithStack(err)
 	fmt.Printf("%+v\n", ers)
-	return ServerErr.WithDataError(err)
+	return ServerErr.WithError(err)
 }
 
 // Result definitions

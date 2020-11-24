@@ -10,7 +10,7 @@ import (
 func GetQuestions(search string, page int, size int) ([]dto.QuestionShortDto, result.Result) {
 	offset := (page - 1) * size
 	questions, res := repository.SelectQuestions(search, offset, size)
-	if !res.IsOK() {
+	if res.NotOK() {
 		return nil, res
 	}
 	var questionDtos []dto.QuestionShortDto
@@ -32,7 +32,7 @@ func GetQuestionById(id int) (*dto.QuestionDetailDto, result.Result) {
 	questionDto := dto.QuestionDetailDto{}
 	model.Copy(&questionDto, &question)
 	user, res := GetUserById(question.CreatorId)
-	if !res.IsOK() {
+	if res.NotOK() {
 		user = dto.AnonymousUser()
 	}
 	questionDto.Creator = user
@@ -45,14 +45,14 @@ func NewQuestion(userId int, questionDto *dto.QuestionCreateDto) result.Result {
 	model.Copy(&question, questionDto)
 	question.CreatorId = userId
 	res := repository.CreateQuestion(&question)
-	if !res.IsOK() {
+	if res.NotOK() {
 		return res
 	}
 
 	questionDetailDto := dto.QuestionDetailDto{}
 	model.Copy(&questionDetailDto, &question)
 	user, res := GetUserById(userId)
-	if !res.IsOK() {
+	if res.NotOK() {
 		user = dto.AnonymousUser()
 	}
 	questionDetailDto.Creator = user

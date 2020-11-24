@@ -24,7 +24,7 @@ func JWTAuthMiddleware(c *gin.Context) {
 	}
 	mc, err := tool.ParseToken(parts[1])
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, result.TokenErr.WithDataError(err))
+		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
 		c.Abort()
 		return
 	}
