@@ -28,29 +28,32 @@ func GetQuestions(search string, page int, size int) ([]dto.QuestionShortDto, re
 }
 
 func GetQuestionById(id int) (*dto.QuestionDetailDto, result.Result) {
-	question := repository.SelectQuestionById(id)
-	questionDto := dto.QuestionDetailDto{}
-	model.Copy(&questionDto, &question)
+	question, res := repository.SelectQuestionById(id)
+	if res.NotOK() {
+		return nil, res
+	}
+	questionDto := &dto.QuestionDetailDto{}
+	model.Copy(questionDto, question)
 	user, res := GetUserById(question.CreatorId)
 	if res.NotOK() {
 		user = dto.AnonymousUser()
 	}
 	questionDto.Creator = user
-	return &questionDto, result.Ok
+	return questionDto, result.Ok
 }
 
 
 func NewQuestion(userId int, questionDto *dto.QuestionCreateDto) result.Result {
-	question := repository.Question{}
-	model.Copy(&question, questionDto)
+	question := &repository.Question{}
+	model.Copy(question, questionDto)
 	question.CreatorId = userId
-	res := repository.CreateQuestion(&question)
+	res := repository.CreateQuestion(question)
 	if res.NotOK() {
 		return res
 	}
 
-	questionDetailDto := dto.QuestionDetailDto{}
-	model.Copy(&questionDetailDto, &question)
+	questionDetailDto := &dto.QuestionDetailDto{}
+	model.Copy(questionDetailDto, question)
 	user, res := GetUserById(userId)
 	if res.NotOK() {
 		user = dto.AnonymousUser()

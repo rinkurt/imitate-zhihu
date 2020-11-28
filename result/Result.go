@@ -22,7 +22,6 @@ func (res Result) Error() string {
 	return strconv.Itoa(res.Code) + ":" + res.Message
 }
 
-
 func (res Result) IsOK() bool {
 	return res.Code == 0
 }
@@ -65,6 +64,7 @@ var (
 	EmptyAuth     = Result{Code: 1001, Message: "Empty Authorization"}
 	AuthFormatErr = Result{Code: 1002, Message: "Authorization Format Error"}
 	TokenErr      = Result{Code: 1003, Message: "Token Error"}
+	ContextErr    = Result{Code: 1004, Message: "Context Error"}
 	// 200x: User Login
 	UserNotFoundErr       = Result{Code: 2001, Message: "User Not Found"}
 	PasswordNotCorrectErr = Result{Code: 2002, Message: "Password not correct"}

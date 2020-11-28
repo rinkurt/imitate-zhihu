@@ -7,7 +7,7 @@ import (
 )
 
 type Question struct {
-	Id           int
+	Id           int `gorm:"primaryKey"`
 	Title        string
 	Content      string
 	CreatorId    int
@@ -35,11 +35,14 @@ func SelectQuestions(search string, offset int, limit int) ([]Question, result.R
 	return questions, result.Ok
 }
 
-func SelectQuestionById(id int) Question {
+func SelectQuestionById(id int) (*Question, result.Result) {
 	db := tool.GetDatabase()
 	question := Question{}
-	db.First(&question, id)
-	return question
+	res := db.First(&question, id)
+	if res.RowsAffected == 0 {
+		return nil, result.QuestionNotFoundErr
+	}
+	return &question, result.Ok
 }
 
 func CreateQuestion(question *Question) result.Result {

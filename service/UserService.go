@@ -30,9 +30,9 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	}
 	user.Token = token
 
-	userDto := dto.UserDetailDto{}
-	model.Copy(&userDto, &user)
-	return res.WithData(&userDto)
+	userDto := &dto.UserDetailDto{}
+	model.Copy(userDto, user)
+	return res.WithData(userDto)
 }
 
 
@@ -42,15 +42,15 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 		return result.EmailAlreadyExistErr
 	}
 
-	user := repository.User{}
-	model.Copy(&user, registerDto)
+	user := &repository.User{}
+	model.Copy(user, registerDto)
 	// encrypt
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return result.HandleServerErr(err)
 	}
 	user.Password = string(hash)
-	res = repository.CreateUser(&user)
+	res = repository.CreateUser(user)
 	if res.NotOK() {
 		return res
 	}
@@ -64,8 +64,8 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	}
 	user.Token = token
 
-	userDto := dto.UserDetailDto{}
-	model.Copy(&userDto, &user)
+	userDto := &dto.UserDetailDto{}
+	model.Copy(userDto, user)
 	return res.WithData(userDto)
 }
 
@@ -76,7 +76,7 @@ func GetUserById(id int) (*dto.UserDto, result.Result) {
 	if res.NotOK() {
 		return nil, res
 	}
-	userDto := dto.UserDto{}
-	model.Copy(&userDto, &user)
-	return &userDto, result.Ok
+	userDto := &dto.UserDto{}
+	model.Copy(userDto, user)
+	return userDto, result.Ok
 }

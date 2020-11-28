@@ -48,7 +48,7 @@ func NewQuestion(c *gin.Context) {
 	userId, ok := iUserId.(int)
 	if !exists || !ok {
 		c.JSON(http.StatusInternalServerError,
-			result.ServerErr.WithErrorStr("get user_id failed"))
+			result.ContextErr.WithErrorStr("get user_id failed"))
 		return
 	}
 	questionDto := dto.QuestionCreateDto{}

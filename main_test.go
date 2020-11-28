@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"imitate-zhihu/tool"
+	"imitate-zhihu/result"
 	"testing"
 )
 
@@ -19,7 +19,9 @@ func Foo() *Bar {
 	return &bar
 }
 
+type Res *result.Result
+
 func TestA(t *testing.T) {
-	token, _ := tool.GenToken("1")
-	fmt.Println(token)
+	result.Ok.WithData("aaaaa")
+	fmt.Println(result.Ok.Data)
 }

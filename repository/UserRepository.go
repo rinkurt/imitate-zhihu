@@ -27,24 +27,24 @@ type User struct {
 //	return result.Ok
 //}
 
-func SelectUserById(id int) (User, result.Result) {
+func SelectUserById(id int) (*User, result.Result) {
 	db := tool.GetDatabase()
 	user := User{}
 	res := db.First(&user, id)
 	if res.RowsAffected == 0 {
-		return user, result.UserNotFoundErr
+		return nil, result.UserNotFoundErr
 	}
-	return user, result.Ok
+	return &user, result.Ok
 }
 
-func SelectUserByEmail(email string) (User, result.Result) {
+func SelectUserByEmail(email string) (*User, result.Result) {
 	db := tool.GetDatabase()
 	user := User{}
 	res := db.Where(&User{Email: email}).First(&user)
 	if res.RowsAffected == 0 {
-		return user, result.UserNotFoundErr
+		return nil, result.UserNotFoundErr
 	}
-	return user, result.Ok
+	return &user, result.Ok
 }
 
 func CreateUser(user *User) result.Result {
