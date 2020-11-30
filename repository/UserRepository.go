@@ -7,14 +7,11 @@ import (
 )
 
 type User struct {
-	Id          int `gorm:"primaryKey"`
-	Name        string
-	Email       string
-	Password    string
-	Token       string
-	CreateAt    int64
-	Description string
-	AvatarUrl   string `json:"avatar_url"`
+	Id       int64 `gorm:"primaryKey"`
+	Email    string
+	Password string
+	CreateAt int64
+	UpdateAt int64
 }
 
 //func SetUserToken(user *User, token string) result.Result {
@@ -51,6 +48,7 @@ func CreateUser(user *User) result.Result {
 	db := tool.GetDatabase()
 	user.Id = 0
 	user.CreateAt = time.Now().Unix()
+	user.UpdateAt = user.CreateAt
 	res := db.Create(user)
 	if res.RowsAffected == 0 {
 		return result.CreateUserErr

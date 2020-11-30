@@ -6,12 +6,14 @@ import (
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"net/http"
+	"strconv"
 )
 
 func RouteUserController(engine *gin.Engine) {
 	group := engine.Group("/user")
 	group.POST("/login", UserLogin)
 	group.POST("/register", UserRegister)
+	group.GET("/profile/:user_id", GetUserProfile)
 }
 
 
@@ -36,4 +38,15 @@ func UserRegister(c *gin.Context) {
 	}
 	res := service.UserRegister(&registerDto)
 	c.JSON(http.StatusOK, res)
+}
+
+func GetUserProfile(c *gin.Context) {
+	sUserId := c.Param("user_id")
+	userId, err := strconv.ParseInt(sUserId, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+	profile, res := service.GetUserProfileByUid(userId)
+	c.JSON(http.StatusOK, res.WithData(profile))
 }

@@ -5,6 +5,7 @@ import (
 	"imitate-zhihu/dto"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
+	"imitate-zhihu/tool"
 	"net/http"
 	"strconv"
 )
@@ -33,7 +34,7 @@ func GetQuestions(c *gin.Context) {
 
 func GetQuestionById(c *gin.Context) {
 	qid := c.Param("question_id")
-	id, err := strconv.Atoi(qid)
+	id, err := tool.StringToInt64(qid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
@@ -44,15 +45,15 @@ func GetQuestionById(c *gin.Context) {
 
 
 func NewQuestion(c *gin.Context) {
-	iUserId, exists := c.Get("user_id")
-	userId, ok := iUserId.(int)
-	if !exists || !ok {
+	sUserId, exists := c.Get("user_id")
+	userId, err := tool.StringToInt64(sUserId.(string))
+	if err != nil || !exists {
 		c.JSON(http.StatusInternalServerError,
 			result.ContextErr.WithErrorStr("get user_id failed"))
 		return
 	}
 	questionDto := dto.QuestionCreateDto{}
-	err := c.ShouldBindJSON(&questionDto)
+	err = c.ShouldBindJSON(&questionDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return

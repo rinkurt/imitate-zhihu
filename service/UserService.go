@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
@@ -24,15 +25,15 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	//if !res.IsOK() {
 	//	return res
 	//}
-	token, err := tool.GenToken(strconv.Itoa(user.Id))
+	token, err := tool.GenToken(strconv.FormatInt(user.Id, 10))
 	if err != nil {
 		return result.HandleServerErr(err)
 	}
-	user.Token = token
 
-	userDto := &dto.UserDetailDto{}
-	model.Copy(userDto, user)
-	return res.WithData(userDto)
+	return res.WithData(gin.H{
+		"id": user.Id,
+		"token": token,
+	})
 }
 
 
@@ -54,29 +55,38 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	if res.NotOK() {
 		return res
 	}
+
+	// Create Profile
+	profile := &repository.Profile{}
+	model.Copy(profile, registerDto)
+	profile.UserId = user.Id
+	res = repository.CreateProfile(profile)
+	if res.NotOK() {
+		return res
+	}
 	//res = repository.SetUserToken(&user, uuid.NewV4().String())
 	//if !res.IsOK() {
 	//	return res
 	//}
-	token, err := tool.GenToken(strconv.Itoa(user.Id))
+	token, err := tool.GenToken(strconv.FormatInt(user.Id, 10))
 	if err != nil {
 		return result.HandleServerErr(err)
 	}
-	user.Token = token
 
-	userDto := &dto.UserDetailDto{}
-	model.Copy(userDto, user)
-	return res.WithData(userDto)
+	return res.WithData(gin.H{
+		"id": user.Id,
+		"token": token,
+	})
 }
 
-
 // TODO: Cache
-func GetUserById(id int) (*dto.UserDto, result.Result) {
-	user, res := repository.SelectUserById(id)
+func GetUserProfileByUid(id int64) (*dto.UserProfileDto, result.Result) {
+	profile, res := repository.SelectProfileByUserId(id)
 	if res.NotOK() {
 		return nil, res
 	}
-	userDto := &dto.UserDto{}
-	model.Copy(userDto, user)
-	return userDto, result.Ok
+	profileDto := &dto.UserProfileDto{}
+	model.Copy(profileDto, profile)
+	profileDto.Id = profile.UserId
+	return profileDto, result.Ok
 }

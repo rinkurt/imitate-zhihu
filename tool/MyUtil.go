@@ -1,5 +1,7 @@
 package tool
 
+import "strconv"
+
 func If(cond bool, t interface{}, f interface{}) interface{} {
 	if cond {
 		return t
@@ -7,3 +9,10 @@ func If(cond bool, t interface{}, f interface{}) interface{} {
 	return f
 }
 
+func Int64ToString(i int64) string {
+	return strconv.FormatInt(i, 10)
+}
+
+func StringToInt64(s string) (int64, error) {
+	return strconv.ParseInt(s, 10, 64)
+}

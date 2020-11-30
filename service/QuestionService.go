@@ -17,7 +17,8 @@ func GetQuestions(search string, page int, size int) ([]dto.QuestionShortDto, re
 	for _, question := range questions {
 		questionDto := dto.QuestionShortDto{}
 		model.Copy(&questionDto, &question)
-		//userDto, res := GetUserById(question.CreatorId)
+		// TODO: Show best answer
+		//userDto, res := GetUserShortByUid(question.CreatorId)
 		//if !res.IsOK() {
 		//	userDto = dto.AnonymousUser()
 		//}
@@ -27,14 +28,14 @@ func GetQuestions(search string, page int, size int) ([]dto.QuestionShortDto, re
 	return questionDtos, result.Ok
 }
 
-func GetQuestionById(id int) (*dto.QuestionDetailDto, result.Result) {
+func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	question, res := repository.SelectQuestionById(id)
 	if res.NotOK() {
 		return nil, res
 	}
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)
-	user, res := GetUserById(question.CreatorId)
+	user, res := GetUserProfileByUid(question.CreatorId)
 	if res.NotOK() {
 		user = dto.AnonymousUser()
 	}
@@ -43,7 +44,7 @@ func GetQuestionById(id int) (*dto.QuestionDetailDto, result.Result) {
 }
 
 
-func NewQuestion(userId int, questionDto *dto.QuestionCreateDto) result.Result {
+func NewQuestion(userId int64, questionDto *dto.QuestionCreateDto) result.Result {
 	question := &repository.Question{}
 	model.Copy(question, questionDto)
 	question.CreatorId = userId
@@ -54,7 +55,7 @@ func NewQuestion(userId int, questionDto *dto.QuestionCreateDto) result.Result {
 
 	questionDetailDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDetailDto, question)
-	user, res := GetUserById(userId)
+	user, res := GetUserProfileByUid(userId)
 	if res.NotOK() {
 		user = dto.AnonymousUser()
 	}

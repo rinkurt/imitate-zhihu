@@ -20,14 +20,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c68b268-1a3d-489b-9401-896ae7d5d802" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/repository/ProfileRepository.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sql/profiles.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0f5c89be-1917-486b-a5cc-ae51cc4f0d16.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0f5c89be-1917-486b-a5cc-ae51cc4f0d16.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/QuestionController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/QuestionController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/main_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/UserController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/UserController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/AnswerDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/AnswerDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/QuestionDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/QuestionDto.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/UserDto.go" beforeDir="false" afterPath="$PROJECT_DIR$/dto/UserDto.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/QuestionRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/QuestionRepository.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/UserRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/UserRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/result/Result.go" beforeDir="false" afterPath="$PROJECT_DIR$/result/Result.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/QuestionService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/QuestionService.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/UserService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/UserService.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/answers.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/answers.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/questions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/questions.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/users.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/users.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/MyUtil.go" beforeDir="false" afterPath="$PROJECT_DIR$/tool/MyUtil.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +91,7 @@
       <recent name="D:\Workspace\imitate-zhihu\error" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestA in imitate-zhihu (4)">
+  <component name="RunManager" selected="Go Build.go build imitate-zhihu">
     <configuration name="go build imitate-zhihu" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="imitate-zhihu" />
       <working_directory value="$PROJECT_DIR$" />
@@ -145,8 +154,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestA in imitate-zhihu (4)" />
         <item itemvalue="Go Build.go build imitate-zhihu" />
+        <item itemvalue="Go Test.TestA in imitate-zhihu (4)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu (3)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu (2)" />
         <item itemvalue="Go Test.TestA in imitate-zhihu (1)" />
@@ -181,26 +190,26 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="191" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605453082820" />
-    <state width="1237" height="152" key="GridCell.Tab.0.bottom" timestamp="1606207912188">
+    <state width="1237" height="152" key="GridCell.Tab.0.bottom" timestamp="1606747276821">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="152" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1605851293707" />
-    <state width="1237" height="152" key="GridCell.Tab.0.bottom/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606207912188" />
-    <state width="1237" height="152" key="GridCell.Tab.0.center" timestamp="1606207912188">
+    <state width="1237" height="152" key="GridCell.Tab.0.bottom/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606747276821" />
+    <state width="1237" height="152" key="GridCell.Tab.0.center" timestamp="1606747276821">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="152" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1605851293707" />
-    <state width="1237" height="152" key="GridCell.Tab.0.center/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606207912188" />
-    <state width="1237" height="152" key="GridCell.Tab.0.left" timestamp="1606207912188">
+    <state width="1237" height="152" key="GridCell.Tab.0.center/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606747276821" />
+    <state width="1237" height="152" key="GridCell.Tab.0.left" timestamp="1606747276821">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="152" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1605851293692" />
-    <state width="1237" height="152" key="GridCell.Tab.0.left/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606207912188" />
-    <state width="1237" height="152" key="GridCell.Tab.0.right" timestamp="1606207912188">
+    <state width="1237" height="152" key="GridCell.Tab.0.left/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606747276821" />
+    <state width="1237" height="152" key="GridCell.Tab.0.right" timestamp="1606747276821">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state width="1237" height="152" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1605851293707" />
-    <state width="1237" height="152" key="GridCell.Tab.0.right/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606207912188" />
+    <state width="1237" height="152" key="GridCell.Tab.0.right/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606747276821" />
     <state width="1237" height="208" key="GridCell.Tab.1.bottom" timestamp="1605172268570">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
@@ -234,15 +243,15 @@
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="512" y="235" width="332" height="247" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1605497169103" />
-    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1606136908333">
+    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1606747752104">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
     <state x="368" y="44" width="702" height="633" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1280.689@0.0.1280.689" timestamp="1605074767932" />
-    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606136908333" />
-    <state x="0" y="0" width="603" height="689" key="find.popup" timestamp="1606203023193">
+    <state x="314" y="37" width="702" height="627" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606747752104" />
+    <state x="0" y="0" width="603" height="689" key="find.popup" timestamp="1606746800199">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
-    <state x="0" y="0" width="603" height="689" key="find.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606203023193" />
+    <state x="0" y="0" width="603" height="689" key="find.popup/0.1080.1280.689/0.0.1280.689@0.0.1280.689" timestamp="1606746800199" />
     <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1605855225057">
       <screen x="0" y="0" width="1280" height="689" />
     </state>
