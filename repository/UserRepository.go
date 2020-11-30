@@ -24,15 +24,6 @@ type User struct {
 //	return result.Ok
 //}
 
-func SelectUserById(id int) (*User, result.Result) {
-	db := tool.GetDatabase()
-	user := User{}
-	res := db.First(&user, id)
-	if res.RowsAffected == 0 {
-		return nil, result.UserNotFoundErr
-	}
-	return &user, result.Ok
-}
 
 func SelectUserByEmail(email string) (*User, result.Result) {
 	db := tool.GetDatabase()

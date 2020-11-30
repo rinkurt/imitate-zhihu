@@ -80,13 +80,13 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 }
 
 // TODO: Cache
-func GetUserProfileByUid(id int64) (*dto.UserProfileDto, result.Result) {
-	profile, res := repository.SelectProfileByUserId(id)
+func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
+	profile, res := repository.SelectProfileByUserId(userId)
 	if res.NotOK() {
 		return nil, res
 	}
-	profileDto := &dto.UserProfileDto{}
-	model.Copy(profileDto, profile)
-	profileDto.Id = profile.UserId
-	return profileDto, result.Ok
+	userDto := &dto.UserProfileDto{}
+	model.Copy(userDto, profile)
+	userDto.Id = profile.UserId
+	return userDto, result.Ok
 }
