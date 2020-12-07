@@ -27,7 +27,11 @@ func GetQuestions(c *gin.Context) {
 		size = 10
 	}
 	search := c.Query("search")
-	q, res := service.GetQuestions(search, page, size)
+	orderBy := c.Query("orderby")
+	if orderBy != "heat" {
+		orderBy = "time"
+	}
+	q, res := service.GetQuestions(search, page, size, orderBy)
 	c.JSON(http.StatusOK, res.WithData(q))
 }
 

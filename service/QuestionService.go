@@ -1,15 +1,16 @@
 package service
 
 import (
+	"fmt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
 )
 
-func GetQuestions(search string, page int, size int) ([]dto.QuestionShortDto, result.Result) {
+func GetQuestions(search string, page int, size int, order string) ([]dto.QuestionShortDto, result.Result) {
 	offset := (page - 1) * size
-	questions, res := repository.SelectQuestions(search, offset, size)
+	questions, res := repository.SelectQuestions(search, offset, size, order)
 	if res.NotOK() {
 		return nil, res
 	}
@@ -32,6 +33,12 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	question, res := repository.SelectQuestionById(id)
 	if res.NotOK() {
 		return nil, res
+	}
+	// TODO: 用 cache 批量增加，避免频繁写库
+	res = repository.AddQuestionViewCount(id, 1)
+	if res.NotOK() {
+		fmt.Println(res.Error())
+		// TODO: log
 	}
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"gorm.io/gorm"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"time"
@@ -21,12 +22,19 @@ type Question struct {
 }
 
 
-func SelectQuestions(search string, offset int, limit int) ([]Question, result.Result) {
+func SelectQuestions(search string, offset int, limit int, order string) ([]Question, result.Result) {
 	db := tool.GetDatabase()
 	var questions []Question
 	if search != "" {
 		db = db.Where("title LIKE ?", "%" + search + "%").
 			Or("FIND_IN_SET(?,tag)", search)
+	}
+	switch order {
+	case "heat":
+		db = db.Order("view_count desc")
+		// TODO: 更加丰富的热度判断标准
+	case "time":
+		db = db.Order("update_at desc")
 	}
 	res := db.Limit(limit).Offset(offset).Find(&questions)
 	if res.RowsAffected == 0 {
@@ -52,6 +60,16 @@ func CreateQuestion(question *Question) result.Result {
 	res := db.Create(question)
 	if res.RowsAffected == 0 {
 		return result.CreateQuestionErr
+	}
+	return result.Ok
+}
+
+func AddQuestionViewCount(id int64, count int) result.Result {
+	db := tool.GetDatabase()
+	res := db.Model(&Question{Id: id}).Update("view_count",
+		gorm.Expr("view_count + ?", count))
+	if res.RowsAffected == 0 {
+		return result.UpdateViewCountErr
 	}
 	return result.Ok
 }

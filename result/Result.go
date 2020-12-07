@@ -73,6 +73,7 @@ var (
 	CreateUserErr        = Result{Code: 2012, Message: "DB Create user error"}
 	// 210x: Get Question
 	QuestionNotFoundErr = Result{Code: 2101, Message: "Question Not Found"}
+	UpdateViewCountErr = Result{Code: 2102, Message: "Failed in updating view count"}
 	// 211x: Create Question
 	CreateQuestionErr = Result{Code: 2111, Message: "DB Create question error"}
 )
