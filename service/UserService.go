@@ -91,7 +91,9 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	return userDto, result.Ok
 }
 
-// TODO
+// TODO: 实现验证邮箱
 func VerifyEmail(email string) result.Result {
-	return result.Ok
+	return result.Ok.WithData(gin.H{
+		"verification_code": "000000",
+	})
 }
