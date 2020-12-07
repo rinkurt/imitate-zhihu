@@ -2,26 +2,40 @@ package main
 
 import (
 	"fmt"
-	"imitate-zhihu/result"
 	"testing"
 )
 
-func TestHandleError(t *testing.T) {
+type Temp interface {
+	FuncA()
+	FuncB()
+}
 
+type Impl struct {
+
+}
+
+func (i *Impl) FuncA() {
+	fmt.Println("Impl:FuncA")
+}
+
+func (i *Impl) FuncB() {
+	fmt.Println("Impl:FuncB")
 }
 
 type Bar struct {
-	a int
+	*Impl
 }
 
-func Foo() *Bar {
-	bar := Bar{a: 1}
-	return &bar
+func (b *Bar) FuncA() {
+	fmt.Println("Bar:FuncA")
 }
 
-type Res *result.Result
+func Func(t Temp) {
+	t.FuncA()
+	t.FuncB()
+}
 
 func TestA(t *testing.T) {
-	result.Ok.WithData("aaaaa")
-	fmt.Println(result.Ok.Data)
+	b := Bar{}
+	Func(&b)
 }

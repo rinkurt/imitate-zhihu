@@ -14,6 +14,7 @@ func RouteUserController(engine *gin.Engine) {
 	group.POST("/login", UserLogin)
 	group.POST("/register", UserRegister)
 	group.GET("/profile/:user_id", GetUserProfile)
+	group.GET("/verify", VerifyEmail)
 }
 
 
@@ -49,4 +50,10 @@ func GetUserProfile(c *gin.Context) {
 	}
 	profile, res := service.GetUserProfileByUid(userId)
 	c.JSON(http.StatusOK, res.WithData(profile))
+}
+
+func VerifyEmail(c *gin.Context) {
+	email := c.Param("email")
+	res := service.VerifyEmail(email)
+	c.JSON(http.StatusOK, res)
 }

@@ -90,3 +90,8 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	userDto.Id = profile.UserId
 	return userDto, result.Ok
 }
+
+// TODO
+func VerifyEmail(email string) result.Result {
+	return result.Ok
+}
