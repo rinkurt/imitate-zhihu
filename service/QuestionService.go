@@ -18,12 +18,6 @@ func GetQuestions(search string, page int, size int, order string) ([]dto.Questi
 	for _, question := range questions {
 		questionDto := dto.QuestionShortDto{}
 		model.Copy(&questionDto, &question)
-		// TODO: Show best answer
-		//userDto, res := GetUserShortByUid(question.CreatorId)
-		//if !res.IsOK() {
-		//	userDto = dto.AnonymousUser()
-		//}
-		//questionDto.Creator = userDto
 		questionDtos = append(questionDtos, questionDto)
 	}
 	return questionDtos, result.Ok
@@ -34,11 +28,10 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	if res.NotOK() {
 		return nil, res
 	}
-	// TODO: 用 cache 批量增加，避免频繁写库
 	res = repository.AddQuestionViewCount(id, 1)
 	if res.NotOK() {
+		// TODO: 改用 log
 		fmt.Println(res.Error())
-		// TODO: log
 	}
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)

@@ -14,16 +14,6 @@ type User struct {
 	UpdateAt int64
 }
 
-//func SetUserToken(user *User, token string) result.Result {
-//	db := tool.GetDatabase()
-//	res := db.Model(user).Update("token", token)
-//	if res.RowsAffected == 0 {
-//		return result.SetTokenErr
-//	}
-//	user.Token = token
-//	return result.Ok
-//}
-
 
 func SelectUserByEmail(email string) (*User, result.Result) {
 	db := tool.GetDatabase()

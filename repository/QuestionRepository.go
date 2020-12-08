@@ -32,7 +32,6 @@ func SelectQuestions(search string, offset int, limit int, order string) ([]Ques
 	switch order {
 	case "heat":
 		db = db.Order("view_count desc")
-		// TODO: 更加丰富的热度判断标准
 	case "time":
 		db = db.Order("update_at desc")
 	}

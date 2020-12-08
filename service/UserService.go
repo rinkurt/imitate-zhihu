@@ -21,10 +21,6 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	if err != nil {
 		return result.PasswordNotCorrectErr.WithError(err)
 	}
-	//res = repository.SetUserToken(&user, uuid.NewV4().String())
-	//if !res.IsOK() {
-	//	return res
-	//}
 	token, err := tool.GenToken(strconv.FormatInt(user.Id, 10))
 	if err != nil {
 		return result.HandleServerErr(err)
@@ -64,10 +60,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	if res.NotOK() {
 		return res
 	}
-	//res = repository.SetUserToken(&user, uuid.NewV4().String())
-	//if !res.IsOK() {
-	//	return res
-	//}
+
 	token, err := tool.GenToken(strconv.FormatInt(user.Id, 10))
 	if err != nil {
 		return result.HandleServerErr(err)
@@ -79,7 +72,6 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	})
 }
 
-// TODO: Cache
 func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	profile, res := repository.SelectProfileByUserId(userId)
 	if res.NotOK() {
@@ -91,8 +83,8 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	return userDto, result.Ok
 }
 
-// TODO: 实现验证邮箱
 func VerifyEmail(email string) result.Result {
+	// TODO: 实现验证邮箱
 	return result.Ok.WithData(gin.H{
 		"verification_code": "000000",
 	})
