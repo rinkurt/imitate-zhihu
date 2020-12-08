@@ -1,8 +1,8 @@
 package result
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
+	"imitate-zhihu/tool"
 	"strconv"
 )
 
@@ -51,7 +51,7 @@ func (res Result) WithErrorStr(str string) Result {
 
 func HandleServerErr(err error) Result {
 	ers := errors.WithStack(err)
-	fmt.Printf("%+v\n", ers)
+	tool.LogOutErrorf("%+v\n", ers)
 	return ServerErr.WithError(err)
 }
 

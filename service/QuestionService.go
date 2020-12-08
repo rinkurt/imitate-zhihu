@@ -1,11 +1,11 @@
 package service
 
 import (
-	"fmt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
+	"imitate-zhihu/tool"
 )
 
 func GetQuestions(search string, page int, size int, order string) ([]dto.QuestionShortDto, result.Result) {
@@ -30,8 +30,7 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	}
 	res = repository.AddQuestionViewCount(id, 1)
 	if res.NotOK() {
-		// TODO: 改用 log
-		fmt.Println(res.Error())
+		tool.LogOutError("Failed in Adding View Count")
 	}
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)

@@ -1,9 +1,11 @@
-### 依赖
+go 版本：1.15
+
+构建及下载依赖：
 ```
-go get -u github.com/gin-gonic/gin
-go get -u gopkg.in/jeevatkm/go-model.v1
-go get -u gorm.io/driver/mysql
-go get -u gorm.io/gorm
-go get -u github.com/pkg/errors
-go get -u github.com/dgrijalva/jwt-go
+go build
+```
+
+运行：
+```
+go run main.go
 ```

@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/middleware"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"imitate-zhihu/tool"
@@ -14,7 +15,7 @@ func RouteQuestionController(engine *gin.Engine) {
 	group := engine.Group("/question")
 	group.GET("", GetQuestions)
 	group.GET("/:question_id", GetQuestionById)
-	group.POST("", JWTAuthMiddleware, NewQuestion)
+	group.POST("", middleware.JWTAuthMiddleware, NewQuestion)
 }
 
 func GetQuestions(c *gin.Context) {

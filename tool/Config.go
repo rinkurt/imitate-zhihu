@@ -6,10 +6,14 @@ import (
 	"os"
 )
 
+// 添加配置方法：
+// 1. 在 config/app.json 添加项
+// 2. 在此处 Config 结构添加项
+
 type Config struct {
-	Port string `json:"port"`
-	Mode string `json:"mode"` // debug or release
-	DBAddr string `json:"db_addr"`
+	Port       string `json:"port"`
+	Mode       string `json:"mode"` // debug or release
+	DBAddr     string `json:"db_addr"`
 	DBUsername string `json:"db_username"`
 	DBPassword string `json:"db_password"`
 }
