@@ -11,14 +11,13 @@ import (
 	"syscall"
 )
 
-func init() {
+
+func main() {
 	if pid := syscall.Getpid(); pid != 1 {
 		ioutil.WriteFile("server.pid", []byte(strconv.Itoa(pid)), 0777)
 		defer os.Remove("server.pid")
 	}
-}
 
-func main() {
 	config := tool.GetConfig()
 
 	tool.InitDatabase()
@@ -38,4 +37,5 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+
 }
