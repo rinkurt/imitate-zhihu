@@ -55,14 +55,14 @@ func ParseConfig(path string) error {
 	if config.LogFile == "" {
 		config.LogFile = os.Getenv("IZ_LOG_FILE")
 	}
-	if config.DBAddr == "" {
-		config.DBAddr = os.Getenv("IZ_DB_ADDR")
+	if dbAddr := os.Getenv("IZ_DB_ADDR"); dbAddr != "" {
+		config.DBAddr = dbAddr
 	}
-	if config.DBUsername == "" {
-		config.DBUsername = os.Getenv("IZ_DB_USERNAME")
+	if dbUsername := os.Getenv("IZ_DB_USERNAME"); dbUsername != "" {
+		config.DBUsername = dbUsername
 	}
-	if config.DBPassword == "" {
-		config.DBPassword = os.Getenv("IZ_DB_PASSWORD")
+	if dbPassword := os.Getenv("IZ_DB_PASSWORD"); dbPassword != "" {
+		config.DBPassword = dbPassword
 	}
 	if config.JwtSecret == "" {
 		config.JwtSecret = os.Getenv("IZ_JWT_SECRET")
