@@ -11,7 +11,7 @@ type MyClaims struct {
 	jwt.StandardClaims
 }
 
-var MySecret = []byte("c2f7e3c0-0267-44bd-a57a-162198e07784")
+var MySecret []byte
 
 // Expire after 15 days.
 //var TokenExpireDuration = time.Hour * 24 * 15

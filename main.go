@@ -21,10 +21,14 @@ func main() {
 	config := tool.GetConfig()
 
 	tool.InitDatabase()
+	tool.InitLogger()
 
 	gin.SetMode(config.Mode)
 	engine := gin.Default()
-	engine.Use(middleware.LoggerToFile)
+
+	if config.LogFile != "" {
+		engine.Use(middleware.LoggerToFile)
+	}
 
 	controller.RouteQuestionController(engine)
 	controller.RouteUserController(engine)

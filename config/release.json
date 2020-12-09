@@ -1,0 +1,5 @@
+{
+  "mode": "release",
+  "port": "8080",
+  "log_file": "./log/log.txt"
+}

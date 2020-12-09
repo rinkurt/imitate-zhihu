@@ -51,7 +51,7 @@ func (res Result) WithErrorStr(str string) Result {
 
 func HandleServerErr(err error) Result {
 	ers := errors.WithStack(err)
-	tool.LogOutErrorf("%+v\n", ers)
+	tool.Logger.Errorf("%+v\n", ers)
 	return ServerErr.WithError(err)
 }
 

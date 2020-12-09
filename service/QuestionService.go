@@ -30,7 +30,7 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	}
 	res = repository.AddQuestionViewCount(id, 1)
 	if res.NotOK() {
-		tool.LogOutError("Failed in Adding View Count")
+		tool.Logger.Error("Failed in Adding View Count")
 	}
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)
