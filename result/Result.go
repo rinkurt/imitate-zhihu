@@ -71,6 +71,7 @@ var (
 	// 201x: User Register
 	EmailAlreadyExistErr = Result{Code: 2011, Message: "Email already exists"}
 	CreateUserErr        = Result{Code: 2012, Message: "DB Create user error"}
+	EmailSendErr         = Result{Code: 2013, Message: "Email send error"}
 	// 210x: Get Question
 	QuestionNotFoundErr = Result{Code: 2101, Message: "Question Not Found"}
 	UpdateViewCountErr = Result{Code: 2102, Message: "Failed in updating view count"}
