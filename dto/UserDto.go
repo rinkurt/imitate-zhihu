@@ -6,13 +6,14 @@ type UserLoginDto struct {
 }
 
 type UserRegisterDto struct {
-	Email       string `binding:"email"`
-	Password    string `binding:"max=20,min=6"`
-	RePassword  string `json:"re_password" binding:"eqfield=Password"`
-	Name        string `binding:"required"`
-	Gender      int
-	Description string
-	AvatarUrl   string `json:"avatar_url"`
+	Email            string `binding:"email"`
+	VerificationCode string `json:"verification_code"`
+	Password         string `binding:"max=20,min=6"`
+	RePassword       string `json:"re_password" binding:"eqfield=Password"`
+	Name             string `binding:"required"`
+	Gender           int
+	Description      string
+	AvatarUrl        string `json:"avatar_url"`
 }
 
 type UserProfileDto struct {
