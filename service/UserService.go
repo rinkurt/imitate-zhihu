@@ -32,7 +32,6 @@ func UserLogin(loginDto *dto.UserLoginDto) result.Result {
 	})
 }
 
-
 func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	_, res := repository.SelectUserByEmail(registerDto.Email)
 	if res.IsOK() {
@@ -88,12 +87,12 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	return userDto, result.Ok
 }
 
-
-
 func VerifyEmail(email string) result.Result {
    	verifyCode := tool.GenValidateCode(6)
 	tool.CodeCache()[email]=verifyCode
-	mailTo := email
+	mailTo := []string{
+		email,"zh_account_verify@163.com",
+	}
 	subject := "您的邮箱验证码是："+verifyCode
 	body := "您的验证码为:"+verifyCode+"\r\n。如果您本人没有通过登录验证请求此验证码，请立即前往“ 我的帐户 ”页面更改密码。\r\n如果您需要支持，请联系zhihu帮助。\r\n感谢您帮助我们一同维护您的帐户安全。\r\n\r\n祝您生活愉快，\r\nzhihu团队"
 	err := tool.SendMail(mailTo, subject, body)

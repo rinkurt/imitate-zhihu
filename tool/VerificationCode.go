@@ -19,7 +19,7 @@ func CodeCache() map[string]string {
 }
 
 //发送邮件
-func SendMail(mailTo string, subject string, body string) error {
+func SendMail(mailTo []string, subject string, body string) error {
 	mailConn := map[string]string{
 		"user": "zh_account_verify@163.com",
 		"pass": "PVQIRHXFMBMFLFEI",//客户端授权密码
@@ -29,7 +29,7 @@ func SendMail(mailTo string, subject string, body string) error {
 	port, _ := strconv.Atoi(mailConn["port"]) //转换端口类型为int
 	m := gomail.NewMessage()
 	m.SetHeader("From", mailConn["user"])
-	m.SetHeader("To", mailTo)    //发送给某个用户
+	m.SetHeader("To", mailTo...)    //发送给某个用户
 	m.SetHeader("Subject", subject) //设置邮件主题
 	m.SetBody("text/html", body)    //设置邮件正文
 	d := gomail.NewDialer(mailConn["host"], port, mailConn["user"], mailConn["pass"])
