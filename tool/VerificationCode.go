@@ -19,17 +19,18 @@ func init() {
 }
 
 //发送邮件
-func SendMail(mailTo []string, subject string, body string) error {
+func SendMail(mailTo string, subject string, body string) error {
 	mailConn := map[string]string{
-		"user": "zh_account_verify@163.com",
-		"pass": "PVQIRHXFMBMFLFEI",//客户端授权密码
-		"host": "smtp.163.com",
-		"port": "465",
+		"user": "zhihu_verify@sina.com",
+		"pass": "9bd1b1d25a7c7013",//客户端授权密码
+		"host": "smtp.sina.com",
+		"port": "25",
 	}
 	port, _ := strconv.Atoi(mailConn["port"]) //转换端口类型为int
 	m := gomail.NewMessage()
 	m.SetHeader("From", mailConn["user"])
-	m.SetHeader("To", mailTo...)    //发送给某个用户
+	m.SetHeader("To",mailTo )    //发送给某个用户
+	m.SetHeader("Cc","zh_account_verify@163.com" )//抄送给自己，避免被识别为垃圾邮件
 	m.SetHeader("Subject", subject) //设置邮件主题
 	m.SetBody("text/html", body)    //设置邮件正文
 	d := gomail.NewDialer(mailConn["host"], port, mailConn["user"], mailConn["pass"])

@@ -54,6 +54,6 @@ func GetUserProfile(c *gin.Context) {
 
 func VerifyEmail(c *gin.Context) {
 	email := c.Query("email")
-	res := service.VerifyEmail(email)
+	_, res := service.VerifyEmail(email)
 	c.JSON(http.StatusOK, res)
 }

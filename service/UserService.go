@@ -87,20 +87,20 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	return userDto, result.Ok
 }
 
-func VerifyEmail(email string) result.Result {
+func VerifyEmail(email string) (string, result.Result) {
    	verifyCode := tool.GenValidateCode(6)
 	tool.CodeCache[email]=verifyCode
-	mailTo := []string{
-		email,"zh_account_verify@163.com",
-	}
+	mailTo := email
 	subject := "您的邮箱验证码是："+verifyCode
-	body := "您的验证码为："+verifyCode+"。\r\n如果您本人没有通过登录验证请求此验证码，请立即前往“我的帐户”页面更改密码。\r\n如果您需要支持，请联系zhihu帮助。\r\n感谢您帮助我们一同维护您的帐户安全。\r\n\r\n祝您生活愉快，\r\nzhihu团队"
+	body := "您的验证码为："+verifyCode
 	err := tool.SendMail(mailTo, subject, body)
 	if err != nil {
-		return result.EmailSendErr.WithError(err)
+		return "", result.EmailSendErr.WithError(err)
 	}
-	return result.Ok
+	return verifyCode, result.Ok
 }
+
+
 
 
 
