@@ -14,7 +14,7 @@ func RouteUserController(engine *gin.Engine) {
 	group.POST("/login", UserLogin)
 	group.POST("/register", UserRegister)
 	group.GET("/profile/:user_id", GetUserProfile)
-	group.GET("/verify/", VerifyEmail)
+	group.GET("/verify", VerifyEmail)
 }
 
 

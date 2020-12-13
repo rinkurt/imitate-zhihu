@@ -9,13 +9,13 @@ import (
 	"time"
 )
 
-var codeCache map[string]string
 
-func CodeCache() map[string]string {
-	if codeCache == nil {
-		codeCache = make(map[string]string)
+var CodeCache map[string]string
+
+func init() {
+	if CodeCache == nil {
+		CodeCache = make(map[string]string)
 	}
-	return codeCache
 }
 
 //发送邮件
