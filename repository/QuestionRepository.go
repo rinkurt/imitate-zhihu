@@ -22,20 +22,25 @@ type Question struct {
 }
 
 
-func SelectQuestions(search string, offset int, limit int, order string) ([]Question, result.Result) {
+func SelectQuestions(search string, cursor int64, cid int64, limit int, order int) ([]Question, result.Result) {
 	db := tool.GetDatabase()
 	var questions []Question
 	if search != "" {
-		db = db.Where("title LIKE ?", "%" + search + "%").
-			Or("FIND_IN_SET(?,tag)", search)
+		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%" + search + "%", search)
 	}
 	switch order {
-	case "heat":
+	case tool.OrderByHeat:
+		if cursor != 0 || cid != 0 {
+			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor, cid, cursor)
+		}
 		db = db.Order("view_count desc")
-	case "time":
+	case tool.OrderByTime:
+		if cursor != 0 || cid != 0 {
+			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor, cid, cursor)
+		}
 		db = db.Order("update_at desc")
 	}
-	res := db.Limit(limit).Offset(offset).Find(&questions)
+	res := db.Limit(limit).Find(&questions)
 	if res.RowsAffected == 0 {
 		return questions, result.QuestionNotFoundErr
 	}

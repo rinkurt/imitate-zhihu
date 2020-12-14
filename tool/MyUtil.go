@@ -2,6 +2,11 @@ package tool
 
 import "strconv"
 
+const (
+	OrderByTime = iota
+	OrderByHeat
+)
+
 func If(cond bool, t interface{}, f interface{}) interface{} {
 	if cond {
 		return t

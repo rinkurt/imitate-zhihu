@@ -9,6 +9,7 @@ import (
 	"imitate-zhihu/tool"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func RouteQuestionController(engine *gin.Engine) {
@@ -19,21 +20,44 @@ func RouteQuestionController(engine *gin.Engine) {
 }
 
 func GetQuestions(c *gin.Context) {
-	page, err := strconv.Atoi(c.Query("page"))
-	if err != nil || page == 0 {
-		page = 1
+	cursor := c.Query("cursor")
+	split := strings.Split(cursor, ",")
+	var cur int64 = 0
+	var cid int64 = 0
+	if len(split) == 2 {
+		cur, _ = tool.StringToInt64(split[0])
+		cid, _ = tool.StringToInt64(split[1])
 	}
 	size, err := strconv.Atoi(c.Query("size"))
-	if err != nil || size < 10 {
+	if err != nil {
 		size = 10
 	}
 	search := c.Query("search")
 	orderBy := c.Query("orderby")
-	if orderBy != "heat" {
-		orderBy = "time"
+	var order int
+	switch orderBy {
+	case "time":
+		order = tool.OrderByTime
+	case "heat":
+		order = tool.OrderByHeat
+	default:
+		order = tool.OrderByTime
 	}
-	q, res := service.GetQuestions(search, page, size, orderBy)
-	c.JSON(http.StatusOK, res.WithData(q))
+	q, res := service.GetQuestions(search, cur, cid, size, order)
+	nextCursor := ""
+	if len(q) > 0 {
+		tail := q[len(q)-1]
+		switch order {
+		case tool.OrderByTime:
+			nextCursor = tool.Int64ToString(tail.UpdateAt) + "," + tool.Int64ToString(tail.Id)
+		case tool.OrderByHeat:
+			nextCursor = strconv.Itoa(tail.ViewCount) + "," + tool.Int64ToString(tail.Id)
+		}
+	}
+	c.JSON(http.StatusOK, res.WithData(gin.H{
+		"next_cursor": nextCursor,
+		"questions": q,
+	}))
 }
 
 
