@@ -39,7 +39,15 @@ func CreateUser(user *User) result.Result {
 
 func DeleteUserByEmail(email string) result.Result {
 	db := tool.GetDatabase()
-	res := db.Where(&User{Email: email}).Delete(User{})
+	var user User
+	db.Where("email = ?",email).First(&user)
+	res := db.Delete(&user)
+	if res.RowsAffected == 0 {
+		return result.UserNotFoundErr
+	}
+	res = db.Where(&Profile{
+		UserId: user.Id,
+	}).Delete(Profile{})
 	if res.RowsAffected == 0 {
 		return result.UserNotFoundErr
 	}
