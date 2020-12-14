@@ -1,5 +1,6 @@
 {
   "mode": "release",
   "port": "8090",
-  "log_file": "./log/log.txt"
+  "log_path": "./log/",
+  "log_file": "log.txt"
 }

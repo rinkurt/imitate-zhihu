@@ -16,6 +16,7 @@ type Config struct {
 	DBAddr     string `json:"db_addr"`
 	DBUsername string `json:"db_username"`
 	DBPassword string `json:"db_password"`
+	LogPath    string `json:"log_path"`
 	LogFile    string `json:"log_file"`
 	JwtSecret  string `json:"jwt_secret"`
 }
