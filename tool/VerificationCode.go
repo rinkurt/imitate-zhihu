@@ -24,7 +24,7 @@ func SendMail(mailTo string, subject string, body string) error {
 		"user": "zhihu_verify@sina.com",
 		"pass": "9bd1b1d25a7c7013",//客户端授权密码
 		"host": "smtp.sina.com",
-		"port": "25",
+		"port": "465",
 	}
 	port, _ := strconv.Atoi(mailConn["port"]) //转换端口类型为int
 	m := gomail.NewMessage()
