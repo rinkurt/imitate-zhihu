@@ -30,6 +30,10 @@ func (res Result) NotOK() bool {
 	return res.Code != 0
 }
 
+func (res Result) IsServerErr() bool {
+	return res.Code == 500
+}
+
 // Effective only when the result is OK.
 func (res Result) WithData(data interface{}) Result {
 	if res.NotOK() {
@@ -61,10 +65,11 @@ var (
 	BadRequest = Result{Code: 400, Message: "Bad Request"}
 	ServerErr  = Result{Code: 500, Message: "Server Error"}
 	// 100x: Authorization
-	EmptyAuth     = Result{Code: 1001, Message: "Empty Authorization"}
-	AuthFormatErr = Result{Code: 1002, Message: "Authorization Format Error"}
-	TokenErr      = Result{Code: 1003, Message: "Token Error"}
-	ContextErr    = Result{Code: 1004, Message: "Context Error"}
+	EmptyAuth       = Result{Code: 1001, Message: "Empty Authorization"}
+	AuthFormatErr   = Result{Code: 1002, Message: "Authorization Format Error"}
+	TokenErr        = Result{Code: 1003, Message: "Token Error"}
+	ContextErr      = Result{Code: 1004, Message: "Context Error"}
+	UnauthorizedOpr = Result{Code: 1005, Message: "Unauthorized operation"}
 	// 200x: User Login
 	UserNotFoundErr       = Result{Code: 2001, Message: "User Not Found"}
 	PasswordNotCorrectErr = Result{Code: 2002, Message: "Password not correct"}
@@ -72,7 +77,7 @@ var (
 	EmailAlreadyExistErr  = Result{Code: 2011, Message: "Email already exists"}
 	CreateUserErr         = Result{Code: 2012, Message: "DB Create user error"}
 	EmailSendErr          = Result{Code: 2013, Message: "Email send error"}
-	WrongVerificationCode = Result{Code: 2014, Message: "Wrong Verification Code"}
+	WrongVerificationCode = Result{Code: 2014, Message: "Wrong verification code, or code expired."}
 	// 210x: Get Question
 	QuestionNotFoundErr = Result{Code: 2101, Message: "Question Not Found"}
 	UpdateViewCountErr  = Result{Code: 2102, Message: "Failed in updating view count"}

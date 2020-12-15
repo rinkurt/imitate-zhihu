@@ -1,7 +1,9 @@
 package service
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/dto"
@@ -9,6 +11,7 @@ import (
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"strconv"
+	"time"
 )
 
 func UserLogin(loginDto *dto.UserLoginDto) result.Result {
@@ -39,7 +42,11 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	}
 
 	// verify code
-	if tool.CodeCache[registerDto.Email] != registerDto.VerificationCode {
+	val, err := tool.Rdb.Get(context.Background(), tool.KeyVrfCode(registerDto.Email)).Result()
+	if err != nil && err != redis.Nil {
+		return result.HandleServerErr(err)
+	}
+	if val != registerDto.VerificationCode {
 		return result.WrongVerificationCode
 	}
 
@@ -77,27 +84,41 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 }
 
 func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
+	// find in cache
+	userDto := &dto.UserProfileDto{}
+	err := tool.CacheGet(tool.KeyUser(userId), userDto)
+	if err == nil {
+		return userDto, result.Ok
+	}
+
 	profile, res := repository.SelectProfileByUserId(userId)
 	if res.NotOK() {
 		return nil, res
 	}
-	userDto := &dto.UserProfileDto{}
+
 	model.Copy(userDto, profile)
 	userDto.Id = profile.UserId
+
+	// save in cache
+	tool.CacheSet(tool.KeyUser(userId), userDto)
 	return userDto, result.Ok
 }
 
 func VerifyEmail(email string) (string, result.Result) {
-   	verifyCode := tool.GenValidateCode(6)
-	tool.CodeCache[email]=verifyCode
+   	vrfCode := tool.GenValidateCode(6)
+	//tool.CodeCache[email]=vrfCode
+	err := tool.Rdb.Set(context.Background(), tool.KeyVrfCode(email), vrfCode, time.Minute*30).Err()
+	if err != nil {
+		return "", result.HandleServerErr(err)
+	}
 	mailTo := email
-	subject := "您的邮箱验证码是："+verifyCode
-	body := "您的验证码为："+verifyCode
-	err := tool.SendMail(mailTo, subject, body)
+	subject := "您的邮箱验证码是："+ vrfCode
+	body := "您的验证码为："+ vrfCode + "，有效期 30 分钟。"
+	err = tool.SendMail(mailTo, subject, body)
 	if err != nil {
 		return "", result.EmailSendErr.WithError(err)
 	}
-	return verifyCode, result.Ok
+	return vrfCode, result.Ok
 }
 
 

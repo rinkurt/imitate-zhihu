@@ -38,6 +38,10 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 	res := service.UserRegister(&registerDto)
+	if res.IsServerErr() {
+		c.JSON(http.StatusInternalServerError, res)
+		return
+	}
 	c.JSON(http.StatusOK, res)
 }
 
