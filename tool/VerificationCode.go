@@ -10,14 +10,6 @@ import (
 )
 
 
-var CodeCache map[string]string
-
-func init() {
-	if CodeCache == nil {
-		CodeCache = make(map[string]string)
-	}
-}
-
 //发送邮件
 func SendMail(mailTo string, subject string, body string) error {
 	mailConn := map[string]string{

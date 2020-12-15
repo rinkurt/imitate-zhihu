@@ -86,8 +86,8 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	// find in cache
 	userDto := &dto.UserProfileDto{}
-	err := tool.CacheGet(tool.KeyUser(userId), userDto)
-	if err == nil {
+	found := tool.CacheGet(tool.KeyUser(userId), userDto)
+	if found {
 		return userDto, result.Ok
 	}
 

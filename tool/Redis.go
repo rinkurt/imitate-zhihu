@@ -27,16 +27,16 @@ func init() {
 	}
 }
 
-func CacheGet(key string, val interface{}) error {
+func CacheGet(key string, val interface{}) bool {
 	str, err := Rdb.Get(context.Background(), key).Result()
 	if err != nil {
 		if err != redis.Nil {
 			Logger.Error(err)
 		}
-		return err
+		return false
 	}
 	err = json.Unmarshal([]byte(str), val)
-	return err
+	return err == nil
 }
 
 func CacheSet(key string, val interface{}) {
