@@ -21,12 +21,21 @@ type Question struct {
 	UpdateAt     int64
 }
 
+type QuestionShortModel struct {
+	Id          int64 `gorm:"primaryKey"`
+	Title       string
+	CreatorId   int64
+	AnswerCount int
+	ViewCount   int
+	CreateAt    int64
+	UpdateAt    int64
+}
 
-func SelectQuestions(search string, cursor int64, cid int64, limit int, order int) ([]Question, result.Result) {
+func SelectQuestions(search string, cursor int64, cid int64, limit int, order int) ([]QuestionShortModel, result.Result) {
 	db := tool.GetDatabase()
-	var questions []Question
+	var questions []QuestionShortModel
 	if search != "" {
-		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%" + search + "%", search)
+		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%"+search+"%", search)
 	}
 	switch order {
 	case tool.OrderByHeat:
@@ -40,7 +49,7 @@ func SelectQuestions(search string, cursor int64, cid int64, limit int, order in
 		}
 		db = db.Order("update_at desc")
 	}
-	res := db.Limit(limit).Find(&questions)
+	res := db.Model(&Question{}).Limit(limit).Find(&questions)
 	if res.RowsAffected == 0 {
 		return questions, result.QuestionNotFoundErr
 	}
