@@ -7,6 +7,14 @@ const (
 	OrderByHeat
 )
 
+// Init for package tool
+func init() {
+	initConfig()
+	initLogger()
+	initDatabase()
+	initRedis()
+}
+
 func If(cond bool, t interface{}, f interface{}) interface{} {
 	if cond {
 		return t

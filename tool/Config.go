@@ -25,7 +25,7 @@ type Config struct {
 
 var Cfg *Config
 
-func InitConfig() {
+func initConfig() {
 	if Cfg != nil {
 		return
 	}

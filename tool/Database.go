@@ -12,7 +12,7 @@ func GetDatabase() *gorm.DB {
 	return db
 }
 
-func InitDatabase() {
+func initDatabase() {
 	if db != nil {
 		return
 	}

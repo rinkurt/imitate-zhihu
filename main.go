@@ -17,11 +17,6 @@ func main() {
 		ioutil.WriteFile("server.pid", []byte(strconv.Itoa(pid)), 0777)
 		defer os.Remove("server.pid")
 	}
-	
-	tool.InitConfig()
-	tool.InitLogger()
-	tool.InitDatabase()
-	tool.InitRedis()
 
 	gin.SetMode(tool.Cfg.Mode)
 	engine := gin.Default()

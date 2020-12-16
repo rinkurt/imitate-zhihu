@@ -11,7 +11,7 @@ import (
 var Rdb *redis.Client
 const CacheExpireTime = time.Hour * 6
 
-func InitRedis() {
+func initRedis() {
 	if Rdb != nil {
 		return
 	}
