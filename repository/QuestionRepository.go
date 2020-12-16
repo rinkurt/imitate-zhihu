@@ -95,3 +95,12 @@ func UpdateQuestion(question *Question) result.Result {
 	}
 	return result.Ok
 }
+
+func DeleteQuestionById(id int64) result.Result {
+	db := tool.GetDatabase()
+	db = db.Delete(&Question{}, id)
+	if db.RowsAffected == 0 {
+		return result.DeleteQuestionErr
+	}
+	return result.Ok
+}

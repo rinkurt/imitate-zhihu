@@ -18,6 +18,7 @@ func RouteQuestionController(engine *gin.Engine) {
 	group.GET("/:question_id", GetQuestionById)
 	group.POST("", middleware.JWTAuthMiddleware, NewQuestion)
 	group.PUT("/:question_id", middleware.JWTAuthMiddleware, UpdateQuestionById)
+	group.DELETE("/:question_id", middleware.JWTAuthMiddleware, DeleteQuestionById)
 }
 
 func GetQuestions(c *gin.Context) {
@@ -109,5 +110,21 @@ func UpdateQuestionById(c *gin.Context) {
 		return
 	}
 	res := service.UpdateQuestionById(uid, qid, questionDto)
+	c.JSON(http.StatusOK, res)
+}
+
+func DeleteQuestionById(c *gin.Context) {
+	uid, err := middleware.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
+		return
+	}
+	sQid := c.Param("question_id")
+	qid, err := tool.StringToInt64(sQid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+	res := service.DeleteQuestionById(uid, qid)
 	c.JSON(http.StatusOK, res)
 }

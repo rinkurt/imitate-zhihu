@@ -80,3 +80,15 @@ func UpdateQuestionById(uid int64, qid int64, quesDto dto.QuestionCreateDto) res
 	quesDetail.Creator = user
 	return result.Ok.WithData(quesDetail)
 }
+
+func DeleteQuestionById(uid int64, qid int64) result.Result {
+	ques, res := repository.SelectQuestionById(qid)
+	if res.NotOK() {
+		return res
+	}
+	if ques.CreatorId != uid {
+		return result.UnauthorizedOpr
+	}
+	res = repository.DeleteQuestionById(qid)
+	return res
+}

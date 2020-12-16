@@ -70,6 +70,8 @@ var (
 	TokenErr        = Result{Code: 1003, Message: "Token Error"}
 	ContextErr      = Result{Code: 1004, Message: "Context Error"}
 	UnauthorizedOpr = Result{Code: 1005, Message: "Unauthorized operation"}
+
+	// 20xx: User
 	// 200x: User Login
 	UserNotFoundErr       = Result{Code: 2001, Message: "User Not Found"}
 	PasswordNotCorrectErr = Result{Code: 2002, Message: "Password not correct"}
@@ -78,11 +80,15 @@ var (
 	CreateUserErr         = Result{Code: 2012, Message: "DB Create user error"}
 	EmailSendErr          = Result{Code: 2013, Message: "Email send error"}
 	WrongVerificationCode = Result{Code: 2014, Message: "Wrong verification code, or code expired."}
+
+	// 21xx: Question
 	// 210x: Get Question
 	QuestionNotFoundErr = Result{Code: 2101, Message: "Question Not Found"}
 	UpdateViewCountErr  = Result{Code: 2102, Message: "Failed in updating view count"}
 	// 211x: Create Question
-	CreateQuestionErr = Result{Code: 2111, Message: "DB Create question error"}
+	CreateQuestionErr = Result{Code: 2111, Message: "DB create question error"}
 	// 212x: Update Question
-	UpdateQuestionErr = Result{Code: 2111, Message: "DB update question error"}
+	UpdateQuestionErr = Result{Code: 2121, Message: "DB update question error"}
+	// 213x: Delete Question
+	DeleteQuestionErr = Result{Code: 2131, Message: "DB delete question error"}
 )
