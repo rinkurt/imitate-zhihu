@@ -7,7 +7,7 @@ import (
 )
 
 // 添加配置方法：
-// 1. 在 config/xxx.json 添加项
+// 1. 在 Cfg/xxx.json 添加项
 // 2. 在此处 Config 结构添加项
 
 type Config struct {
@@ -23,21 +23,21 @@ type Config struct {
 	RedisPassword string `json:"redis_password"`
 }
 
-var config *Config
+var Cfg *Config
 
-func GetConfig() *Config {
-	if config == nil {
-		var err error
-		if os.Getenv("IZ_ENV_MODE") == "release" {
-			err = ParseConfig("./config/release.json")
-		} else {
-			err = ParseConfig("./config/debug.json")
-		}
-		if err != nil {
-			panic(err.Error())
-		}
+func InitConfig() {
+	if Cfg != nil {
+		return
 	}
-	return config
+	var err error
+	if os.Getenv("IZ_ENV_MODE") == "release" {
+		err = ParseConfig("./config/release.json")
+	} else {
+		err = ParseConfig("./config/debug.json")
+	}
+	if err != nil {
+		panic(err.Error())
+	}
 }
 
 func GetEnvIfExist(dest *string, key string) {
@@ -55,20 +55,20 @@ func ParseConfig(path string) error {
 
 	reader := bufio.NewReader(file)
 	decoder := json.NewDecoder(reader)
-	config = new(Config)
-	if err := decoder.Decode(config); err != nil {
-		config = nil
+	Cfg = new(Config)
+	if err := decoder.Decode(Cfg); err != nil {
+		Cfg = nil
 		return err
 	}
 
-	GetEnvIfExist(&config.LogFile, "IZ_LOG_FILE")
-	GetEnvIfExist(&config.DBAddr, "IZ_DB_ADDR")
-	GetEnvIfExist(&config.DBUsername, "IZ_DB_USERNAME")
-	GetEnvIfExist(&config.DBPassword, "IZ_DB_PASSWORD")
-	GetEnvIfExist(&config.JwtSecret, "IZ_JWT_SECRET")
-	GetEnvIfExist(&config.RedisAddr, "IZ_REDIS_ADDR")
-	GetEnvIfExist(&config.RedisPassword, "IZ_REDIS_PASSWORD")
+	GetEnvIfExist(&Cfg.LogFile, "IZ_LOG_FILE")
+	GetEnvIfExist(&Cfg.DBAddr, "IZ_DB_ADDR")
+	GetEnvIfExist(&Cfg.DBUsername, "IZ_DB_USERNAME")
+	GetEnvIfExist(&Cfg.DBPassword, "IZ_DB_PASSWORD")
+	GetEnvIfExist(&Cfg.JwtSecret, "IZ_JWT_SECRET")
+	GetEnvIfExist(&Cfg.RedisAddr, "IZ_REDIS_ADDR")
+	GetEnvIfExist(&Cfg.RedisPassword, "IZ_REDIS_PASSWORD")
 
-	MySecret = []byte(config.JwtSecret)
+	MySecret = []byte(Cfg.JwtSecret)
 	return nil
 }

@@ -11,19 +11,19 @@ import (
 var Rdb *redis.Client
 const CacheExpireTime = time.Hour * 6
 
-func init() {
-	if Rdb == nil {
-		config := GetConfig()
-		Rdb = redis.NewClient(&redis.Options{
-			Addr:     config.RedisAddr,
-			Password: config.RedisPassword, // no password set
-			DB:       0,  // use default DB
-		})
-		_, err := Rdb.Ping(context.Background()).Result()
-		if err != nil {
-			fmt.Println("Redis Connection Failed")
-			panic(err)
-		}
+func InitRedis() {
+	if Rdb != nil {
+		return
+	}
+	Rdb = redis.NewClient(&redis.Options{
+		Addr:     Cfg.RedisAddr,
+		Password: Cfg.RedisPassword, // no password set
+		DB:       0,  // use default DB
+	})
+	_, err := Rdb.Ping(context.Background()).Result()
+	if err != nil {
+		fmt.Println("Redis Connection Failed")
+		panic(err)
 	}
 }
 

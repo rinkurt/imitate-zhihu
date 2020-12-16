@@ -17,23 +17,23 @@ func main() {
 		ioutil.WriteFile("server.pid", []byte(strconv.Itoa(pid)), 0777)
 		defer os.Remove("server.pid")
 	}
-
-	config := tool.GetConfig()
-
-	tool.InitDatabase()
+	
+	tool.InitConfig()
 	tool.InitLogger()
+	tool.InitDatabase()
+	tool.InitRedis()
 
-	gin.SetMode(config.Mode)
+	gin.SetMode(tool.Cfg.Mode)
 	engine := gin.Default()
 
-	if config.LogFile != "" {
+	if tool.Cfg.LogFile != "" {
 		engine.Use(middleware.LoggerToFile)
 	}
 
 	controller.RouteQuestionController(engine)
 	controller.RouteUserController(engine)
 
-	err := engine.Run(":" + config.Port)
+	err := engine.Run(":" + tool.Cfg.Port)
 	if err != nil {
 		panic(err.Error())
 	}

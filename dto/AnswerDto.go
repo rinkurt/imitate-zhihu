@@ -14,7 +14,6 @@ type AnswerDetailDto struct {
 	Content       string          `json:"content"`
 	ViewCount     int             `json:"view_count"`
 	UpvoteCount   int             `json:"upvote_count"`
-	DownvoteCount int             `json:"downvote_count"`
 	CommentCount  int             `json:"comment_count"`
 	CreateAt      int64           `json:"create_at"`
 	UpdateAt      int64           `json:"update_at"`

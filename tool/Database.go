@@ -6,23 +6,22 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var database *gorm.DB
+var db *gorm.DB
 
 func GetDatabase() *gorm.DB {
-	if database == nil {
-		InitDatabase()
-	}
-	return database
+	return db
 }
 
 func InitDatabase() {
-	config := GetConfig()
+	if db != nil {
+		return
+	}
 
-	dsn := config.DBUsername + ":" + config.DBPassword +
-		"@tcp(" + config.DBAddr + ")/zhihu?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := Cfg.DBUsername + ":" + Cfg.DBPassword +
+		"@tcp(" + Cfg.DBAddr + ")/zhihu?charset=utf8mb4&parseTime=True&loc=Local"
 
 	var err error
-	database, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
