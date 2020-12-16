@@ -7,7 +7,7 @@ import (
 )
 
 // 添加配置方法：
-// 1. 在 Cfg/xxx.json 添加项
+// 1. 在 config/xxx.json 添加项
 // 2. 在此处 Config 结构添加项
 
 type Config struct {

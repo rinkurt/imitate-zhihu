@@ -86,3 +86,12 @@ func AddQuestionViewCount(id int64, count int) result.Result {
 	}
 	return result.Ok
 }
+
+func UpdateQuestion(question *Question) result.Result {
+	db := tool.GetDatabase()
+	db = db.Save(question)
+	if db.RowsAffected == 0 {
+		return result.UpdateQuestionErr
+	}
+	return result.Ok
+}

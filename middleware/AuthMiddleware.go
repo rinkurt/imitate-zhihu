@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"net/http"
@@ -34,4 +35,14 @@ func JWTAuthMiddleware(c *gin.Context) {
 	// 后续的处理函数可以用过c.Get("user_id")来获取当前请求的用户信息
 	c.Next()
 
+}
+
+
+func GetUserId(c *gin.Context) (int64, error) {
+	sUserId, exists := c.Get("user_id")
+	userId, err := tool.StringToInt64(sUserId.(string))
+	if !exists || err != nil {
+		return 0, errors.New("get user_id failed")
+	}
+	return userId, nil
 }

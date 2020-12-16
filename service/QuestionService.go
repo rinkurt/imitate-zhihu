@@ -52,12 +52,31 @@ func NewQuestion(userId int64, questionDto *dto.QuestionCreateDto) result.Result
 		return res
 	}
 
-	questionDetailDto := &dto.QuestionDetailDto{}
-	model.Copy(questionDetailDto, question)
-	user, res := GetUserProfileByUid(userId)
+	quesDetail := &dto.QuestionDetailDto{}
+	model.Copy(quesDetail, question)
+	user, _ := GetUserProfileByUid(userId)
+	quesDetail.Creator = user
+	return result.Ok.WithData(quesDetail)
+}
+
+func UpdateQuestionById(uid int64, qid int64, quesDto dto.QuestionCreateDto) result.Result {
+	ques, res := repository.SelectQuestionById(qid)
 	if res.NotOK() {
-		user = dto.AnonymousUser()
+		return res
 	}
-	questionDetailDto.Creator = user
-	return result.Ok.WithData(questionDetailDto)
+	if ques.CreatorId != uid {
+		return result.UnauthorizedOpr
+	}
+
+	model.Copy(ques, quesDto)
+	res = repository.UpdateQuestion(ques)
+	if res.NotOK() {
+		return res
+	}
+
+	quesDetail := &dto.QuestionDetailDto{}
+	model.Copy(quesDetail, ques)
+	user, _ := GetUserProfileByUid(uid)
+	quesDetail.Creator = user
+	return result.Ok.WithData(quesDetail)
 }

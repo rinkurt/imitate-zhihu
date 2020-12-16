@@ -17,6 +17,7 @@ func RouteQuestionController(engine *gin.Engine) {
 	group.GET("", GetQuestions)
 	group.GET("/:question_id", GetQuestionById)
 	group.POST("", middleware.JWTAuthMiddleware, NewQuestion)
+	group.PUT("/:question_id", middleware.JWTAuthMiddleware, UpdateQuestionById)
 }
 
 func GetQuestions(c *gin.Context) {
@@ -74,11 +75,9 @@ func GetQuestionById(c *gin.Context) {
 
 
 func NewQuestion(c *gin.Context) {
-	sUserId, exists := c.Get("user_id")
-	userId, err := tool.StringToInt64(sUserId.(string))
-	if err != nil || !exists {
-		c.JSON(http.StatusInternalServerError,
-			result.ContextErr.WithErrorStr("get user_id failed"))
+	userId, err := middleware.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
 		return
 	}
 	questionDto := dto.QuestionCreateDto{}
@@ -88,5 +87,27 @@ func NewQuestion(c *gin.Context) {
 		return
 	}
 	res := service.NewQuestion(userId, &questionDto)
+	c.JSON(http.StatusOK, res)
+}
+
+func UpdateQuestionById(c *gin.Context) {
+	uid, err := middleware.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
+		return
+	}
+	sQid := c.Param("question_id")
+	qid, err := tool.StringToInt64(sQid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+	questionDto := dto.QuestionCreateDto{}
+	err = c.ShouldBindJSON(&questionDto)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+	res := service.UpdateQuestionById(uid, qid, questionDto)
 	c.JSON(http.StatusOK, res)
 }

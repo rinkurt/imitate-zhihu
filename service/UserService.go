@@ -93,7 +93,7 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 
 	profile, res := repository.SelectProfileByUserId(userId)
 	if res.NotOK() {
-		return nil, res
+		return dto.AnonymousUser(), res
 	}
 
 	model.Copy(userDto, profile)

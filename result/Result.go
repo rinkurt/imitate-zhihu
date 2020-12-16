@@ -83,4 +83,6 @@ var (
 	UpdateViewCountErr  = Result{Code: 2102, Message: "Failed in updating view count"}
 	// 211x: Create Question
 	CreateQuestionErr = Result{Code: 2111, Message: "DB Create question error"}
+	// 212x: Update Question
+	UpdateQuestionErr = Result{Code: 2111, Message: "DB update question error"}
 )
