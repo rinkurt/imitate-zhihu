@@ -78,7 +78,7 @@ func GetQuestionById(c *gin.Context) {
 func NewQuestion(c *gin.Context) {
 	userId, err := middleware.GetUserId(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
+		c.JSON(http.StatusUnauthorized, result.ContextErr.WithError(err))
 		return
 	}
 	questionDto := dto.QuestionCreateDto{}
@@ -94,7 +94,7 @@ func NewQuestion(c *gin.Context) {
 func UpdateQuestionById(c *gin.Context) {
 	uid, err := middleware.GetUserId(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
+		c.JSON(http.StatusUnauthorized, result.ContextErr.WithError(err))
 		return
 	}
 	sQid := c.Param("question_id")
@@ -116,7 +116,7 @@ func UpdateQuestionById(c *gin.Context) {
 func DeleteQuestionById(c *gin.Context) {
 	uid, err := middleware.GetUserId(c)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, result.TokenErr.WithError(err))
+		c.JSON(http.StatusUnauthorized, result.ContextErr.WithError(err))
 		return
 	}
 	sQid := c.Param("question_id")
