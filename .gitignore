@@ -1,6 +1,7 @@
 .idea
 imitate-zhihu.exe
 log
+log.txt
 server.pid
 zhihu.out
 zhihu.err

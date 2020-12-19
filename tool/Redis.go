@@ -9,7 +9,7 @@ import (
 )
 
 var Rdb *redis.Client
-const CacheExpireTime = time.Hour * 6
+const CacheExpireTime = time.Hour * 3
 
 func initRedis() {
 	if Rdb != nil {
@@ -28,6 +28,8 @@ func initRedis() {
 }
 
 func CacheGet(key string, val interface{}) bool {
+	// reset expire time
+	Rdb.Expire(context.Background(), key, CacheExpireTime)
 	str, err := Rdb.Get(context.Background(), key).Result()
 	if err != nil {
 		if err != redis.Nil {
