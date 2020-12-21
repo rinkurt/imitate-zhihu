@@ -3,8 +3,12 @@ package cache
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/go-redis/redis/v8"
+	"imitate-zhihu/enum"
+	"imitate-zhihu/repository"
 	"imitate-zhihu/tool"
+	"strings"
 	"time"
 )
 
@@ -56,6 +60,49 @@ func IncrViewCount(typ int, id int64, countType string, count int) {
 	if err != nil {
 		tool.Logger.Error(err)
 	}
+}
+
+func SyncCount() {
+	fmt.Println("SyncCount")
+	keys, _ := tool.Rdb.Keys(context.Background(), "Write:*").Result()
+	for _, key := range keys {
+		split := strings.Split(key, ":")
+		if len(split) != 3 {
+			continue
+		}
+		typ, err1 := tool.StrToInt(split[1])
+		id, err2 := tool.StrToInt64(split[2])
+		if err1 != nil || err2 != nil {
+			continue
+		}
+		counts, err := tool.Rdb.HGetAll(context.Background(), key).Result()
+		if err != nil {
+			tool.Logger.Error(err)
+			continue
+		}
+
+		switch typ {
+		case enum.Question:
+			question, res := repository.SelectQuestionById(id)
+			if res.NotOK() {
+				tool.Logger.Error(res.Error())
+				continue
+			}
+			question.CommentCount += tool.StrToDefaultInt(counts[enum.CommentCount])
+			question.ViewCount += tool.StrToDefaultInt(counts[enum.ViewCount])
+			question.LikeCount += tool.StrToDefaultInt(counts[enum.UpvoteCount])
+			question.CommentCount += tool.StrToDefaultInt(counts[enum.CommentCount])
+			res = repository.UpdateQuestion(question)
+			if res.NotOK() {
+				tool.Logger.Error(res.Error())
+			}
+
+		case enum.Answer:
+
+		}
+		tool.Rdb.Del(context.Background(), key)
+	}
+
 }
 
 

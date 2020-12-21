@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
+	"imitate-zhihu/cache"
 	"imitate-zhihu/controller"
 	"imitate-zhihu/middleware"
 	"imitate-zhihu/tool"
@@ -17,6 +19,10 @@ func main() {
 		ioutil.WriteFile("server.pid", []byte(strconv.Itoa(pid)), 0777)
 		defer os.Remove("server.pid")
 	}
+
+	c := cron.New(cron.WithSeconds())
+	c.AddFunc("@every 3h", cache.SyncCount)
+	c.Start()
 
 	gin.SetMode(tool.Cfg.Mode)
 	engine := gin.Default()
