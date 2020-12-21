@@ -83,26 +83,21 @@ func SyncCount() {
 
 		switch typ {
 		case enum.Question:
-			question, res := repository.SelectQuestionById(id)
+			question := &repository.Question{Id: id}
+			question.CommentCount = tool.StrToDefaultInt(counts[enum.CommentCount])
+			question.ViewCount = tool.StrToDefaultInt(counts[enum.ViewCount])
+			question.LikeCount = tool.StrToDefaultInt(counts[enum.UpvoteCount])
+			question.CommentCount = tool.StrToDefaultInt(counts[enum.CommentCount])
+			res := repository.UpdateQuestionCounts(question)
 			if res.NotOK() {
 				tool.Logger.Error(res.Error())
 				continue
 			}
-			question.CommentCount += tool.StrToDefaultInt(counts[enum.CommentCount])
-			question.ViewCount += tool.StrToDefaultInt(counts[enum.ViewCount])
-			question.LikeCount += tool.StrToDefaultInt(counts[enum.UpvoteCount])
-			question.CommentCount += tool.StrToDefaultInt(counts[enum.CommentCount])
-			res = repository.UpdateQuestion(question)
-			if res.NotOK() {
-				tool.Logger.Error(res.Error())
-			}
-
 		case enum.Answer:
 
 		}
 		tool.Rdb.Del(context.Background(), key)
 	}
-
 }
 
 
