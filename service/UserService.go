@@ -6,6 +6,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/jeevatkm/go-model.v1"
+	"imitate-zhihu/cache"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
@@ -42,7 +43,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 	}
 
 	// verify code
-	val, err := tool.Rdb.Get(context.Background(), tool.KeyVrfCode(registerDto.Email)).Result()
+	val, err := tool.Rdb.Get(context.Background(), cache.KeyVrfCode(registerDto.Email)).Result()
 	if err != nil && err != redis.Nil {
 		return result.HandleServerErr(err)
 	}
@@ -86,7 +87,7 @@ func UserRegister(registerDto *dto.UserRegisterDto) result.Result {
 func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	// find in cache
 	userDto := &dto.UserProfileDto{}
-	found := tool.CacheGet(tool.KeyUser(userId), userDto)
+	found := cache.Get(cache.KeyUser(userId), userDto)
 	if found {
 		return userDto, result.Ok
 	}
@@ -100,14 +101,14 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	userDto.Id = profile.UserId
 
 	// save in cache
-	tool.CacheSet(tool.KeyUser(userId), userDto)
+	cache.Set(cache.KeyUser(userId), userDto)
 	return userDto, result.Ok
 }
 
 func VerifyEmail(email string) (string, result.Result) {
    	vrfCode := tool.GenValidateCode(6)
 	//tool.CodeCache[email]=vrfCode
-	err := tool.Rdb.Set(context.Background(), tool.KeyVrfCode(email), vrfCode, time.Minute*30).Err()
+	err := tool.Rdb.Set(context.Background(), cache.KeyVrfCode(email), vrfCode, time.Minute*30).Err()
 	if err != nil {
 		return "", result.HandleServerErr(err)
 	}

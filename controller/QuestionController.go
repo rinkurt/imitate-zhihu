@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/enum"
 	"imitate-zhihu/middleware"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
@@ -27,8 +28,8 @@ func GetQuestions(c *gin.Context) {
 	var cur int64 = 0
 	var cid int64 = 0
 	if len(split) == 2 {
-		cur, _ = tool.StringToInt64(split[0])
-		cid, _ = tool.StringToInt64(split[1])
+		cur, _ = tool.StrToInt64(split[0])
+		cid, _ = tool.StrToInt64(split[1])
 	}
 	size, err := strconv.Atoi(c.Query("size"))
 	if err != nil {
@@ -39,21 +40,21 @@ func GetQuestions(c *gin.Context) {
 	var order int
 	switch orderBy {
 	case "time":
-		order = tool.OrderByTime
+		order = enum.ByTime
 	case "heat":
-		order = tool.OrderByHeat
+		order = enum.ByHeat
 	default:
-		order = tool.OrderByTime
+		order = enum.ByTime
 	}
 	q, res := service.GetQuestions(search, cur, cid, size, order)
 	nextCursor := ""
 	if len(q) > 0 {
 		tail := q[len(q)-1]
 		switch order {
-		case tool.OrderByTime:
-			nextCursor = tool.Int64ToString(tail.UpdateAt) + "," + tool.Int64ToString(tail.Id)
-		case tool.OrderByHeat:
-			nextCursor = strconv.Itoa(tail.ViewCount) + "," + tool.Int64ToString(tail.Id)
+		case enum.ByTime:
+			nextCursor = tool.Int64ToStr(tail.UpdateAt) + "," + tool.Int64ToStr(tail.Id)
+		case enum.ByHeat:
+			nextCursor = strconv.Itoa(tail.ViewCount) + "," + tool.Int64ToStr(tail.Id)
 		}
 	}
 	c.JSON(http.StatusOK, res.WithData(gin.H{
@@ -65,7 +66,7 @@ func GetQuestions(c *gin.Context) {
 
 func GetQuestionById(c *gin.Context) {
 	qid := c.Param("question_id")
-	id, err := tool.StringToInt64(qid)
+	id, err := tool.StrToInt64(qid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
@@ -98,7 +99,7 @@ func UpdateQuestionById(c *gin.Context) {
 		return
 	}
 	sQid := c.Param("question_id")
-	qid, err := tool.StringToInt64(sQid)
+	qid, err := tool.StrToInt64(sQid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
@@ -120,7 +121,7 @@ func DeleteQuestionById(c *gin.Context) {
 		return
 	}
 	sQid := c.Param("question_id")
-	qid, err := tool.StringToInt64(sQid)
+	qid, err := tool.StrToInt64(sQid)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return

@@ -1,8 +1,11 @@
 package service
 
 import (
+	"context"
 	"gopkg.in/jeevatkm/go-model.v1"
+	"imitate-zhihu/cache"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/enum"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
@@ -28,12 +31,37 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	if res.NotOK() {
 		return nil, res
 	}
-	res = repository.AddQuestionViewCount(id, 1)
-	if res.NotOK() {
-		tool.Logger.Error("Failed in Adding View Count")
-	}
+
+	cache.IncrViewCount(enum.Question, id, enum.ViewCount, 1)
+	//res = repository.AddQuestionViewCount(id, 1)
+	//if res.NotOK() {
+	//	tool.Logger.Error("Failed in Adding View Count")
+	//}
+
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)
+
+	// Read counts from cache
+	counts, err := tool.Rdb.HGetAll(context.Background(), cache.KeyWrite(enum.Question, id)).Result()
+	if err != nil {
+		tool.Logger.Error(err)
+	}
+	for k, v := range counts {
+		c, err := tool.StrToInt(v)
+		if err != nil {
+			tool.Logger.Error("Cache value not integer!")
+			break
+		}
+		switch k {
+		case enum.ViewCount:
+			questionDto.ViewCount += c
+		case enum.UpvoteCount:
+			questionDto.LikeCount += c
+		case enum.CommentCount:
+			questionDto.CommentCount += c
+		}
+	}
+
 	user, res := GetUserProfileByUid(question.CreatorId)
 	if res.NotOK() {
 		user = dto.AnonymousUser()

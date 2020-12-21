@@ -40,7 +40,7 @@ func JWTAuthMiddleware(c *gin.Context) {
 
 func GetUserId(c *gin.Context) (int64, error) {
 	sUserId, exists := c.Get("user_id")
-	userId, err := tool.StringToInt64(sUserId.(string))
+	userId, err := tool.StrToInt64(sUserId.(string))
 	if !exists || err != nil {
 		return 0, errors.New("get user_id failed")
 	}

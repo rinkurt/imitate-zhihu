@@ -2,14 +2,11 @@ package tool
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"time"
 )
 
 var Rdb *redis.Client
-const CacheExpireTime = time.Hour * 3
 
 func initRedis() {
 	if Rdb != nil {
@@ -27,36 +24,3 @@ func initRedis() {
 	}
 }
 
-func CacheGet(key string, val interface{}) bool {
-	// reset expire time
-	Rdb.Expire(context.Background(), key, CacheExpireTime)
-	str, err := Rdb.Get(context.Background(), key).Result()
-	if err != nil {
-		if err != redis.Nil {
-			Logger.Error(err)
-		}
-		return false
-	}
-	err = json.Unmarshal([]byte(str), val)
-	return err == nil
-}
-
-func CacheSet(key string, val interface{}) {
-	bytes, err := json.Marshal(val)
-	if err != nil {
-		Logger.Error(err)
-		return
-	}
-	err = Rdb.Set(context.Background(), key, bytes, CacheExpireTime).Err()
-	if err != nil {
-		Logger.Error(err)
-	}
-}
-
-func KeyVrfCode(email string) string {
-	return "VrfCode:" + email
-}
-
-func KeyUser(uid int64) string {
-	return "User:" + Int64ToString(uid)
-}

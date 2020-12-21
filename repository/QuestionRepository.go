@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"imitate-zhihu/enum"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"time"
@@ -38,12 +39,12 @@ func SelectQuestions(search string, cursor int64, cid int64, limit int, order in
 		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%"+search+"%", search)
 	}
 	switch order {
-	case tool.OrderByHeat:
+	case enum.ByHeat:
 		if cursor != 0 || cid != 0 {
 			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor, cid, cursor)
 		}
 		db = db.Order("view_count desc")
-	case tool.OrderByTime:
+	case enum.ByTime:
 		if cursor != 0 || cid != 0 {
 			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor, cid, cursor)
 		}
