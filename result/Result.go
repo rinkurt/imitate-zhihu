@@ -92,4 +92,14 @@ var (
 	UpdateQuestionErr = Result{Code: 2121, Message: "DB update question error"}
 	// 213_: Delete Question
 	DeleteQuestionErr = Result{Code: 2131, Message: "DB delete question error"}
+
+	// 22__: Answer
+	// 220_: Get Answer
+	AnswerNotFoundErr = Result{Code: 2201, Message: "Answer Not Found"}
+	// 221_: Create Answer
+	CreateAnswerErr = Result{Code: 2211, Message: "DB create Answer error"}
+	// 222_: Update Answer
+	UpdateAnswerErr = Result{Code: 2221, Message: "DB update Answer error"}
+	// 223_: Delete Answer
+	DeleteAnswerErr = Result{Code: 2231, Message: "DB delete Answer error"}
 )
