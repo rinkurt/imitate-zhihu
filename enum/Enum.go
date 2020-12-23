@@ -3,6 +3,7 @@ package enum
 const (
 	ByTime = iota
 	ByHeat
+	ByUpvote
 )
 
 const (

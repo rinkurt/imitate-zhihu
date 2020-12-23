@@ -5,8 +5,6 @@ import (
 	"imitate-zhihu/dto"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -75,70 +73,32 @@ func DeleteAnswerById(answerId int64) result.Result  {
 	return result.Ok
 }
 
-func SelectAnswers(questionId int64, cursor []int64, size int64, orderby string) ([]Answer, result.Result, string)  {
+func SelectAnswers(questionId int64, cursor []int64, size int, orderby string) ([]Answer, result.Result) {
 	var answers []Answer
-	var nextCursor string
 	db := tool.GetDatabase()
-	str := make([]string,2)
+	db = db.Where("question_id = ?",questionId)
 	switch orderby {
 	case "time":
-		if cursor[1] == -1 {//说明直接查询前size个数据,并返回最后一个answer的时间戳和id
-			err := db.Where("question_id = ?",questionId).Order("update_at desc").Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr,"-1,-1"
-			}
-		}else {//如果不是默认的cursor，则从cursor所指向记录的下一个记录开始查起
-			err := db.Where("question_id = ? AND update_at <= ?",questionId,cursor[0]).Order("update_at desc").Not("id = ?",cursor[1]).Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr, "-1,-1"
-			}
+		if cursor[1] != -1 {
+			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
 		}
-		if len(answers) == 0 {
-			return nil, result.AnswerNotFoundErr,"-1,-1"
-		}
-		str[0] = strconv.FormatInt(answers[len(answers)-1].UpdateAt,10)
-		str[1] = strconv.FormatInt(answers[len(answers)-1].Id,10)
-		nextCursor = strings.Join(str,",")//找到最后一个的时间戳+id作为下一个游标
-
+		db = db.Order("update_at desc")
 	case "heat":
-		if cursor[1] == -1 {
-			err := db.Where("question_id = ?",questionId).Order("view_count desc").Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr,"-1,-1"
-			}
-		}else {
-			err := db.Where("question_id = ? AND update_at <= ?",questionId,cursor[0]).Order("view_count desc").Not("id = ?",cursor[1]).Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr, "-1,-1"
-			}
+		if cursor[1] != -1 {
+			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
 		}
-		if len(answers) == 0 {
-			return nil, result.AnswerNotFoundErr,"-1,-1"
-		}
-		str[0] = strconv.FormatInt(answers[len(answers)-1].UpdateAt,10)
-		str[1] = strconv.FormatInt(answers[len(answers)-1].Id,10)
-		nextCursor = strings.Join(str,",")
-
+		db = db.Order("view_count desc")
 	case "upvote":
-		if cursor[1] == -1 {
-			err := db.Where("question_id = ?",questionId).Order("upvote_count desc").Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr,"-1,-1"
-			}
-		}else {
-			err := db.Where("question_id = ? AND update_at <= ?",questionId,cursor[0]).Order("upvote_count desc").Not("id = ?",cursor[1]).Limit(int(size)).Find(&answers).Error
-			if err != nil {
-				return nil, result.AnswerNotFoundErr, "-1,-1"
-			}
+		if cursor[1] != -1 {
+			db = db.Where("(upvote_count = ? AND id > ?) OR upvote_count < ?", cursor[0], cursor[1], cursor[0])
 		}
-		if len(answers) == 0 {
-			return nil, result.AnswerNotFoundErr,"-1,-1"
-		}
-		str[0] = strconv.FormatInt(answers[len(answers)-1].UpdateAt,10)
-		str[1] = strconv.FormatInt(answers[len(answers)-1].Id,10)
-		nextCursor = strings.Join(str,",")
+		db = db.Order("upvote_count desc")
 	}
-	return answers,result.Ok,nextCursor
+	db = db.Limit(size).Find(&answers)
+	if db.RowsAffected == 0 {
+		return nil, result.AnswerNotFoundErr
+	}
+	return answers, result.Ok
 }
 
 func UpdateAnswerCounts(answer *Answer) result.Result {

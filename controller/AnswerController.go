@@ -111,13 +111,31 @@ func GetAnswers(c *gin.Context) {
 		cursor[i] = ele
 	}
 	s := c.DefaultQuery("size", "5") //每页记录数,缺省情况下取5
-	size, err := tool.StrToInt64(s)
+	size, err := tool.StrToInt(s)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
 	orderby := c.DefaultQuery("orderby", "time") //获取排序方式，默认为时间戳降序
-	answers, nextCursor, res := service.GetAnswers(questionId, cursor, size, orderby)
+	answers, res := service.GetAnswers(questionId, cursor, size, orderby)
+
+	nextCursor := ""
+	var nc int64
+	var nid int64
+	if len(answers) > 0 {
+		tail := answers[len(answers) - 1]
+		switch orderby {
+		case "time":
+			nc = tail.UpdateAt
+		case "heat":
+			nc = int64(tail.ViewCount)
+		case "upvote":
+			nc = int64(tail.UpvoteCount)
+		}
+		nid = tail.Id
+	}
+	nextCursor = tool.Int64ToStr(nc) + "," + tool.Int64ToStr(nid)
+
 	c.JSON(http.StatusOK, res.WithData(gin.H{
 		"next_cursor": nextCursor,
 		"answers":     answers,

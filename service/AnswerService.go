@@ -100,10 +100,10 @@ func DeleteAnswerById(userId int64, answerId int64) result.Result {
 	return res
 }
 
-func GetAnswers(questionId int64, cursor []int64, size int64, orderby string) (*[]dto.AnswerDetailDto, string, result.Result) {
-	ans, res, nextCursor := repository.SelectAnswers(questionId, cursor, size, orderby)
+func GetAnswers(questionId int64, cursor []int64, size int, orderby string) ([]dto.AnswerDetailDto, result.Result) {
+	ans, res := repository.SelectAnswers(questionId, cursor, size, orderby)
 	if res.NotOK() {
-		return nil, "-1,-1", result.AnswerNotFoundErr
+		return nil, result.AnswerNotFoundErr
 	}
 	answers := make([]dto.AnswerDetailDto, len(ans))
 	for i := 0; i < len(ans); i++ {
@@ -114,5 +114,5 @@ func GetAnswers(questionId int64, cursor []int64, size int64, orderby string) (*
 		}
 		answers[i].Creator = userProfile
 	}
-	return &answers, nextCursor, result.Ok
+	return answers, result.Ok
 }
