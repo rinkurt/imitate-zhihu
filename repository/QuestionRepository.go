@@ -40,12 +40,12 @@ func SelectQuestions(search string, cursor int64, cid int64, limit int, order in
 	}
 	switch order {
 	case enum.ByHeat:
-		if cursor != 0 || cid != 0 {
+		if cid != -1 {
 			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor, cid, cursor)
 		}
 		db = db.Order("view_count desc")
 	case enum.ByTime:
-		if cursor != 0 || cid != 0 {
+		if cid != -1 {
 			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor, cid, cursor)
 		}
 		db = db.Order("update_at desc")

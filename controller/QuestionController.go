@@ -10,7 +10,6 @@ import (
 	"imitate-zhihu/tool"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func RouteQuestionController(engine *gin.Engine) {
@@ -23,20 +22,20 @@ func RouteQuestionController(engine *gin.Engine) {
 }
 
 func GetQuestions(c *gin.Context) {
-	cursor := c.Query("cursor")
-	split := strings.Split(cursor, ",")
-	var cur int64 = 0
-	var cid int64 = 0
-	if len(split) == 2 {
-		cur, _ = tool.StrToInt64(split[0])
-		cid, _ = tool.StrToInt64(split[1])
+	cursor := c.DefaultQuery("cursor", "-1,-1")
+	arrCursor, err := tool.ParseCursor(cursor)
+	if err != nil || len(arrCursor) < 2 {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
+		return
 	}
+	cur := arrCursor[0]
+	cid := arrCursor[1]
 	size, err := strconv.Atoi(c.Query("size"))
 	if err != nil {
 		size = 10
 	}
 	search := c.Query("search")
-	orderBy := c.Query("orderby")
+	orderBy := c.DefaultQuery("orderby", "time")
 	var order int
 	switch orderBy {
 	case "time":

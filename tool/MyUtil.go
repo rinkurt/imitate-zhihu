@@ -1,6 +1,9 @@
 package tool
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 // Init for package tool
 func init() {
@@ -38,3 +41,15 @@ func StrToInt64(s string) (int64, error) {
 	return strconv.ParseInt(s, 10, 64)
 }
 
+func ParseCursor(cursor string) ([]int64, error) {
+	cursors := strings.Split(cursor, ",")
+	ret := make([]int64, len(cursors))
+	for i, v := range cursors {
+		el, err := StrToInt64(v)
+		if err != nil {
+			return nil, err
+		}
+		ret[i] = el
+	}
+	return ret, nil
+}

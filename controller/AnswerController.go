@@ -8,7 +8,6 @@ import (
 	"imitate-zhihu/service"
 	"imitate-zhihu/tool"
 	"net/http"
-	"strings"
 )
 
 func RouteAnswerController(engine *gin.Engine) {
@@ -100,16 +99,13 @@ func GetAnswers(c *gin.Context) {
 		return
 	}
 	cu := c.DefaultQuery("cursor", "-1,-1") //游标，缺省情况下取(-1,-1)，即从排好序的列表的第一个开始取size个记录
-	cur := strings.Split(cu, ",")
-	cursor := make([]int64, 2)
-	for i, v := range cur {
-		ele, err := tool.StrToInt64(v)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
-			return
-		}
-		cursor[i] = ele
+
+	cursor, err := tool.ParseCursor(cu)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
+		return
 	}
+
 	s := c.DefaultQuery("size", "5") //每页记录数,缺省情况下取5
 	size, err := tool.StrToInt(s)
 	if err != nil {
