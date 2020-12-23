@@ -46,14 +46,10 @@ func SelectAnswerById(answerId int64) (*Answer,result.Result)  {
 func UpdateAnswer(answerId int64, answer *dto.AnswerCreateDto) (*Answer,result.Result) {
 	db := tool.GetDatabase()
 	var ans Answer
-	err := db.First(&ans,answerId).Error//根据问题ID查找问题
+	err := db.First(&ans,answerId).Error
 	if err != nil {//查找失败
 		return nil, result.UpdateAnswerErr
 	}
-	//对找到的这个对象进行更新
-	//db.Model(&ans).Updates(map[string]interface{}{
-	//	""
-	//})
 	err = db.Model(&ans).Updates(map[string]interface{}{
 		"content":answer.Content,
 		"update_at":time.Now().Unix(),
@@ -67,7 +63,7 @@ func UpdateAnswer(answerId int64, answer *dto.AnswerCreateDto) (*Answer,result.R
 func DeleteAnswerById(answerId int64) result.Result  {
 	var answer Answer
 	db := tool.GetDatabase()
-	err := db.First(&answer).Error
+	err := db.First(&answer,answerId).Error
 	if err != nil {
 		return result.AnswerNotFoundErr
 	}
