@@ -2,5 +2,6 @@
   "mode": "release",
   "port": "8090",
   "log_path": "./log/",
-  "log_file": "log.txt"
+  "log_file": "log.txt",
+  "redis_sync_time": "@every 3h"
 }

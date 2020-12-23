@@ -6,5 +6,6 @@
   "db_password": "123456",
   "jwt_secret": "c2f7e3c0-0267-44bd-a57a-162198e07784",
   "redis_addr": "127.0.0.1:6379",
-  "redis_password": ""
+  "redis_password": "",
+  "redis_sync_time": "@every 30s"
 }

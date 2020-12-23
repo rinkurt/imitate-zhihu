@@ -21,7 +21,7 @@ func main() {
 	}
 
 	c := cron.New(cron.WithSeconds())
-	c.AddFunc("@every 3h", cache.SyncCount)
+	c.AddFunc(tool.Cfg.RedisSyncTime, cache.SyncCount)
 	c.Start()
 
 	gin.SetMode(tool.Cfg.Mode)

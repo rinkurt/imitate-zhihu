@@ -15,5 +15,7 @@ const (
 	ViewCount = "ViewCount"
 	UpvoteCount = "UpvoteCount"
 	CommentCount = "CommentCount"
+	AnswerCount = "AnswerCount"
+	DownvoteCount = "DownvoteCount"
 )
 

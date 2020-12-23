@@ -21,6 +21,7 @@ type Config struct {
 	JwtSecret     string `json:"jwt_secret"`
 	RedisAddr     string `json:"redis_addr"`
 	RedisPassword string `json:"redis_password"`
+	RedisSyncTime string `json:"redis_sync_time"`
 }
 
 var Cfg *Config

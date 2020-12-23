@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"gorm.io/gorm"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
@@ -142,4 +143,18 @@ func SelectAnswers(questionId int64, cursor []int64, size int64, orderby string)
 		nextCursor = strings.Join(str,",")
 	}
 	return answers,result.Ok,nextCursor
+}
+
+func UpdateAnswerCounts(answer *Answer) result.Result {
+	db := tool.GetDatabase()
+	db = db.Model(answer).Updates(map[string]interface{}{
+		"view_count": gorm.Expr("view_count + ?", answer.ViewCount),
+		"upvote_count": gorm.Expr("upvote_count + ?", answer.UpvoteCount),
+		"downvote_count": gorm.Expr("downvote_count + ?", answer.DownvoteCount),
+		"comment_count": gorm.Expr("comment_count + ?", answer.CommentCount),
+	})
+	if db.RowsAffected == 0 {
+		return result.UpdateAnswerErr
+	}
+	return result.Ok
 }
