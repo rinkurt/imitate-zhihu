@@ -97,6 +97,20 @@ func UpdateQuestion(question *Question) result.Result {
 	return result.Ok
 }
 
+func UpdateQuestionCounts(question *Question) result.Result {
+	db := tool.GetDatabase()
+	db = db.Model(question).Updates(map[string]interface{}{
+		"answer_count": gorm.Expr("answer_count + ?", question.AnswerCount),
+		"comment_count": gorm.Expr("comment_count + ?", question.CommentCount),
+		"view_count": gorm.Expr("view_count + ?", question.ViewCount),
+		"like_count": gorm.Expr("like_count + ?", question.LikeCount),
+	})
+	if db.RowsAffected == 0 {
+		return result.UpdateQuestionErr
+	}
+	return result.Ok
+}
+
 func DeleteQuestionById(id int64) result.Result {
 	db := tool.GetDatabase()
 	db = db.Delete(&Question{}, id)

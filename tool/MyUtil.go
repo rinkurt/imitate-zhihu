@@ -25,6 +25,11 @@ func StrToInt(s string) (int, error) {
 	return strconv.Atoi(s)
 }
 
+func StrToDefaultInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
+}
+
 func Int64ToStr(i int64) string {
 	return strconv.FormatInt(i, 10)
 }
