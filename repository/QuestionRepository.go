@@ -32,13 +32,13 @@ type QuestionShortModel struct {
 	UpdateAt    int64
 }
 
-func SelectQuestions(search string, cursor int64, cid int64, limit int, order int) ([]QuestionShortModel, result.Result) {
+func SelectQuestions(search string, cursor int64, cid int64, limit int, orderBy string) ([]QuestionShortModel, result.Result) {
 	db := tool.GetDatabase()
 	var questions []QuestionShortModel
 	if search != "" {
 		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%"+search+"%", search)
 	}
-	switch order {
+	switch orderBy {
 	case enum.ByHeat:
 		if cid != -1 {
 			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor, cid, cursor)

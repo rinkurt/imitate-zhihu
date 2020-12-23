@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/enum"
 	"imitate-zhihu/middleware"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
@@ -112,25 +113,21 @@ func GetAnswers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
-	orderby := c.DefaultQuery("orderby", "time") //获取排序方式，默认为时间戳降序
-	answers, res := service.GetAnswers(questionId, cursor, size, orderby)
+	orderBy := c.DefaultQuery("orderby", enum.ByTime) //获取排序方式，默认为时间戳降序
+	answers, res := service.GetAnswers(questionId, cursor, size, orderBy)
 
 	nextCursor := ""
-	var nc int64
-	var nid int64
 	if len(answers) > 0 {
 		tail := answers[len(answers) - 1]
-		switch orderby {
-		case "time":
-			nc = tail.UpdateAt
-		case "heat":
-			nc = int64(tail.ViewCount)
-		case "upvote":
-			nc = int64(tail.UpvoteCount)
+		switch orderBy {
+		case enum.ByTime:
+			nextCursor = tool.Int64ToStr(tail.UpdateAt) + "," + tool.Int64ToStr(tail.Id)
+		case enum.ByHeat:
+			nextCursor = tool.IntToStr(tail.ViewCount) + "," + tool.Int64ToStr(tail.Id)
+		case enum.ByUpvote:
+			nextCursor = tool.IntToStr(tail.UpvoteCount) + "," + tool.Int64ToStr(tail.Id)
 		}
-		nid = tail.Id
 	}
-	nextCursor = tool.Int64ToStr(nc) + "," + tool.Int64ToStr(nid)
 
 	c.JSON(http.StatusOK, res.WithData(gin.H{
 		"next_cursor": nextCursor,

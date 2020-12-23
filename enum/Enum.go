@@ -1,9 +1,9 @@
 package enum
 
 const (
-	ByTime = iota
-	ByHeat
-	ByUpvote
+	ByTime   = "time"
+	ByHeat   = "heat"
+	ByUpvote = "upvote"
 )
 
 const (

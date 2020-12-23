@@ -100,8 +100,8 @@ func DeleteAnswerById(userId int64, answerId int64) result.Result {
 	return res
 }
 
-func GetAnswers(questionId int64, cursor []int64, size int, orderby string) ([]dto.AnswerDetailDto, result.Result) {
-	ans, res := repository.SelectAnswers(questionId, cursor, size, orderby)
+func GetAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]dto.AnswerDetailDto, result.Result) {
+	ans, res := repository.SelectAnswers(questionId, cursor, size, orderBy)
 	if res.NotOK() {
 		return nil, result.AnswerNotFoundErr
 	}

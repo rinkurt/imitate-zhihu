@@ -35,21 +35,12 @@ func GetQuestions(c *gin.Context) {
 		size = 10
 	}
 	search := c.Query("search")
-	orderBy := c.DefaultQuery("orderby", "time")
-	var order int
-	switch orderBy {
-	case "time":
-		order = enum.ByTime
-	case "heat":
-		order = enum.ByHeat
-	default:
-		order = enum.ByTime
-	}
-	q, res := service.GetQuestions(search, cur, cid, size, order)
+	orderBy := c.DefaultQuery("orderby", enum.ByTime)
+	q, res := service.GetQuestions(search, cur, cid, size, orderBy)
 	nextCursor := ""
 	if len(q) > 0 {
 		tail := q[len(q)-1]
-		switch order {
+		switch orderBy {
 		case enum.ByTime:
 			nextCursor = tool.Int64ToStr(tail.UpdateAt) + "," + tool.Int64ToStr(tail.Id)
 		case enum.ByHeat:

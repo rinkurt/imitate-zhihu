@@ -3,6 +3,7 @@ package repository
 import (
 	"gorm.io/gorm"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/enum"
 	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"time"
@@ -73,22 +74,22 @@ func DeleteAnswerById(answerId int64) result.Result  {
 	return result.Ok
 }
 
-func SelectAnswers(questionId int64, cursor []int64, size int, orderby string) ([]Answer, result.Result) {
+func SelectAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]Answer, result.Result) {
 	var answers []Answer
 	db := tool.GetDatabase()
 	db = db.Where("question_id = ?",questionId)
-	switch orderby {
-	case "time":
+	switch orderBy {
+	case enum.ByTime:
 		if cursor[1] != -1 {
 			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
 		}
 		db = db.Order("update_at desc")
-	case "heat":
+	case enum.ByHeat:
 		if cursor[1] != -1 {
 			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
 		}
 		db = db.Order("view_count desc")
-	case "upvote":
+	case enum.ByUpvote:
 		if cursor[1] != -1 {
 			db = db.Where("(upvote_count = ? AND id > ?) OR upvote_count < ?", cursor[0], cursor[1], cursor[0])
 		}
