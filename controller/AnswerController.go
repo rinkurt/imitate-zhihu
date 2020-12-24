@@ -99,10 +99,9 @@ func GetAnswers(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Missing question id"))
 		return
 	}
-	cu := c.DefaultQuery("cursor", "-1,-1") //游标，缺省情况下取(-1,-1)，即从排好序的列表的第一个开始取size个记录
 
-	cursor, err := tool.ParseCursor(cu)
-	if err != nil {
+	cursor, err := tool.ParseCursor(c.DefaultQuery("cursor", "-1,-1"))
+	if err != nil || len(cursor) < 2 {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
 		return
 	}

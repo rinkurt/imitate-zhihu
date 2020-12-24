@@ -22,21 +22,18 @@ func RouteQuestionController(engine *gin.Engine) {
 }
 
 func GetQuestions(c *gin.Context) {
-	cursor := c.DefaultQuery("cursor", "-1,-1")
-	arrCursor, err := tool.ParseCursor(cursor)
-	if err != nil || len(arrCursor) < 2 {
+	cursor, err := tool.ParseCursor(c.DefaultQuery("cursor", "-1,-1"))
+	if err != nil || len(cursor) < 2 {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
 		return
 	}
-	cur := arrCursor[0]
-	cid := arrCursor[1]
 	size, err := strconv.Atoi(c.Query("size"))
 	if err != nil {
 		size = 10
 	}
 	search := c.Query("search")
 	orderBy := c.DefaultQuery("orderby", enum.ByTime)
-	q, res := service.GetQuestions(search, cur, cid, size, orderBy)
+	q, res := service.GetQuestions(search, cursor, size, orderBy)
 	nextCursor := ""
 	if len(q) > 0 {
 		tail := q[len(q)-1]

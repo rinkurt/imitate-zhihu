@@ -32,7 +32,7 @@ type QuestionShortModel struct {
 	UpdateAt    int64
 }
 
-func SelectQuestions(search string, cursor int64, cid int64, limit int, orderBy string) ([]QuestionShortModel, result.Result) {
+func SelectQuestions(search string, cursor []int64, limit int, orderBy string) ([]QuestionShortModel, result.Result) {
 	db := tool.GetDatabase()
 	var questions []QuestionShortModel
 	if search != "" {
@@ -40,13 +40,13 @@ func SelectQuestions(search string, cursor int64, cid int64, limit int, orderBy 
 	}
 	switch orderBy {
 	case enum.ByHeat:
-		if cid != -1 {
-			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor, cid, cursor)
+		if cursor[1] != -1 {
+			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
 		}
 		db = db.Order("view_count desc")
 	case enum.ByTime:
-		if cid != -1 {
-			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor, cid, cursor)
+		if cursor[1] != -1 {
+			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
 		}
 		db = db.Order("update_at desc")
 	}
