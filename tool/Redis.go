@@ -8,7 +8,7 @@ import (
 
 var Rdb *redis.Client
 
-func initRedis() {
+func InitRedis() {
 	if Rdb != nil {
 		return
 	}

@@ -14,6 +14,14 @@ import (
 )
 
 
+func init() {
+	tool.InitConfig("./config")
+	tool.InitLogger()
+	tool.InitDatabase("zhihu")
+	tool.InitRedis()
+}
+
+
 func main() {
 	if pid := syscall.Getpid(); pid != 1 {
 		ioutil.WriteFile("server.pid", []byte(strconv.Itoa(pid)), 0777)

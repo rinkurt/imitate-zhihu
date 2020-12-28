@@ -1,4 +1,4 @@
-create table zhihu.questions
+create table questions
 (
     id            bigint auto_increment
         primary key,
@@ -15,5 +15,5 @@ create table zhihu.questions
 );
 
 create index questions_creator_id_index
-    on zhihu.questions (creator_id);
+    on questions (creator_id);
 

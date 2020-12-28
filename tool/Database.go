@@ -12,13 +12,13 @@ func GetDatabase() *gorm.DB {
 	return db
 }
 
-func initDatabase() {
+func InitDatabase(database string) {
 	if db != nil {
 		return
 	}
 
 	dsn := Cfg.DBUsername + ":" + Cfg.DBPassword +
-		"@tcp(" + Cfg.DBAddr + ")/zhihu?charset=utf8mb4&parseTime=True&loc=Local"
+		"@tcp(" + Cfg.DBAddr + ")/" + database + "?charset=utf8mb4&parseTime=True&loc=Local"
 
 	var err error
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{

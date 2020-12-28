@@ -1,4 +1,4 @@
-create table zhihu.users
+create table users
 (
     id        bigint auto_increment
         primary key,

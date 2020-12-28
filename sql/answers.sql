@@ -1,4 +1,4 @@
-create table zhihu.answers
+create table answers
 (
     id             bigint auto_increment
         primary key,
@@ -14,8 +14,8 @@ create table zhihu.answers
 );
 
 create index answers_creator_id_index
-    on zhihu.answers (creator_id);
+    on answers (creator_id);
 
 create index answers_question_id_index
-    on zhihu.answers (question_id);
+    on answers (question_id);
 

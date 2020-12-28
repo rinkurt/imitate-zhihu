@@ -1,4 +1,4 @@
-create table zhihu.profiles
+create table profiles
 (
     id          bigint auto_increment
         primary key,

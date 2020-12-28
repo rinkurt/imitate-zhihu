@@ -13,7 +13,7 @@ import (
 var Logger *logrus.Logger
 var Formatter logrus.Formatter
 
-func initLogger() {
+func InitLogger() {
 	if Logger != nil {
 		return
 	}

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"os"
+	"path"
 )
 
 // 添加配置方法：
@@ -26,15 +27,15 @@ type Config struct {
 
 var Cfg *Config
 
-func initConfig() {
+func InitConfig(configPath string) {
 	if Cfg != nil {
 		return
 	}
 	var err error
 	if os.Getenv("IZ_ENV_MODE") == "release" {
-		err = ParseConfig("./config/release.json")
+		err = ParseConfig(path.Join(configPath, "release.json"))
 	} else {
-		err = ParseConfig("./config/debug.json")
+		err = ParseConfig(path.Join(configPath, "debug.json"))
 	}
 	if err != nil {
 		panic(err.Error())
