@@ -7,7 +7,7 @@ go build
 
 运行：
 ```
-go run main.go
+./imitate-zhihu
 ```
 
 服务器环境变量：
@@ -18,3 +18,5 @@ IZ_DB_USERNAME=xxx      //数据库用户名
 IZ_DB_PASSWORD=xxx      //数据库密码
 IZ_JWT_SECRET=abcd1234  //JWT Secret（任意字符串）
 ```
+
+运行前先导入 sql 中的结构，导入到 zhihu 用于运行，导入到 zhihu_test 用于单元测试。
