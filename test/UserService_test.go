@@ -2,15 +2,18 @@ package test
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/service"
 	"testing"
 )
 
+var email = "e4yb596h@meantinc.com"
+var id int64
+
 func TestVerifyEmail(t *testing.T) {
-	testEmail := "1812754991@qq.com"
-	verifyCode, res := service.VerifyEmail(testEmail)
+	verifyCode, res := service.VerifyEmail(email)
 	if res.NotOK(){
 		t.Error(res.Message)
 	}
@@ -18,7 +21,8 @@ func TestVerifyEmail(t *testing.T) {
 }
 
 func TestUserRegister(t *testing.T) {
-	email := "1812754991@qq.com"
+	_ = repository.DeleteUserByEmail(email)
+
 	vrfCode, res := service.VerifyEmail(email)
 	if res.NotOK() {
 		t.Error(res.Message)
@@ -37,24 +41,24 @@ func TestUserRegister(t *testing.T) {
 	if res.NotOK() {
 		t.Error(res.Message)
 	}
-	res = repository.DeleteUserByEmail(email)
 }
 
 func TestUserLogin(t *testing.T) {
 	testUser := dto.UserLoginDto{
-		Email:    "1812754991@qq.com",
+		Email:    email,
 		Password: "123456",
 	}
 	res := service.UserLogin(&testUser)
 	if res.NotOK() {
 		t.Error(res.Message)
 	}
+	dat := res.Data.(gin.H)
+	id = dat["id"].(int64)
 }
 
 func TestGetUserProfileByUid(t *testing.T)  {
 	var resProfile *dto.UserProfileDto
-	testID := int64(5)
-	resProfile,res := service.GetUserProfileByUid(testID)
+	resProfile,res := service.GetUserProfileByUid(id)
 	if res.NotOK() {
 		t.Error(res.Message)
 	}
