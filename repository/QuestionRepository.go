@@ -90,6 +90,7 @@ func AddQuestionViewCount(id int64, count int) result.Result {
 
 func UpdateQuestion(question *Question) result.Result {
 	db := tool.GetDatabase()
+	question.UpdateAt = time.Now().Unix()
 	db = db.Save(question)
 	if db.RowsAffected == 0 {
 		return result.UpdateQuestionErr

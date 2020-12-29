@@ -36,6 +36,8 @@ func main() {
 		engine.Use(middleware.LoggerToFile)
 	}
 
+	engine.Use(middleware.CORSMiddleware)
+
 	controller.RouteQuestionController(engine)
 	controller.RouteUserController(engine)
 	controller.RouteAnswerController(engine)

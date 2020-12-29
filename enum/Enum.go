@@ -20,3 +20,9 @@ const (
 	DownvoteCount = "DownvoteCount"
 )
 
+const (
+	StateNoVote = 0
+	StateUpVote = 1
+	StateDownVote = 2
+)
+
