@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-
 func If(cond bool, t interface{}, f interface{}) interface{} {
 	if cond {
 		return t
@@ -35,6 +34,9 @@ func StrToInt64(s string) (int64, error) {
 }
 
 func ParseCursor(cursor string) ([]int64, error) {
+	if cursor == "" {
+		return []int64{-1, -1}, nil
+	}
 	cursors := strings.Split(cursor, ",")
 	ret := make([]int64, len(cursors))
 	for i, v := range cursors {
