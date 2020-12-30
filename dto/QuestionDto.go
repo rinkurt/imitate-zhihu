@@ -3,10 +3,10 @@ package dto
 type QuestionShortDto struct {
 	Id          int64           `json:"id"`
 	Title       string          `json:"title"`
+	Content     string          `json:"content"`
 	AnswerCount int             `json:"answer_count"`
 	ViewCount   int             `json:"view_count"`
 	UpdateAt    int64           `json:"update_at"`
-	BestAnswer  *AnswerShortDto `json:"best_answer"`
 }
 
 type QuestionDetailDto struct {

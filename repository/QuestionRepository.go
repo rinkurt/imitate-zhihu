@@ -25,6 +25,7 @@ type Question struct {
 type QuestionShortModel struct {
 	Id          int64 `gorm:"primaryKey"`
 	Title       string
+	Content     string
 	CreatorId   int64
 	AnswerCount int
 	ViewCount   int

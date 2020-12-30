@@ -33,10 +33,6 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	}
 
 	cache.IncrViewCount(enum.Question, id, enum.ViewCount, 1)
-	//res = repository.AddQuestionViewCount(id, 1)
-	//if res.NotOK() {
-	//	tool.Logger.Error("Failed in Adding View Count")
-	//}
 
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)
