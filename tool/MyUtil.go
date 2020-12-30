@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"github.com/thinkeridea/go-extend/exunicode/exutf8"
 	"strconv"
 	"strings"
 )
@@ -47,4 +48,10 @@ func ParseCursor(cursor string) ([]int64, error) {
 		ret[i] = el
 	}
 	return ret, nil
+}
+
+func CutContent(content *string, length int) {
+	if len(*content) > length {
+		*content = exutf8.RuneSubString(*content, 0, length) + "..."
+	}
 }

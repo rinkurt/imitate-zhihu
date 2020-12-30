@@ -21,6 +21,7 @@ func GetQuestions(search string, cursor []int64, size int, orderBy string) ([]dt
 	for _, question := range questions {
 		questionDto := dto.QuestionShortDto{}
 		model.Copy(&questionDto, &question)
+		tool.CutContent(&questionDto.Content, 80)
 		questionDtos = append(questionDtos, questionDto)
 	}
 	return questionDtos, result.Ok
