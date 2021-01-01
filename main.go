@@ -41,6 +41,7 @@ func main() {
 	controller.RouteQuestionController(engine)
 	controller.RouteUserController(engine)
 	controller.RouteAnswerController(engine)
+	controller.RouteVoteController(engine)
 
 	err := engine.Run(":" + tool.Cfg.Port)
 	if err != nil {

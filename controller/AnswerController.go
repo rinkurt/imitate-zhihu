@@ -13,13 +13,12 @@ import (
 
 func RouteAnswerController(engine *gin.Engine) {
 	group := engine.Group("/answer")
-	{
-		group.GET("", GetAnswers)
-		group.GET("/:answer_id", GetAnswerById)
-		group.POST("", middleware.JWTAuthMiddleware, NewAnswer)
-		group.PUT("/:answer_id", middleware.JWTAuthMiddleware, UpdateAnswerById)
-		group.DELETE("/:answer_id", middleware.JWTAuthMiddleware, DeleteAnswerById)
-	}
+
+	group.GET("", GetAnswers)
+	group.GET("/:answer_id", GetAnswerById)
+	group.POST("", middleware.JWTAuthMiddleware, NewAnswer)
+	group.PUT("/:answer_id", middleware.JWTAuthMiddleware, UpdateAnswerById)
+	group.DELETE("/:answer_id", middleware.JWTAuthMiddleware, DeleteAnswerById)
 }
 
 func NewAnswer(c *gin.Context) {

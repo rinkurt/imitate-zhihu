@@ -1,9 +1,21 @@
 package repository
 
 import (
-	"imitate-zhihu/result"
+	"imitate-zhihu/tool"
 )
 
-func UpvoteAnswer(answerId int64, userId int64) result.Result {
-	return result.Ok
+type AnswerVote struct {
+	Id       int64 `gorm:"primaryKey"`
+	IsUpvote bool
+	AnswerId int64
+	UserId   int64
+	UpdateAt int64
+}
+
+
+func SelectVotesByUid(uid int64) []AnswerVote {
+	db := tool.GetDatabase()
+	var votes []AnswerVote
+	db = db.Where(&AnswerVote{UserId: uid}).Find(&votes)
+	return votes
 }

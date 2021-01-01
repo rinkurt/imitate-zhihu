@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"github.com/pkg/errors"
 	"github.com/thinkeridea/go-extend/exunicode/exutf8"
 	"strconv"
 	"strings"
@@ -48,6 +49,25 @@ func ParseCursor(cursor string) ([]int64, error) {
 		ret[i] = el
 	}
 	return ret, nil
+}
+
+func ParseVoteVal(val string) (int, int64, error) {
+	split := strings.Split(val, ":")
+	if len(split) < 2 {
+		return 0, 0, errors.New("Empty val")
+	}
+
+	status, err := StrToInt(split[0])
+	if err != nil {
+		return 0, 0, err
+	}
+
+	time, err := StrToInt64(split[1])
+	if err != nil {
+		return 0, 0, err
+	}
+
+	return status, time, nil
 }
 
 func CutContent(content *string, length int) {

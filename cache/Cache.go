@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const ExpireTime = time.Hour * 3
+const ExpireTime = time.Hour * 6
 
 func KeyVrfCode(email string) string {
 	return "VrfCode:" + email
@@ -26,16 +26,6 @@ func KeyUser(uid int64) string {
 // Write-cache for counts
 func KeyWrite(typ int, id int64) string {
 	return "Write:" + tool.IntToStr(typ) + ":" + tool.Int64ToStr(id)
-}
-
-// Read-cache for vote user lists
-func KeyReadVote(typ int, id int64) string {
-	return "ReadVote:" + tool.IntToStr(typ) + ":" + tool.Int64ToStr(id)
-}
-
-// Write-cache for vote user lists
-func KeyWriteVote(typ int, id int64) string {
-	return "WriteVote:" + tool.IntToStr(typ) + ":" + tool.Int64ToStr(id)
 }
 
 func Get(key string, val interface{}) bool {
