@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"imitate-zhihu/enum"
 	"imitate-zhihu/repository"
+	"imitate-zhihu/result"
 	"imitate-zhihu/tool"
 	"strings"
 	"time"
@@ -66,11 +67,65 @@ func Set(key string, val interface{}) {
 // typ: Question, Comment...
 // countType: ViewCount, UpvoteCount...
 // types definition see package enum
-func IncrViewCount(typ int, id int64, countType string, count int) {
+func IncrCount(typ int, id int64, countType string, count int) result.Result {
 	_, err := tool.Rdb.HIncrBy(context.Background(), KeyWrite(typ, id), countType, int64(count)).Result()
 	if err != nil {
 		tool.Logger.Error(err)
+		return result.RedisErr.WithError(err)
 	}
+	return result.Ok
+}
+
+func ReadQuestionCounts(question *repository.Question) result.Result {
+	counts, err := tool.Rdb.HGetAll(context.Background(), KeyWrite(enum.Question, question.Id)).Result()
+	if err != nil {
+		tool.Logger.Error(err)
+		return result.RedisErr.WithError(err)
+	}
+	for k, v := range counts {
+		c, err := tool.StrToInt(v)
+		if err != nil {
+			tool.Logger.Error("Cache value not integer!")
+			continue
+		}
+		switch k {
+		case enum.ViewCount:
+			question.ViewCount += c
+		case enum.AnswerCount:
+			question.AnswerCount += c
+		case enum.UpvoteCount:
+			question.LikeCount += c
+		case enum.CommentCount:
+			question.CommentCount += c
+		}
+	}
+	return result.Ok
+}
+
+func ReadAnswerCounts(answer *repository.Answer) result.Result {
+	counts, err := tool.Rdb.HGetAll(context.Background(), KeyWrite(enum.Answer, answer.Id)).Result()
+	if err != nil {
+		tool.Logger.Error(err)
+		return result.RedisErr.WithError(err)
+	}
+	for k, v := range counts {
+		c, err := tool.StrToInt(v)
+		if err != nil {
+			tool.Logger.Error("Cache value not integer!")
+			continue
+		}
+		switch k {
+		case enum.ViewCount:
+			answer.ViewCount += c
+		case enum.UpvoteCount:
+			answer.UpvoteCount += c
+		case enum.DownvoteCount:
+			answer.DownvoteCount += c
+		case enum.CommentCount:
+			answer.CommentCount += c
+		}
+	}
+	return result.Ok
 }
 
 func SyncCount() {

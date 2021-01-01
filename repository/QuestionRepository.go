@@ -33,9 +33,9 @@ type QuestionShortModel struct {
 	UpdateAt    int64
 }
 
-func SelectQuestions(search string, cursor []int64, limit int, orderBy string) ([]QuestionShortModel, result.Result) {
+func SelectQuestions(search string, cursor []int64, limit int, orderBy string) ([]Question, result.Result) {
 	db := tool.GetDatabase()
-	var questions []QuestionShortModel
+	var questions []Question
 	if search != "" {
 		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%"+search+"%", search)
 	}

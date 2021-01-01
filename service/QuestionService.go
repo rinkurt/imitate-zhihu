@@ -1,7 +1,6 @@
 package service
 
 import (
-	"context"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/cache"
 	"imitate-zhihu/dto"
@@ -19,8 +18,14 @@ func GetQuestions(search string, cursor []int64, size int, orderBy string) ([]dt
 	}
 	var questionDtos []dto.QuestionShortDto
 	for _, question := range questions {
+		res = cache.ReadQuestionCounts(&question)
+		if res.NotOK() {
+			return nil, res
+		}
+
 		questionDto := dto.QuestionShortDto{}
 		model.Copy(&questionDto, &question)
+
 		tool.CutContent(&questionDto.Content, 80)
 		questionDtos = append(questionDtos, questionDto)
 	}
@@ -33,31 +38,18 @@ func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 		return nil, res
 	}
 
-	cache.IncrViewCount(enum.Question, id, enum.ViewCount, 1)
+	res = cache.IncrCount(enum.Question, id, enum.ViewCount, 1)
+	if res.NotOK() {
+		return nil, res
+	}
+
+	res = cache.ReadQuestionCounts(question)
+	if res.NotOK() {
+		return nil, res
+	}
 
 	questionDto := &dto.QuestionDetailDto{}
 	model.Copy(questionDto, question)
-
-	// Read counts from cache
-	counts, err := tool.Rdb.HGetAll(context.Background(), cache.KeyWrite(enum.Question, id)).Result()
-	if err != nil {
-		tool.Logger.Error(err)
-	}
-	for k, v := range counts {
-		c, err := tool.StrToInt(v)
-		if err != nil {
-			tool.Logger.Error("Cache value not integer!")
-			break
-		}
-		switch k {
-		case enum.ViewCount:
-			questionDto.ViewCount += c
-		case enum.UpvoteCount:
-			questionDto.LikeCount += c
-		case enum.CommentCount:
-			questionDto.CommentCount += c
-		}
-	}
 
 	user, res := GetUserProfileByUid(question.CreatorId)
 	if res.NotOK() {

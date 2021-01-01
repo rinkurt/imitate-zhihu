@@ -1,14 +1,12 @@
 package service
 
 import (
-	"context"
 	"gopkg.in/jeevatkm/go-model.v1"
 	"imitate-zhihu/cache"
 	"imitate-zhihu/dto"
 	"imitate-zhihu/enum"
 	"imitate-zhihu/repository"
 	"imitate-zhihu/result"
-	"imitate-zhihu/tool"
 )
 
 func NewAnswer(userId int64, answerCreateDto *dto.AnswerCreateDto) result.Result {
@@ -19,6 +17,13 @@ func NewAnswer(userId int64, answerCreateDto *dto.AnswerCreateDto) result.Result
 	if res.NotOK() {
 		return res
 	}
+
+	// incr answer count
+	res = cache.IncrCount(enum.Question, answerCreateDto.QuestionId, enum.AnswerCount, 1)
+	if res.NotOK() {
+		return res
+	}
+
 	answerDetail := &dto.AnswerDetailDto{}
 	model.Copy(answerDetail, answer)
 	user, _ := GetUserProfileByUid(userId)
@@ -33,30 +38,17 @@ func GetAnswerById(id int64) (*dto.AnswerDetailDto, result.Result) {
 		return nil, res
 	}
 
-	cache.IncrViewCount(enum.Answer, id, enum.ViewCount, 1)
+	res = cache.IncrCount(enum.Answer, id, enum.ViewCount, 1)
+	if res.NotOK() {
+		return nil, res
+	}
+
+	res = cache.ReadAnswerCounts(answer)
+	if res.NotOK() {
+		return nil, res
+	}
 
 	model.Copy(answerDetail, answer)
-
-	// Read counts from cache
-	counts, err := tool.Rdb.HGetAll(context.Background(), cache.KeyWrite(enum.Answer, id)).Result()
-	if err != nil {
-		tool.Logger.Error(err)
-	}
-	for k, v := range counts {
-		c, err := tool.StrToInt(v)
-		if err != nil {
-			tool.Logger.Error("Cache value not integer!")
-			break
-		}
-		switch k {
-		case enum.ViewCount:
-			answerDetail.ViewCount += c
-		case enum.UpvoteCount:
-			answerDetail.UpvoteCount += c
-		case enum.CommentCount:
-			answerDetail.CommentCount += c
-		}
-	}
 
 	user, res := GetUserProfileByUid(answer.CreatorId)
 	if res.NotOK() {
@@ -97,6 +89,12 @@ func DeleteAnswerById(userId int64, answerId int64) result.Result {
 		return result.UnauthorizedOpr
 	}
 	res = repository.DeleteAnswerById(answerId)
+	if res.NotOK() {
+		return res
+	}
+
+	// decr answer count
+	res = cache.IncrCount(enum.Question, answer.QuestionId, enum.AnswerCount, -1)
 	return res
 }
 
@@ -107,6 +105,11 @@ func GetAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]d
 	}
 	answers := make([]dto.AnswerDetailDto, len(ans))
 	for i := 0; i < len(ans); i++ {
+		res = cache.ReadAnswerCounts(&ans[i])
+		if res.NotOK() {
+			return nil, res
+		}
+
 		model.Copy(&answers[i], &ans[i])
 		userProfile, res := GetUserProfileByUid(ans[i].CreatorId)
 		if res.NotOK() {
