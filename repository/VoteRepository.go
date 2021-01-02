@@ -19,3 +19,19 @@ func SelectVotesByUid(uid int64) []AnswerVote {
 	db = db.Where(&AnswerVote{UserId: uid}).Find(&votes)
 	return votes
 }
+
+
+func CreateVotes(votes []AnswerVote) {
+	db := tool.GetDatabase()
+	db.Create(votes)
+}
+
+
+func DeleteVotes(uid int64, aids []int64) {
+	db := tool.GetDatabase()
+	db = db.Where(map[string]interface{}{
+		"user_id": uid,
+		"answer_id": aids,
+	})
+	db = db.Delete(&AnswerVote{})
+}

@@ -57,17 +57,17 @@ func ParseVoteVal(val string) (int, int64, error) {
 		return 0, 0, errors.New("Empty val")
 	}
 
-	status, err := StrToInt(split[0])
+	s, err := StrToInt(split[0])
 	if err != nil {
 		return 0, 0, err
 	}
 
-	time, err := StrToInt64(split[1])
+	t, err := StrToInt64(split[1])
 	if err != nil {
 		return 0, 0, err
 	}
 
-	return status, time, nil
+	return s, t, nil
 }
 
 func CutContent(content *string, length int) {
