@@ -156,7 +156,7 @@ func GetAnswers(c *gin.Context) {
 		return
 	}
 
-	orderBy := c.DefaultQuery("orderby", enum.ByTime) //获取排序方式，默认为时间戳降序
+	orderBy := c.DefaultQuery("orderby", enum.ByUpvote) //获取排序方式，默认为点赞数
 	answers, res := service.GetAnswers(questionId, userId, cursor, size, orderBy)
 	if answers == nil {
 		answers = []dto.AnswerDetailDto{}
