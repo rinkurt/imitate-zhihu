@@ -111,10 +111,7 @@ func GetAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]d
 		}
 
 		model.Copy(&answers[i], &ans[i])
-		userProfile, res := GetUserProfileByUid(ans[i].CreatorId)
-		if res.NotOK() {
-			userProfile = dto.AnonymousUser()
-		}
+		userProfile, _ := GetUserProfileByUid(ans[i].CreatorId)
 		answers[i].Creator = userProfile
 	}
 	return answers, result.Ok

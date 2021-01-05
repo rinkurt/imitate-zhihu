@@ -36,14 +36,8 @@ func GetHotQuestions(cursor int, size int) ([]dto.HotQuestionDto, result.Result)
 		answer, _ := repository.GetBestAnswerByQues(id)
 		if answer != nil {
 			model.Copy(hotQues.Answer, answer)
-
-			user, _ := repository.SelectProfileByUserId(answer.CreatorId)
-			if user == nil || user.Id == 0 {
-				hotQues.Answer.Creator = dto.AnonymousUser()
-			} else {
-				model.Copy(hotQues.Answer.Creator, user)
-				hotQues.Answer.Creator.Id = user.UserId
-			}
+			profile, _ := GetUserProfileByUid(answer.CreatorId)
+			hotQues.Answer.Creator = profile
 		}
 
 		ques = append(ques, hotQues)

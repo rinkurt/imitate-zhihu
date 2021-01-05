@@ -163,6 +163,8 @@ func SyncCount() {
 		}
 		tool.Rdb.Del(context.Background(), key)
 	}
+
+	SyncHotQuestions()
 }
 
 
