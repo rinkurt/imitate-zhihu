@@ -24,13 +24,18 @@ type UserProfileDto struct {
 	AvatarUrl   string `json:"avatar_url"`
 }
 
+type LoginResponseDto struct {
+	Id    int64  `json:"id"`
+	Token string `json:"token"`
+}
+
 var anonymousUser *UserProfileDto = nil
 
 func AnonymousUser() *UserProfileDto {
 	if anonymousUser == nil {
 		anonymousUser = &UserProfileDto{
 			Id:   0,
-			Name: "Anonymous",
+			Name: "未知用户",
 		}
 	}
 	return anonymousUser

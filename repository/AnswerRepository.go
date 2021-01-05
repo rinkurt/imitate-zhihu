@@ -10,16 +10,21 @@ import (
 )
 
 type Answer struct {
-	Id           	int64 `gorm:"primaryKey"`
-	Content      	string
-	ViewCount    	int
-	UpvoteCount  	int
-	DownvoteCount  	int
-	CommentCount 	int
-	CreateAt     	int64
-	UpdateAt     	int64
-	CreatorId    	int64
-	QuestionId    	int64
+	Id            int64 `gorm:"primaryKey"`
+	Content       string
+	ViewCount     int
+	UpvoteCount   int
+	DownvoteCount int
+	CommentCount  int
+	CreateAt      int64
+	UpdateAt      int64
+	CreatorId     int64
+	QuestionId    int64
+}
+
+type HotAnswer struct {
+	QuestionId int64
+	Heat       int
 }
 
 func CreateAnswer(answer *Answer) result.Result {
@@ -33,37 +38,37 @@ func CreateAnswer(answer *Answer) result.Result {
 	return result.Ok
 }
 
-func SelectAnswerById(answerId int64) (*Answer,result.Result)  {
+func SelectAnswerById(answerId int64) (*Answer, result.Result) {
 	db := tool.GetDatabase()
 	var ans Answer
-	err := db.First(&ans,answerId).Error
+	err := db.First(&ans, answerId).Error
 	if err != nil {
-		return nil,result.AnswerNotFoundErr
+		return nil, result.AnswerNotFoundErr
 	}
 	return &ans, result.Ok
 }
 
-func UpdateAnswer(answerId int64, answer *dto.AnswerCreateDto) (*Answer,result.Result) {
+func UpdateAnswer(answerId int64, answer *dto.AnswerCreateDto) (*Answer, result.Result) {
 	db := tool.GetDatabase()
 	var ans Answer
-	err := db.First(&ans,answerId).Error
-	if err != nil {//查找失败
+	err := db.First(&ans, answerId).Error
+	if err != nil { //查找失败
 		return nil, result.UpdateAnswerErr
 	}
 	err = db.Model(&ans).Updates(map[string]interface{}{
-		"content":answer.Content,
-		"update_at":time.Now().Unix(),
+		"content":   answer.Content,
+		"update_at": time.Now().Unix(),
 	}).Error
-	if err != nil {//更新失败
-		return nil,result.UpdateAnswerErr
+	if err != nil { //更新失败
+		return nil, result.UpdateAnswerErr
 	}
-	return &ans,result.Ok
+	return &ans, result.Ok
 }
 
-func DeleteAnswerById(answerId int64) result.Result  {
+func DeleteAnswerById(answerId int64) result.Result {
 	var answer Answer
 	db := tool.GetDatabase()
-	err := db.First(&answer,answerId).Error
+	err := db.First(&answer, answerId).Error
 	if err != nil {
 		return result.AnswerNotFoundErr
 	}
@@ -77,7 +82,7 @@ func DeleteAnswerById(answerId int64) result.Result  {
 func SelectAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]Answer, result.Result) {
 	var answers []Answer
 	db := tool.GetDatabase()
-	db = db.Where("question_id = ?",questionId)
+	db = db.Where("question_id = ?", questionId)
 	switch orderBy {
 	case enum.ByTime:
 		if cursor[1] != -1 {
@@ -105,13 +110,34 @@ func SelectAnswers(questionId int64, cursor []int64, size int, orderBy string) (
 func UpdateAnswerCounts(answer *Answer) result.Result {
 	db := tool.GetDatabase()
 	db = db.Model(answer).Updates(map[string]interface{}{
-		"view_count": gorm.Expr("view_count + ?", answer.ViewCount),
-		"upvote_count": gorm.Expr("upvote_count + ?", answer.UpvoteCount),
+		"view_count":     gorm.Expr("view_count + ?", answer.ViewCount),
+		"upvote_count":   gorm.Expr("upvote_count + ?", answer.UpvoteCount),
 		"downvote_count": gorm.Expr("downvote_count + ?", answer.DownvoteCount),
-		"comment_count": gorm.Expr("comment_count + ?", answer.CommentCount),
+		"comment_count":  gorm.Expr("comment_count + ?", answer.CommentCount),
 	})
 	if db.RowsAffected == 0 {
 		return result.UpdateAnswerErr
 	}
 	return result.Ok
+}
+
+func GetAnswerHeatsGroupByQuestion() ([]HotAnswer, result.Result) {
+	db := tool.GetDatabase()
+	var hots []HotAnswer
+	db = db.Model(Answer{}).Select("question_id, upvote_count * 2 as heat").
+		Group("question_id").Find(&hots)
+	if db.Error != nil {
+		return nil, result.HandleServerErr(db.Error)
+	}
+	return hots, result.Ok
+}
+
+func GetBestAnswerByQues(qid int64) (*Answer, result.Result) {
+	db := tool.GetDatabase()
+	answer := &Answer{}
+	db.Where(&Answer{QuestionId: qid}).Order("upvote_count desc").Take(answer)
+	if db.Error != nil {
+		return nil, result.HandleServerErr(db.Error)
+	}
+	return answer, result.Ok
 }

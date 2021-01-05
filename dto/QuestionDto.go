@@ -1,12 +1,12 @@
 package dto
 
 type QuestionShortDto struct {
-	Id          int64           `json:"id"`
-	Title       string          `json:"title"`
-	Content     string          `json:"content"`
-	AnswerCount int             `json:"answer_count"`
-	ViewCount   int             `json:"view_count"`
-	UpdateAt    int64           `json:"update_at"`
+	Id          int64  `json:"id"`
+	Title       string `json:"title"`
+	Content     string `json:"content"`
+	AnswerCount int    `json:"answer_count"`
+	ViewCount   int    `json:"view_count"`
+	UpdateAt    int64  `json:"update_at"`
 }
 
 type QuestionDetailDto struct {
@@ -27,4 +27,15 @@ type QuestionCreateDto struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
 	Tag     string `json:"tag"`
+}
+
+type HotQuestionDto struct {
+	Id          int64           `json:"id"`
+	Title       string          `json:"title"`
+	Content     string          `json:"content"`
+	Heat        int             `json:"heat"`
+	AnswerCount int             `json:"answer_count"`
+	ViewCount   int             `json:"view_count"`
+	UpdateAt    int64           `json:"update_at"`
+	Answer      *AnswerShortDto `json:"answer"`
 }

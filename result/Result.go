@@ -19,7 +19,7 @@ type Result struct {
 }
 
 func (res Result) Error() string {
-	return strconv.Itoa(res.Code) + ":" + res.Message
+	return strconv.Itoa(res.Code) + ": " + res.Message
 }
 
 func (res Result) IsOK() bool {
@@ -34,22 +34,18 @@ func (res Result) IsServerErr() bool {
 	return res.Code == 500
 }
 
-// Effective only when the result is OK.
 func (res Result) WithData(data interface{}) Result {
-	if res.NotOK() {
-		return res
-	}
 	res.Data = data
 	return res
 }
 
 func (res Result) WithError(err error) Result {
-	res.Data = err.Error()
+	res.Message += ": " + err.Error()
 	return res
 }
 
 func (res Result) WithErrorStr(str string) Result {
-	res.Data = str
+	res.Message += ": " + str
 	return res
 }
 

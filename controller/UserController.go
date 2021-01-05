@@ -20,24 +20,32 @@ func RouteUserController(engine *gin.Engine) {
 
 func UserLogin(c *gin.Context) {
 	userDto := dto.UserLoginDto{}
+	resp := &dto.LoginResponseDto{}
 	err := c.ShouldBindJSON(&userDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
 	res := service.UserLogin(&userDto)
+	if res.NotOK() {
+		res = res.WithData(resp)
+	}
 	c.JSON(http.StatusOK, res)
 }
 
 
 func UserRegister(c *gin.Context) {
 	registerDto := dto.UserRegisterDto{}
+	resp := &dto.LoginResponseDto{}
 	err := c.ShouldBindJSON(&registerDto)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
 	res := service.UserRegister(&registerDto)
+	if res.NotOK() {
+		res = res.WithData(resp)
+	}
 	if res.IsServerErr() {
 		c.JSON(http.StatusInternalServerError, res)
 		return
@@ -53,6 +61,9 @@ func GetUserProfile(c *gin.Context) {
 		return
 	}
 	profile, res := service.GetUserProfileByUid(userId)
+	if res.NotOK() {
+		res = res.WithData(dto.AnonymousUser())
+	}
 	c.JSON(http.StatusOK, res.WithData(profile))
 }
 

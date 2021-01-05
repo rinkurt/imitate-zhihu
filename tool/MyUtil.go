@@ -7,13 +7,6 @@ import (
 	"strings"
 )
 
-func If(cond bool, t interface{}, f interface{}) interface{} {
-	if cond {
-		return t
-	}
-	return f
-}
-
 func IntToStr(i int) string {
 	return strconv.Itoa(i)
 }
@@ -71,7 +64,9 @@ func ParseVoteVal(val string) (int, int64, error) {
 }
 
 func CutContent(content *string, length int) {
-	if len(*content) > length {
-		*content = exutf8.RuneSubString(*content, 0, length) + "..."
+	oldLength := len(*content)
+	*content = exutf8.RuneSubString(*content, 0, length)
+	if len(*content) < oldLength {
+		 *content += "..."
 	}
 }

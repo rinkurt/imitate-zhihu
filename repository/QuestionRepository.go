@@ -33,6 +33,11 @@ type QuestionShortModel struct {
 	UpdateAt    int64
 }
 
+type Hot struct {
+	Id   int64 `gorm:"primaryKey"`
+	Heat int
+}
+
 func SelectQuestions(search string, cursor []int64, limit int, orderBy string) ([]Question, result.Result) {
 	db := tool.GetDatabase()
 	var questions []Question
@@ -102,10 +107,10 @@ func UpdateQuestion(question *Question) result.Result {
 func UpdateQuestionCounts(question *Question) result.Result {
 	db := tool.GetDatabase()
 	db = db.Model(question).Updates(map[string]interface{}{
-		"answer_count": gorm.Expr("answer_count + ?", question.AnswerCount),
+		"answer_count":  gorm.Expr("answer_count + ?", question.AnswerCount),
 		"comment_count": gorm.Expr("comment_count + ?", question.CommentCount),
-		"view_count": gorm.Expr("view_count + ?", question.ViewCount),
-		"like_count": gorm.Expr("like_count + ?", question.LikeCount),
+		"view_count":    gorm.Expr("view_count + ?", question.ViewCount),
+		"like_count":    gorm.Expr("like_count + ?", question.LikeCount),
 	})
 	if db.RowsAffected == 0 {
 		return result.UpdateQuestionErr
@@ -120,4 +125,14 @@ func DeleteQuestionById(id int64) result.Result {
 		return result.DeleteQuestionErr
 	}
 	return result.Ok
+}
+
+func GetQuestionHeats() ([]Hot, result.Result) {
+	db := tool.GetDatabase()
+	var hots []Hot
+	db = db.Model(&Question{}).Select("id, (view_count + answer_count * 5) as heat").Find(&hots)
+	if db.Error != nil {
+		return nil, result.HandleServerErr(db.Error)
+	}
+	return hots, result.Ok
 }
