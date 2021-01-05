@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"imitate-zhihu/dto"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"imitate-zhihu/tool"
@@ -24,9 +25,8 @@ func GetHotQuestions(c *gin.Context) {
 		size = 10
 	}
 	q, res := service.GetHotQuestions(cursor, size)
-	if res.NotOK() {
-		c.JSON(http.StatusOK, res)
-		return
+	if q == nil {
+		q = []dto.HotQuestionDto{}
 	}
 	c.JSON(http.StatusOK, res.WithData(gin.H{
 		"next_cursor": cursor + size,

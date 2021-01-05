@@ -21,6 +21,8 @@ func RouteAnswerController(engine *gin.Engine) {
 	group.DELETE("/:answer_id", middleware.JWTAuthMiddleware, DeleteAnswerById)
 }
 
+var emptyAnswer = &dto.AnswerDetailDto{Creator: &dto.UserProfileDto{}}
+
 func NewAnswer(c *gin.Context) {
 	userId, err := middleware.GetUserId(c)
 	if err != nil {
@@ -39,6 +41,9 @@ func NewAnswer(c *gin.Context) {
 		return
 	}
 	res := service.NewAnswer(userId, &answerDto)
+	if res.NotOK() {
+		res = res.WithData(emptyAnswer)
+	}
 	c.JSON(http.StatusOK, res)
 }
 
@@ -50,6 +55,9 @@ func GetAnswerById(c *gin.Context) {
 		return
 	}
 	answerDetail, res := service.GetAnswerById(answerId)
+	if res.NotOK() {
+		answerDetail = emptyAnswer
+	}
 	c.JSON(http.StatusOK, res.WithData(answerDetail))
 }
 
@@ -72,6 +80,9 @@ func UpdateAnswerById(c *gin.Context) {
 		return
 	}
 	answerDetail, res := service.UpdateAnswerById(userId, answerId, &answer)
+	if res.NotOK() {
+		answerDetail = emptyAnswer
+	}
 	c.JSON(http.StatusOK, res.WithData(answerDetail))
 }
 
@@ -113,6 +124,9 @@ func GetAnswers(c *gin.Context) {
 	}
 	orderBy := c.DefaultQuery("orderby", enum.ByTime) //获取排序方式，默认为时间戳降序
 	answers, res := service.GetAnswers(questionId, cursor, size, orderBy)
+	if answers == nil {
+		answers = []dto.AnswerDetailDto{}
+	}
 
 	nextCursor := ""
 	if len(answers) > 0 {

@@ -28,6 +28,9 @@ func GetAnswerVoteStatus(c *gin.Context) {
 		return
 	}
 	res := cache.GetAnswerVoteStatus(uid, aid)
+	if res.NotOK() {
+		res = res.WithData(0)
+	}
 	c.JSON(http.StatusOK, res)
 }
 

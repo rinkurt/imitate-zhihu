@@ -18,6 +18,9 @@ type Profile struct {
 }
 
 func SelectProfileByUserId(userId int64) (*Profile, result.Result) {
+	if userId == 0 {
+		return nil, result.UserNotFoundErr
+	}
 	db := tool.GetDatabase()
 	profile := Profile{}
 	res := db.Where(&Profile{UserId: userId}).First(&profile)

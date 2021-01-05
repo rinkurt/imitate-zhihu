@@ -12,6 +12,8 @@ import (
 	"strconv"
 )
 
+var emptyQuesDetail = &dto.QuestionDetailDto{Creator: &dto.UserProfileDto{}}
+
 func RouteQuestionController(engine *gin.Engine) {
 	group := engine.Group("/question")
 	group.GET("", GetQuestions)
@@ -34,6 +36,9 @@ func GetQuestions(c *gin.Context) {
 	search := c.Query("search")
 	orderBy := c.DefaultQuery("orderby", enum.ByTime)
 	q, res := service.GetQuestions(search, cursor, size, orderBy)
+	if q == nil {
+		q = []dto.QuestionShortDto{}
+	}
 	nextCursor := ""
 	if len(q) > 0 {
 		tail := q[len(q)-1]
@@ -59,6 +64,9 @@ func GetQuestionById(c *gin.Context) {
 		return
 	}
 	q, res := service.GetQuestionById(id)
+	if q == nil {
+		q = emptyQuesDetail
+	}
 	c.JSON(http.StatusOK, res.WithData(q))
 }
 
@@ -76,6 +84,9 @@ func NewQuestion(c *gin.Context) {
 		return
 	}
 	res := service.NewQuestion(userId, &questionDto)
+	if res.NotOK() {
+		res = res.WithData(emptyQuesDetail)
+	}
 	c.JSON(http.StatusOK, res)
 }
 
@@ -98,6 +109,9 @@ func UpdateQuestionById(c *gin.Context) {
 		return
 	}
 	res := service.UpdateQuestionById(uid, qid, questionDto)
+	if res.NotOK() {
+		res = res.WithData(emptyQuesDetail)
+	}
 	c.JSON(http.StatusOK, res)
 }
 
