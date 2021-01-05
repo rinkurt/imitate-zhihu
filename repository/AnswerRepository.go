@@ -79,10 +79,10 @@ func DeleteAnswerById(answerId int64) result.Result {
 	return result.Ok
 }
 
-func SelectAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]Answer, result.Result) {
+func SelectAnswers(questionId int64, userId int64, cursor []int64, size int, orderBy string) ([]Answer, result.Result) {
 	var answers []Answer
 	db := tool.GetDatabase()
-	db = db.Where("question_id = ?", questionId)
+	db = db.Where(&Answer{QuestionId: questionId, CreatorId: userId})
 	switch orderBy {
 	case enum.ByTime:
 		if cursor[1] != -1 {

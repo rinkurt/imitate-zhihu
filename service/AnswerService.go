@@ -98,12 +98,18 @@ func DeleteAnswerById(userId int64, answerId int64) result.Result {
 	return res
 }
 
-func GetAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]dto.AnswerDetailDto, result.Result) {
-	ans, res := repository.SelectAnswers(questionId, cursor, size, orderBy)
+func GetAnswers(questionId int64, userId int64, cursor []int64, size int, orderBy string) ([]dto.AnswerDetailDto, result.Result) {
+	ans, res := repository.SelectAnswers(questionId, userId, cursor, size, orderBy)
 	if res.NotOK() {
 		return nil, result.AnswerNotFoundErr
 	}
 	answers := make([]dto.AnswerDetailDto, len(ans))
+
+	profile := &dto.UserProfileDto{}
+	if userId != 0 {
+		profile, _ = GetUserProfileByUid(userId)
+	}
+
 	for i := 0; i < len(ans); i++ {
 		res = cache.ReadAnswerCounts(&ans[i])
 		if res.NotOK() {
@@ -111,8 +117,16 @@ func GetAnswers(questionId int64, cursor []int64, size int, orderBy string) ([]d
 		}
 
 		model.Copy(&answers[i], &ans[i])
-		userProfile, _ := GetUserProfileByUid(ans[i].CreatorId)
-		answers[i].Creator = userProfile
+		if userId != 0 {
+			answers[i].Creator = profile
+		} else {
+			userProfile, _ := GetUserProfileByUid(ans[i].CreatorId)
+			answers[i].Creator = userProfile
+		}
 	}
 	return answers, result.Ok
+}
+
+func GetAnswersByVoteUser(uid int64, cursor int, size int) ([]dto.AnswerDetailDto, result.Result) {
+	return nil, result.Ok
 }

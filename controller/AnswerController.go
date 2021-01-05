@@ -103,11 +103,51 @@ func DeleteAnswerById(c *gin.Context) {
 }
 
 func GetAnswers(c *gin.Context) {
+	voteBy := c.Query("voteby")
+	voteUid, err := tool.StrToInt64(voteBy)
+	if err != nil {
+		voteUid = 0
+	}
+
+	s := c.DefaultQuery("size", "10")
+	size, err := tool.StrToInt(s)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+
+	// 进入按点赞查询，该部分需要从缓存查询，单独处理
+	if voteUid != 0 {
+		// 此处 cursor 格式不同，单独处理
+		qCursor := c.Query("cursor")
+		cursor, err := tool.StrToInt(qCursor)
+		if err != nil {
+			cursor = 0
+		}
+
+		answers, res := service.GetAnswersByVoteUser(voteUid, cursor, size)
+		if answers == nil {
+			answers = []dto.AnswerDetailDto{}
+		}
+
+		c.JSON(http.StatusOK, res.WithData(gin.H{
+			"next_cursor": cursor + size,
+			"answers":     answers,
+		}))
+		// 停止后续处理
+		return
+	}
+
 	qid := c.Query("qid")
 	questionId, err := tool.StrToInt64(qid)
-	if err != nil { //没有转换成功，说明请求失败
-		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Missing question id"))
-		return
+	if err != nil {
+		questionId = 0
+	}
+
+	uid := c.Query("uid")
+	userId, err := tool.StrToInt64(uid)
+	if err != nil {
+		userId = 0
 	}
 
 	cursor, err := tool.ParseCursor(c.DefaultQuery("cursor", "-1,-1"))
@@ -116,14 +156,8 @@ func GetAnswers(c *gin.Context) {
 		return
 	}
 
-	s := c.DefaultQuery("size", "5") //每页记录数,缺省情况下取5
-	size, err := tool.StrToInt(s)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
-		return
-	}
 	orderBy := c.DefaultQuery("orderby", enum.ByTime) //获取排序方式，默认为时间戳降序
-	answers, res := service.GetAnswers(questionId, cursor, size, orderBy)
+	answers, res := service.GetAnswers(questionId, userId, cursor, size, orderBy)
 	if answers == nil {
 		answers = []dto.AnswerDetailDto{}
 	}
