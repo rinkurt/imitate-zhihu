@@ -128,5 +128,29 @@ func GetAnswers(questionId int64, userId int64, cursor []int64, size int, orderB
 }
 
 func GetAnswersByVoteUser(uid int64, cursor int, size int) ([]dto.AnswerDetailDto, result.Result) {
-	return nil, result.Ok
+	ids, res := cache.GetVotedAnswerIds(uid, cursor, size)
+	if res.NotOK() {
+		return nil, res
+	}
+	var ret []dto.AnswerDetailDto
+	for _, id := range ids {
+		if id == 0 {
+			continue
+		}
+		answer, _ := repository.SelectAnswerById(id)
+		if answer == nil {
+			continue
+		}
+		ansDto := dto.AnswerDetailDto{}
+		model.Copy(&ansDto, answer)
+
+		profile, _ := GetUserProfileByUid(answer.CreatorId)
+		ansDto.Creator = profile
+
+		ret = append(ret, ansDto)
+	}
+	if len(ret) == 0 {
+		return nil, result.AnswerNotFoundErr
+	}
+	return ret, result.Ok
 }

@@ -41,8 +41,8 @@ func CreateAnswer(answer *Answer) result.Result {
 func SelectAnswerById(answerId int64) (*Answer, result.Result) {
 	db := tool.GetDatabase()
 	var ans Answer
-	err := db.First(&ans, answerId).Error
-	if err != nil {
+	db = db.First(&ans, answerId)
+	if db.RowsAffected == 0 {
 		return nil, result.AnswerNotFoundErr
 	}
 	return &ans, result.Ok

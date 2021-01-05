@@ -29,7 +29,7 @@ func GetHotQuestions(c *gin.Context) {
 		q = []dto.HotQuestionDto{}
 	}
 	c.JSON(http.StatusOK, res.WithData(gin.H{
-		"next_cursor": cursor + size,
+		"next_cursor": tool.IntToStr(cursor + size),
 		"questions": q,
 	}))
 }

@@ -20,6 +20,10 @@ func KeyWriteVote(uid int64) string {
 	return "WriteVote:" + tool.Int64ToStr(uid)
 }
 
+func KeyVoteZSet(uid int64) string {
+	return "VoteZSet:" + tool.Int64ToStr(uid)
+}
+
 func SyncAnswerVoteFromDB(uid int64) {
 	votes := repository.SelectVotesByUid(uid)
 	// 删除旧缓存
@@ -27,6 +31,7 @@ func SyncAnswerVoteFromDB(uid int64) {
 	if err != nil {
 		tool.Logger.Error(err)
 	}
+	tool.Rdb.HSet(context.Background(), KeyReadVote(uid), "", "")
 	for _, vote := range votes {
 		var state string
 		if vote.IsUpvote {
@@ -40,6 +45,7 @@ func SyncAnswerVoteFromDB(uid int64) {
 			tool.Logger.Error(err)
 		}
 	}
+	tool.Rdb.Expire(context.Background(), KeyReadVote(uid), ExpireTime)
 }
 
 func GetAnswerVoteStatus(uid int64, aid int64) result.Result {
@@ -50,9 +56,7 @@ func GetAnswerVoteStatus(uid int64, aid int64) result.Result {
 
 	// key 在缓存中未找到，从数据库读取
 	if exists == 0 {
-		tool.Rdb.HSet(context.Background(), KeyReadVote(uid), "", "")
 		SyncAnswerVoteFromDB(uid)
-		tool.Rdb.Expire(context.Background(), KeyReadVote(uid), ExpireTime)
 	}
 
 	val, err := tool.Rdb.HGet(context.Background(), KeyReadVote(uid), tool.Int64ToStr(aid)).Result()
@@ -177,4 +181,53 @@ func SyncAnswerVote() {
 			tool.Logger.Error(err)
 		}
 	}
+}
+
+func GetVotedAnswerIds(uid int64, cursor int, size int) ([]int64, result.Result) {
+	if cursor == 0 {
+		// 更新列表
+		err := tool.Rdb.Del(context.Background(), KeyVoteZSet(uid)).Err()
+		if err != nil && err != redis.Nil {
+			return []int64{}, result.RedisErr.WithError(err)
+		}
+
+		exists, _ := tool.Rdb.Exists(context.Background(), KeyReadVote(uid)).Result()
+		if exists == 0 {
+			SyncAnswerVoteFromDB(uid)
+		}
+
+		rVal, _ := tool.Rdb.HGetAll(context.Background(), KeyReadVote(uid)).Result()
+		wVal, _ := tool.Rdb.HGetAll(context.Background(), KeyWriteVote(uid)).Result()
+		for k, v := range wVal {
+			rVal[k] = v
+		}
+
+		for k, v := range rVal {
+			state, updateAt, err := tool.ParseVoteVal(v)
+			if err != nil {
+				continue
+			}
+			if state == 1 {
+				tool.Rdb.ZAdd(context.Background(), KeyVoteZSet(uid), &redis.Z{
+					Score: float64(updateAt),
+					Member: k,
+				})
+			}
+		}
+	}
+
+	ids, err := tool.Rdb.ZRevRange(context.Background(), KeyVoteZSet(uid), int64(cursor), int64(cursor+size-1)).Result()
+	if err != nil && err != redis.Nil {
+		return []int64{}, result.RedisErr.WithError(err)
+	}
+
+	ret := make([]int64, len(ids))
+	for k, v := range ids {
+		id, err := tool.StrToInt64(v)
+		if err != nil {
+			id = 0
+		}
+		ret[k] = id
+	}
+	return ret, result.Ok
 }

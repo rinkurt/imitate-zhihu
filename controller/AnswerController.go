@@ -131,7 +131,7 @@ func GetAnswers(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, res.WithData(gin.H{
-			"next_cursor": cursor + size,
+			"next_cursor": tool.IntToStr(cursor + size),
 			"answers":     answers,
 		}))
 		// 停止后续处理
