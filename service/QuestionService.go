@@ -10,9 +10,9 @@ import (
 	"imitate-zhihu/tool"
 )
 
-func GetQuestions(search string, cursor []int64, size int, orderBy string) ([]dto.QuestionShortDto, result.Result) {
+func GetQuestions(uid int64, search string, cursor []int64, size int, orderBy string) ([]dto.QuestionShortDto, result.Result) {
 	//offset := (page - 1) * size
-	questions, res := repository.SelectQuestions(search, cursor, size, orderBy)
+	questions, res := repository.SelectQuestions(uid, search, cursor, size, orderBy)
 	if res.NotOK() {
 		return nil, res
 	}

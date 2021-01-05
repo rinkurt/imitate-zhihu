@@ -24,6 +24,11 @@ func RouteQuestionController(engine *gin.Engine) {
 }
 
 func GetQuestions(c *gin.Context) {
+	uid := c.Query("uid")
+	userId, err := tool.StrToInt64(uid)
+	if err != nil {
+		userId = 0
+	}
 	cursor, err := tool.ParseCursor(c.DefaultQuery("cursor", "-1,-1"))
 	if err != nil || len(cursor) < 2 {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
@@ -35,7 +40,7 @@ func GetQuestions(c *gin.Context) {
 	}
 	search := c.Query("search")
 	orderBy := c.DefaultQuery("orderby", enum.ByTime)
-	q, res := service.GetQuestions(search, cursor, size, orderBy)
+	q, res := service.GetQuestions(userId, search, cursor, size, orderBy)
 	if q == nil {
 		q = []dto.QuestionShortDto{}
 	}

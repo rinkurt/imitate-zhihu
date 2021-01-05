@@ -38,9 +38,10 @@ type Hot struct {
 	Heat int
 }
 
-func SelectQuestions(search string, cursor []int64, limit int, orderBy string) ([]Question, result.Result) {
+func SelectQuestions(uid int64, search string, cursor []int64, limit int, orderBy string) ([]Question, result.Result) {
 	db := tool.GetDatabase()
 	var questions []Question
+	db = db.Where(&Question{CreatorId: uid})
 	if search != "" {
 		db = db.Where("title LIKE ? OR FIND_IN_SET(?,tag)", "%"+search+"%", search)
 	}
