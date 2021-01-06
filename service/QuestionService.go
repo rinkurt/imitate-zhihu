@@ -26,6 +26,8 @@ func GetQuestions(uid int64, search string, cursor []int64, size int, orderBy st
 		questionDto := dto.QuestionShortDto{}
 		model.Copy(&questionDto, &question)
 
+		questionDto.Creator, _ = GetUserProfileByUid(question.CreatorId)
+
 		tool.CutContent(&questionDto.Content, 80)
 		questionDtos = append(questionDtos, questionDto)
 	}
