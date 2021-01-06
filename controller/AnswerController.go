@@ -54,7 +54,8 @@ func GetAnswerById(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
 		return
 	}
-	answerDetail, res := service.GetAnswerById(answerId)
+	order := c.DefaultQuery("orderby", enum.ByUpvote)
+	answerDetail, res := service.GetAnswerById(answerId, order)
 	if res.NotOK() {
 		answerDetail = emptyAnswer
 	}

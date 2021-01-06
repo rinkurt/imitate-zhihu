@@ -48,14 +48,14 @@ func SelectQuestions(uid int64, search string, cursor []int64, limit int, orderB
 	switch orderBy {
 	case enum.ByHeat:
 		if cursor[1] != -1 {
-			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
+			db = db.Where("(view_count = ? AND id < ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
 		}
-		db = db.Order("view_count desc")
+		db = db.Order("view_count desc, id desc")
 	case enum.ByTime:
 		if cursor[1] != -1 {
-			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
+			db = db.Where("(update_at = ? AND id < ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
 		}
-		db = db.Order("update_at desc")
+		db = db.Order("update_at desc, id desc")
 	}
 	res := db.Model(&Question{}).Limit(limit).Find(&questions)
 	if res.RowsAffected == 0 {

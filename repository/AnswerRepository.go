@@ -86,25 +86,52 @@ func SelectAnswers(questionId int64, userId int64, cursor []int64, size int, ord
 	switch orderBy {
 	case enum.ByTime:
 		if cursor[1] != -1 {
-			db = db.Where("(update_at = ? AND id > ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
+			db = db.Where("(update_at = ? AND id < ?) OR update_at < ?", cursor[0], cursor[1], cursor[0])
 		}
-		db = db.Order("update_at desc")
+		db = db.Order("update_at desc, id desc")
 	case enum.ByHeat:
 		if cursor[1] != -1 {
-			db = db.Where("(view_count = ? AND id > ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
+			db = db.Where("(view_count = ? AND id < ?) OR view_count < ?", cursor[0], cursor[1], cursor[0])
 		}
-		db = db.Order("view_count desc")
+		db = db.Order("view_count desc, id desc")
 	case enum.ByUpvote:
 		if cursor[1] != -1 {
-			db = db.Where("(upvote_count = ? AND id > ?) OR upvote_count < ?", cursor[0], cursor[1], cursor[0])
+			db = db.Where("(upvote_count = ? AND id < ?) OR upvote_count < ?", cursor[0], cursor[1], cursor[0])
 		}
-		db = db.Order("upvote_count desc")
+		db = db.Order("upvote_count desc, id desc")
 	}
 	db = db.Limit(size).Find(&answers)
 	if db.RowsAffected == 0 {
 		return nil, result.AnswerNotFoundErr
 	}
 	return answers, result.Ok
+}
+
+func GetNextAnswerId(cur *Answer, order string) int64 {
+	id := cur.Id
+	if id == 0 {
+		return 0
+	}
+	db := tool.GetDatabase()
+	switch order {
+	case enum.ByUpvote:
+		cursor := cur.UpvoteCount
+		db = db.Where("(upvote_count = ? AND id < ?) OR upvote_count < ?", cursor, id, cursor)
+		db = db.Order("upvote_count desc, id desc")
+	case enum.ByTime:
+		cursor := cur.UpdateAt
+		db = db.Where("(update_at = ? AND id < ?) OR update_at < ?", cursor, id, cursor)
+		db = db.Order("update_at desc, id desc")
+	case enum.ByHeat:
+		cursor := cur.ViewCount
+		db = db.Where("(view_count = ? AND id < ?) OR view_count < ?", cursor, id, cursor)
+		db = db.Order("view_count desc, id desc")
+	default:
+		return 0
+	}
+	answer := &Answer{}
+	db = db.Select("id").Take(answer)
+	return answer.Id
 }
 
 func UpdateAnswerCounts(answer *Answer) result.Result {

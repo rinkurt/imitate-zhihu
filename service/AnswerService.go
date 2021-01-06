@@ -31,7 +31,7 @@ func NewAnswer(userId int64, answerCreateDto *dto.AnswerCreateDto) result.Result
 	return result.Ok.WithData(answerDetail)
 }
 
-func GetAnswerById(id int64) (*dto.AnswerDetailDto, result.Result) {
+func GetAnswerById(id int64, order string) (*dto.AnswerDetailDto, result.Result) {
 	answerDetail := &dto.AnswerDetailDto{}
 	answer, res := repository.SelectAnswerById(id)
 	if res.NotOK() {
@@ -55,6 +55,7 @@ func GetAnswerById(id int64) (*dto.AnswerDetailDto, result.Result) {
 		user = dto.AnonymousUser()
 	}
 	answerDetail.Creator = user
+	answerDetail.NextId = repository.GetNextAnswerId(answer, order)
 	return answerDetail, result.Ok
 }
 

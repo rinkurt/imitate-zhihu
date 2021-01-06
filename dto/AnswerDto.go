@@ -20,6 +20,7 @@ type AnswerDetailDto struct {
 	UpdateAt      int64           `json:"update_at"`
 	QuestionId    int64           `json:"question_id"`
 	Creator       *UserProfileDto `json:"creator"`
+	NextId        int64           `json:"next_id"`
 }
 
 type AnswerCreateDto struct {
