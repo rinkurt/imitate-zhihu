@@ -61,6 +61,7 @@ var (
 	BadRequest = Result{Code: 400, Message: "Bad Request"}
 	ServerErr  = Result{Code: 500, Message: "Server Error"}
 	RedisErr  = Result{Code: 501, Message: "Redis Error"}
+	GraphDeleteErr =Result{Code: 502, Message: "GraphDeleteErr"}
 
 	// 100_: Authorization
 	EmptyAuth       = Result{Code: 1001, Message: "Empty Authorization"}
