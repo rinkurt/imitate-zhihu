@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
+	"imitate-zhihu/middleware"
 	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"net/http"
@@ -14,6 +15,7 @@ func RouteUserController(engine *gin.Engine) {
 	group.POST("/login", UserLogin)
 	group.POST("/register", UserRegister)
 	group.GET("/profile/:user_id", GetUserProfile)
+	group.PUT("/profile", middleware.JWTAuthMiddleware, UpdateUserProfile)
 	group.GET("/verify", VerifyEmail)
 }
 
@@ -64,6 +66,23 @@ func GetUserProfile(c *gin.Context) {
 	if res.NotOK() {
 		res = res.WithData(dto.AnonymousUser())
 	}
+	c.JSON(http.StatusOK, res.WithData(profile))
+}
+
+func UpdateUserProfile(c *gin.Context) {
+	uid, err := middleware.GetUserId(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, result.ContextErr.WithError(err))
+		return
+	}
+	profile := &dto.UserProfileDto{}
+	err = c.ShouldBindJSON(profile)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, result.BadRequest.WithError(err))
+		return
+	}
+	profile.Id = uid
+	res := service.UpdateUserProfileByUid(profile)
 	c.JSON(http.StatusOK, res.WithData(profile))
 }
 

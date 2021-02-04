@@ -60,7 +60,7 @@ var (
 	Ok         = Result{Code: 0, Message: "OK"}
 	BadRequest = Result{Code: 400, Message: "Bad Request"}
 	ServerErr  = Result{Code: 500, Message: "Server Error"}
-	RedisErr  = Result{Code: 501, Message: "Redis Error"}
+	RedisErr   = Result{Code: 501, Message: "Redis Error"}
 
 	// 100_: Authorization
 	EmptyAuth       = Result{Code: 1001, Message: "Empty Authorization"}
@@ -78,6 +78,7 @@ var (
 	CreateUserErr         = Result{Code: 2012, Message: "DB Create user error"}
 	EmailSendErr          = Result{Code: 2013, Message: "Email send error"}
 	WrongVerificationCode = Result{Code: 2014, Message: "Wrong verification code, or code expired."}
+	UpdateProfileErr      = Result{Code: 2015, Message: "Update profile error"}
 
 	// 21__: Question
 	// 210_: Get Question

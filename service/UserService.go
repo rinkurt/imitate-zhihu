@@ -105,6 +105,23 @@ func GetUserProfileByUid(userId int64) (*dto.UserProfileDto, result.Result) {
 	return userDto, result.Ok
 }
 
+func UpdateUserProfileByUid(profileDto *dto.UserProfileDto) result.Result {
+	profile := &repository.Profile{}
+	model.Copy(profile, profileDto)
+	profile.UserId = profileDto.Id
+	profile.Id = 0
+
+	res := repository.UpdateProfileByUserId(profile)
+	if res.NotOK() {
+		return res
+	}
+
+	// save in cache
+	cache.Set(cache.KeyUser(profileDto.Id), profileDto)
+
+	return result.Ok
+}
+
 func VerifyEmail(email string) (string, result.Result) {
    	vrfCode := tool.GenValidateCode(6)
 	//tool.CodeCache[email]=vrfCode

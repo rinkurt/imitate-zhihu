@@ -41,3 +41,15 @@ func CreateProfile(profile *Profile) result.Result {
 	}
 	return result.Ok
 }
+
+func UpdateProfileByUserId(profile *Profile) result.Result {
+	db := tool.GetDatabase()
+	profile.UpdateAt = time.Now().Unix()
+	db = db.Model(profile).Where("user_id = ?", profile.UserId).
+		Select("Name", "Gender", "Description", "AvatarUrl", "UpdateAt").
+		Updates(profile)
+	if db.RowsAffected == 0 {
+		return result.UpdateProfileErr
+	}
+	return result.Ok
+}
