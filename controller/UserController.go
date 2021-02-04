@@ -91,3 +91,4 @@ func VerifyEmail(c *gin.Context) {
 	_, res := service.VerifyEmail(email)
 	c.JSON(http.StatusOK, res)
 }
+
