@@ -3,7 +3,7 @@ package tool
 import (
 	"encoding/base64"
 	"fmt"
-	"imitate-zhihu/result"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -11,7 +11,7 @@ import (
 )
 
 //上传图片，返回素材库图片ID和url
-func GraphUpload(path string)(string,string){
+func GraphUpload(path string) (string,string) {
 	//base64 标准编码
 	b,err := ioutil.ReadFile(path)
 	if err != nil {
@@ -39,23 +39,23 @@ func GraphUpload(path string)(string,string){
 }
 
 //根据素材库图片ID删除图片
-func GraphDeleteById(id string)  result.Result{
+func GraphDeleteById(id string) error {
 	res, err := http.Post("http://hn216.api.yesapi.cn/?s=App.CDN.DeleteById&app_key=3EE1399D7F5DC953E746D33FF9B06E0E&id="+id,"application/x-www-form-urlencoded",nil)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	str := string(body)
 	fmt.Println(str)
 	pos := strings.Index(str,"ret")
 
-	ret,_ := StrToInt(str[pos+5:pos+8])
+	ret, _ := StrToInt(str[pos+5:pos+8])
 	if ret == 200 {
-		return result.Ok
+		return nil
 	}
-	return result.GraphDeleteErr
+	return errors.New("Graph Delete Error")
 }
 
