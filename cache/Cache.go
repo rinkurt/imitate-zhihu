@@ -23,8 +23,8 @@ func KeyUser(uid int64) string {
 	return "User:" + tool.Int64ToStr(uid)
 }
 
-func KeyQuestion(qid int64) string {
-	return "Question:" + tool.Int64ToStr(qid)
+func KeyQuestionTitle(qid int64) string {
+	return "QuestionTitle:" + tool.Int64ToStr(qid)
 }
 
 // Write-cache for counts

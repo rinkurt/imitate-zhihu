@@ -1,5 +1,10 @@
 package dto
 
+type QuestionTitleDto struct {
+	Id    int64  `json:"id"`
+	Title string `json:"title"`
+}
+
 type QuestionShortDto struct {
 	Id          int64           `json:"id"`
 	Title       string          `json:"title"`

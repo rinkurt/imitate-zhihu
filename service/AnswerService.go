@@ -50,7 +50,7 @@ func GetAnswerById(id int64, order string) (*dto.AnswerDetailDto, result.Result)
 
 	model.Copy(answerDetail, answer)
 
-	question, _ := GetQuestionUsingCache(answer.QuestionId)
+	question, _ := GetQuestionTitle(answer.QuestionId)
 	answerDetail.QuestionTitle = question.Title
 
 	user, res := GetUserProfileByUid(answer.CreatorId)
@@ -122,7 +122,7 @@ func GetAnswers(questionId int64, userId int64, cursor []int64, size int, orderB
 
 		model.Copy(&answers[i], &ans[i])
 
-		question, _ := GetQuestionUsingCache(ans[i].QuestionId)
+		question, _ := GetQuestionTitle(ans[i].QuestionId)
 		answers[i].QuestionTitle = question.Title
 
 		if userId != 0 {
@@ -152,7 +152,7 @@ func GetAnswersByVoteUser(uid int64, cursor int, size int) ([]dto.AnswerDetailDt
 		ansDto := dto.AnswerDetailDto{}
 		model.Copy(&ansDto, answer)
 
-		question, _ := GetQuestionUsingCache(answer.QuestionId)
+		question, _ := GetQuestionTitle(answer.QuestionId)
 		ansDto.QuestionTitle = question.Title
 
 		profile, _ := GetUserProfileByUid(answer.CreatorId)
