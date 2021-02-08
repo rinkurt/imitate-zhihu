@@ -23,6 +23,10 @@ func KeyUser(uid int64) string {
 	return "User:" + tool.Int64ToStr(uid)
 }
 
+func KeyQuestion(qid int64) string {
+	return "Question:" + tool.Int64ToStr(qid)
+}
+
 // Write-cache for counts
 func KeyWrite(typ int, id int64) string {
 	return "Write:" + tool.IntToStr(typ) + ":" + tool.Int64ToStr(id)

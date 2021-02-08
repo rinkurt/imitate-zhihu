@@ -30,12 +30,14 @@ type LoginResponseDto struct {
 }
 
 var anonymousUser *UserProfileDto = nil
+const AnonyAvatar = "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=605029614,2240337309&fm=26&gp=0.jpg"
 
 func AnonymousUser() *UserProfileDto {
 	if anonymousUser == nil {
 		anonymousUser = &UserProfileDto{
 			Id:   0,
 			Name: "未知用户",
+			AvatarUrl: AnonyAvatar,
 		}
 	}
 	return anonymousUser

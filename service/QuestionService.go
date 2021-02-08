@@ -34,6 +34,22 @@ func GetQuestions(uid int64, search string, cursor []int64, size int, orderBy st
 	return questionDtos, result.Ok
 }
 
+func GetQuestionUsingCache(id int64) (*repository.Question, result.Result) {
+	question := &repository.Question{}
+	found := cache.Get(cache.KeyQuestion(id), question)
+	if found {
+		return question, result.Ok
+	}
+
+	question, res := repository.SelectQuestionById(id)
+	if res.NotOK() {
+		return question, res
+	}
+
+	cache.Set(cache.KeyQuestion(id), question)
+	return question, result.Ok
+}
+
 func GetQuestionById(id int64) (*dto.QuestionDetailDto, result.Result) {
 	question, res := repository.SelectQuestionById(id)
 	if res.NotOK() {

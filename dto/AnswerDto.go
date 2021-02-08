@@ -10,6 +10,8 @@ type AnswerShortDto struct {
 }
 
 type AnswerDetailDto struct {
+	QuestionId    int64           `json:"question_id"`
+	QuestionTitle string          `json:"question_title"`
 	Id            int64           `json:"id"`
 	Content       string          `json:"content"`
 	ViewCount     int             `json:"view_count"`
@@ -18,7 +20,6 @@ type AnswerDetailDto struct {
 	CommentCount  int             `json:"comment_count"`
 	CreateAt      int64           `json:"create_at"`
 	UpdateAt      int64           `json:"update_at"`
-	QuestionId    int64           `json:"question_id"`
 	Creator       *UserProfileDto `json:"creator"`
 	NextId        int64           `json:"next_id"`
 }
