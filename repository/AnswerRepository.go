@@ -163,7 +163,7 @@ func GetBestAnswerByQues(qid int64) (*Answer, result.Result) {
 	db := tool.GetDatabase()
 	answer := &Answer{}
 	db.Where(&Answer{QuestionId: qid}).Order("upvote_count desc").Take(answer)
-	if db.RowsAffected == 0 {
+	if db.Error != nil {
 		return nil, result.AnswerNotFoundErr
 	}
 	return answer, result.Ok

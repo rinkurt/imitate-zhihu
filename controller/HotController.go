@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"imitate-zhihu/dto"
-	"imitate-zhihu/result"
 	"imitate-zhihu/service"
 	"imitate-zhihu/tool"
 	"net/http"
@@ -15,10 +14,9 @@ func RouteHotController(engine *gin.Engine) {
 }
 
 func GetHotQuestions(c *gin.Context) {
-	cursor, err := tool.StrToInt(c.DefaultQuery("cursor", "0"))
+	cursor, err := tool.StrToInt(c.Query("cursor"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, result.BadRequest.WithErrorStr("Cursor format error"))
-		return
+		cursor = 0
 	}
 	size, err := tool.StrToInt(c.DefaultQuery("size", "10"))
 	if err != nil {
