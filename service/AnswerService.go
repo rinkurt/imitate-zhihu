@@ -149,6 +149,7 @@ func GetAnswersByVoteUser(uid int64, cursor int, size int) ([]dto.AnswerDetailDt
 		if answer == nil {
 			continue
 		}
+		cache.ReadAnswerCounts(answer)
 		ansDto := dto.AnswerDetailDto{}
 		model.Copy(&ansDto, answer)
 
