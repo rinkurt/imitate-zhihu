@@ -10,7 +10,8 @@ import (
 )
 
 var email = "e4yb596h@meantinc.com"
-var id int64
+var Uid int64
+var Tok string
 
 func TestVerifyEmail(t *testing.T) {
 	verifyCode, res := service.VerifyEmail(email)
@@ -41,6 +42,9 @@ func TestUserRegister(t *testing.T) {
 	if res.NotOK() {
 		t.Error(res.Message)
 	}
+	dat := res.Data.(gin.H)
+	Uid = dat["id"].(int64)
+	Tok = dat["token"].(string)
 }
 
 func TestUserLogin(t *testing.T) {
@@ -53,14 +57,29 @@ func TestUserLogin(t *testing.T) {
 		t.Error(res.Message)
 	}
 	dat := res.Data.(gin.H)
-	id = dat["id"].(int64)
+	Uid = dat["id"].(int64)
+	Tok = dat["token"].(string)
 }
 
 func TestGetUserProfileByUid(t *testing.T)  {
 	var resProfile *dto.UserProfileDto
-	resProfile,res := service.GetUserProfileByUid(id)
+	resProfile,res := service.GetUserProfileByUid(Uid)
 	if res.NotOK() {
 		t.Error(res.Message)
 	}
 	fmt.Printf("user profile:%v\n",resProfile)
+}
+
+func TestUpdateUserProfileByUid(t *testing.T)  {
+	updateUer := dto.UserProfileDto{
+		Id:          Uid,
+		Name:        "Jack",
+		Gender:      0,
+		Description: "I'm Jack.",
+		AvatarUrl:   "http://Jack.com/avatar.jpg",
+	}
+	res := service.UpdateUserProfileByUid(&updateUer)
+	if res.NotOK() {
+		t.Error(res.Message)
+	}
 }
